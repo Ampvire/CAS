@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.edu.cas.user.dao.Category;
 import ru.edu.cas.user.dao.Role;
 import ru.edu.cas.user.dao.User;
+import ru.edu.cas.user.repo.RoleRepository;
 import ru.edu.cas.user.repo.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminController {
 
     private UserRepository repository;
+    private RoleRepository roleRepository;
+
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Autowired
     public void setRepository(UserRepository repository) {
@@ -58,7 +65,7 @@ public class AdminController {
         }
         repository.save(userEntity);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message","User");
+        modelAndView.addObject("message", "User");
         modelAndView.setViewName("/success_create.jsp");
         return modelAndView;
     }
