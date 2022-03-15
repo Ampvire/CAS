@@ -6,12 +6,6 @@
  </head>
 <body>
  <h1>User panel</h1>
- <h2>New clients/h2>
-  <br>
-  <br>
-<c:forEach items="${list}" var="user">
-    id:${user}
-    <hr>
-</c:forEach>
+ <h2>Client report</h2>
 </body>
 </html>
