@@ -8,26 +8,28 @@
  <h1>User panel</h1>
  <h2>All clients</h2>
 <div style="width: 300px; display: flex;margin-top: 20px">
-<table>
+<table >
  <colgroup>
-        <col span="4" style="background:#DBD7D2">
+        <col span="5" style="background:#DCDCDC">
     </colgroup>
             <tr>
                <th>NANE</td>
-               <th>TYPE</td>
                <th>INN</td>
                <th>OGRN</td>
                <th>SEGMENT</td>
+               <th>TYPE</td>
+               <th></td>
            </tr>
     <c:forEach items="${list}" var="client">
            <tr>
                <td>${client.name}</td>
-               <td>${client.type}</td>
                <td>${client.inn}</td>
                <td>${client.ogrn}</td>
+               <td>${client.segmentId.segment}</td>
+               <td>${client.typeId.type}</td>
                 <td>
                     <form action="getReport" method="get">
-                        <div style="width: 300px; display: flex; margin-top: 20px">
+                        <div style="width: 300px; display: flex">
                             <input type="submit" value="Report" style="width: 100px; margin-right: auto">
                         </div>
                     </form>

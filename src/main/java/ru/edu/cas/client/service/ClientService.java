@@ -1,7 +1,7 @@
 package ru.edu.cas.client.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientSegment;
 import ru.edu.cas.client.dao.ClientType;
@@ -12,8 +12,10 @@ import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 
 import java.util.List;
-
-@Component
+/**
+ * Класс предназначен для работы с таблицами clients, clientType, clientSegment.
+ */
+@Service
 public class ClientService {
     private ClientsRepository clientsRepository;
     private ClientTypeRepository typeRepository;
@@ -40,33 +42,80 @@ public class ClientService {
         this.segmentRepository = segmentRepository;
     }
 
+    /**
+     * Метод возвращает список все клиентов по id пользователя
+     * @param userId
+     * @return
+     */
+
     public List<Client> getAllClients(int userId) {
-        return clientsRepository.findByUserId(userId);
+        User user = getUser(userId);
+        return clientsRepository.findByUserId(user);
     }
 
-    public List<Client> getAllClientsWithoutUser(int segmentId) {
-        return clientsRepository.findByUserIdAndSegmentId(null, segmentId);
+    /**
+     *  Метод возвращает список все клиентов по id сегмента и незакрепленных за пользователем
+     * @param segment
+     * @return
+     */
+    public List<Client> getAllClientsWithoutUser(String segment) {
+        ClientSegment clientSegment = getSegment(segment);
+        return clientsRepository.findByUserIdAndSegmentId(null,  clientSegment);
     }
 
+    /**
+     * Метод возвращает записть из таблицы ClientSegment по названию сегмента
+     * @param segment
+     * @return
+     */
     public ClientSegment getSegment(String segment) {
         return segmentRepository.findBySegment(segment);
     }
 
+    /**
+     * Метод возвращает записть из таблицы ClientType по названию типа клиента
+     * @param type
+     * @return
+     */
     public ClientType getType(String type) {
         return typeRepository.findByType(type);
     }
+
+    /**
+     * Метод возвращает пользователя из таблицы user по id
+     * @param id
+     * @return
+     */
     public User getUser(int id){
         return userRepository.getById(id);
     }
 
+    /**
+     * Метод возвращает список из таблицы ClientSegment
+     * @return
+     */
     public List<ClientSegment> getListSegments(){
         return segmentRepository.findAll();
     }
 
+    /**
+     * Метод возвращает список из таблицы ClientType
+     * @return
+     */
     public List<ClientType> getListTypes(){
         return typeRepository.findAll();
     }
 
+    /**
+     * Метод создает или редактирует запись в таблице Client
+     * @param name
+     * @param type
+     * @param inn
+     * @param ogrn
+     * @param segment
+     * @param userId
+     * @return
+     */
     public Client createClient(String name,
                                String type,
                                String inn,

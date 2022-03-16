@@ -31,9 +31,9 @@ public class ClientController {
     }
 
     @GetMapping("/getNewClients")
-    public ModelAndView getNew() {
+    public ModelAndView getNew(@RequestParam("segment") String segment) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("list", service.getAllClientsWithoutUser(2));
+        modelAndView.addObject("list", service.getAllClientsWithoutUser(segment));
         modelAndView.setViewName("/client/new_clients.jsp");
         return modelAndView;
     }
@@ -41,12 +41,13 @@ public class ClientController {
     @GetMapping("/newClient")
     public ModelAndView info() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("segment", service.getListSegments());
-        modelAndView.addObject("type", service.getListTypes());
-        return new ModelAndView("/client/create_client.jsp");
+        modelAndView.setViewName("/client/create_client.jsp");
+        modelAndView.addObject("segments",service.getListSegments());
+        modelAndView.addObject("types", service.getListTypes());
+        return modelAndView;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/create")
     public ModelAndView newUser(@RequestParam("name") String name,
                                 @RequestParam("type") String type,
                                 @RequestParam("inn") String inn,
@@ -56,7 +57,7 @@ public class ClientController {
         user.getName();
         service.createClient(name, type, inn, ogrn, segment, "2");
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", "Client");
+        modelAndView.addObject("message", "Client created!");
         modelAndView.setViewName("/success.jsp");
         return modelAndView;
     }

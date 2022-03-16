@@ -7,13 +7,13 @@
 <body>
 <h1>User panel</h1>
 <h2>Create client</h2>
-<form action="update" method="post">
+<form action="create" method="post">
     <div style="width: 300px; display: flex; margin-top: 20px">
         <label for="name">Client name:</label>
         <input id="name" name="name" style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="inn">Inn:</label>
+        <label for="inn">INN:</label>
         <input id="inn" name="inn" style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
@@ -23,18 +23,18 @@
     <div style="width: 300px; display: flex; margin-top: 20px">
         <label for="type">Type:</label>
          <select id="type" name="type" style="width: 200px; margin-left: auto">
-             <c:forEach items="${type}" var="t">
+             <c:forEach items="${types}" var="t">
                  <option>${t.type}</option>
              </c:forEach>
          </select>
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="segment">Segment:</label>
-        <select id="segment" name="segment" style="width: 200px; margin-left: auto">
-            <c:forEach items="${segment}" var="s">
-                <option>${s.segment}</option>
-            </c:forEach>
-        </select>
+         <label for="segment">Segment:</label>
+          <select id="segment" name="segment" style="width: 200px; margin-left: auto">
+              <c:forEach items="${segments}" var="seg">
+                  <option>${seg.segment}</option>
+              </c:forEach>
+          </select>
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
         <input type="submit" value="Create" style="width: 100px; margin-right: auto">
