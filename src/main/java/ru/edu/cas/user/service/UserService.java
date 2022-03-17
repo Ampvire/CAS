@@ -96,7 +96,10 @@ public class UserService {
                                     String categoryName,
                                     String roleName){
         String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
-        User user = new User();
+        User user = getUser(login);
+        if (user==null){
+            user = new User();
+        }
         user.setCategoryId(getCategory(categoryName));
         user.setFirstName(firstName);
         user.setLastName(secondName);
@@ -107,13 +110,17 @@ public class UserService {
          return user;
     }
 
+    private User getUser(String login) {
+        return repository.findByLogin(login);
+    }
+
     /**
      * Метод удаляет запись из таблицы user по логину
      * @param login
      */
     public void deleteUser(String login ){
-        User user = repository.findByLogin(login);
-        if (repository.findByLogin(login) == null) {
+        User user = getUser(login);
+        if (getUser(login) == null) {
             throw new RuntimeException("User with login " + login + " not found!");
         }
         repository.delete(user);

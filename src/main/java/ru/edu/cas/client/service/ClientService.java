@@ -12,6 +12,7 @@ import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 
 import java.util.List;
+
 /**
  * Класс предназначен для работы с таблицами clients, clientType, clientSegment.
  */
@@ -44,6 +45,7 @@ public class ClientService {
 
     /**
      * Метод возвращает список все клиентов по id пользователя
+     *
      * @param userId
      * @return
      */
@@ -54,17 +56,19 @@ public class ClientService {
     }
 
     /**
-     *  Метод возвращает список все клиентов по id сегмента и незакрепленных за пользователем
+     * Метод возвращает список все клиентов по id сегмента и незакрепленных за пользователем
+     *
      * @param segment
      * @return
      */
     public List<Client> getAllClientsWithoutUser(String segment) {
         ClientSegment clientSegment = getSegment(segment);
-        return clientsRepository.findByUserIdAndSegmentId(null,  clientSegment);
+        return clientsRepository.findByUserIdAndSegmentId(null, clientSegment);
     }
 
     /**
      * Метод возвращает записть из таблицы ClientSegment по названию сегмента
+     *
      * @param segment
      * @return
      */
@@ -74,6 +78,7 @@ public class ClientService {
 
     /**
      * Метод возвращает записть из таблицы ClientType по названию типа клиента
+     *
      * @param type
      * @return
      */
@@ -83,31 +88,35 @@ public class ClientService {
 
     /**
      * Метод возвращает пользователя из таблицы user по id
+     *
      * @param id
      * @return
      */
-    public User getUser(int id){
+    public User getUser(int id) {
         return userRepository.getById(id);
     }
 
     /**
      * Метод возвращает список из таблицы ClientSegment
+     *
      * @return
      */
-    public List<ClientSegment> getListSegments(){
+    public List<ClientSegment> getListSegments() {
         return segmentRepository.findAll();
     }
 
     /**
      * Метод возвращает список из таблицы ClientType
+     *
      * @return
      */
-    public List<ClientType> getListTypes(){
+    public List<ClientType> getListTypes() {
         return typeRepository.findAll();
     }
 
     /**
      * Метод создает или редактирует запись в таблице Client
+     *
      * @param name
      * @param type
      * @param inn
@@ -122,7 +131,10 @@ public class ClientService {
                                String ogrn,
                                String segment,
                                String userId) {
-        Client client = new Client();
+        Client client = getClient(inn);
+        if (client==null){
+            client = new Client();
+        }
         client.setName(name);
         client.setTypeId(getType(type));
         client.setInn(inn);
@@ -131,5 +143,14 @@ public class ClientService {
         client.setUserId(getUser(Integer.parseInt(userId)));
         clientsRepository.save(client);
         return client;
+    }
+
+    /**
+     * Метод возвращает запись из таблицы Client по inn
+     * @param inn
+     * @return
+     */
+    private Client getClient(String inn) {
+        return clientsRepository.findByInn(inn);
     }
 }
