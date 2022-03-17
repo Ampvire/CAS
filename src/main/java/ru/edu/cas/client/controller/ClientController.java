@@ -55,7 +55,7 @@ public class ClientController {
                                 @RequestParam("segment") String segment) {
         SecurityProperties.User user=  new SecurityProperties.User();
         user.getName();
-        service.createClient(name, type, inn, ogrn, segment, "2");
+        service.createClient(name, type, inn, ogrn, segment);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "Client created!");
         modelAndView.setViewName("/success.jsp");

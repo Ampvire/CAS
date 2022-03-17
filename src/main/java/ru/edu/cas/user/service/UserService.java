@@ -9,6 +9,7 @@ import ru.edu.cas.user.repo.CategoryRepository;
 import ru.edu.cas.user.repo.RoleRepository;
 import ru.edu.cas.user.repo.UserRepository;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -95,6 +96,10 @@ public class UserService {
                                     String password,
                                     String categoryName,
                                     String roleName){
+        List<String> parameters = Arrays.asList(login,firstName,secondName,password);
+        if (parameters.contains(null)){
+            throw new RuntimeException("Fields must not be null!");
+        }
         String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
         User user = getUser(login);
         if (user==null){
@@ -110,7 +115,7 @@ public class UserService {
          return user;
     }
 
-    private User getUser(String login) {
+    public User getUser(String login) {
         return repository.findByLogin(login);
     }
 

@@ -1,6 +1,5 @@
 package ru.edu.cas.client.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientSegment;
@@ -11,6 +10,7 @@ import ru.edu.cas.client.repo.ClientsRepository;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,33 +23,20 @@ public class ClientService {
     private ClientSegmentRepository segmentRepository;
     private UserRepository userRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
+            , ClientSegmentRepository segmentRepository, UserRepository userRepository) {
+        this.clientsRepository = clientsRepository;
+        this.typeRepository = typeRepository;
+        this.segmentRepository = segmentRepository;
         this.userRepository = userRepository;
     }
 
-    @Autowired
-    public void setClientsRepository(ClientsRepository clientsRepository) {
-        this.clientsRepository = clientsRepository;
-    }
-
-    @Autowired
-    public void setTypeRepository(ClientTypeRepository typeRepository) {
-        this.typeRepository = typeRepository;
-    }
-
-    @Autowired
-    public void setSegmentRepository(ClientSegmentRepository segmentRepository) {
-        this.segmentRepository = segmentRepository;
-    }
-
     /**
-     * Метод возвращает список все клиентов по id пользователя
+     * Метод возвращает список всех клиентов по id пользователя
      *
      * @param userId
      * @return
      */
-
     public List<Client> getAllClients(int userId) {
         User user = getUser(userId);
         return clientsRepository.findByUserId(user);
@@ -122,17 +109,19 @@ public class ClientService {
      * @param inn
      * @param ogrn
      * @param segment
-     * @param userId
      * @return
      */
     public Client createClient(String name,
                                String type,
                                String inn,
                                String ogrn,
-                               String segment,
-                               String userId) {
+                               String segment) {
+        List<String> parameters = Arrays.asList(name, inn);
+        if (parameters.contains(null)) {
+            throw new RuntimeException("Fields must not be null!");
+        }
         Client client = getClient(inn);
-        if (client==null){
+        if (client == null) {
             client = new Client();
         }
         client.setName(name);
@@ -140,13 +129,12 @@ public class ClientService {
         client.setInn(inn);
         client.setOgrn(ogrn);
         client.setSegmentId(getSegment(segment));
-        client.setUserId(getUser(Integer.parseInt(userId)));
-        clientsRepository.save(client);
-        return client;
+        return clientsRepository.save(client);
     }
 
     /**
      * Метод возвращает запись из таблицы Client по inn
+     *
      * @param inn
      * @return
      */
