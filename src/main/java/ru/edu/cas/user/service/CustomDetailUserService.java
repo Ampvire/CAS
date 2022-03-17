@@ -11,6 +11,7 @@
 //import ru.edu.cas.user.repo.UserRepository;
 //
 //import java.util.ArrayList;
+//import java.util.Base64;
 //import java.util.Collection;
 //
 //@Component
@@ -28,8 +29,10 @@
 //        if (info == null) {
 //            throw new UsernameNotFoundException("User not found " + info.getLogin());
 //        }
+//        byte[] password = info.getPassword().getBytes();
+//        String decodedPassword = Base64.getDecoder().decode(password).toString();
 //        Collection<GrantedAuthority> authorities = new ArrayList<>();
 //        authorities.add(new SimpleGrantedAuthority("ROLE_" + info.getRoleId().getRole()));
-//        return new org.springframework.security.core.userdetails.User(info.getLogin(), info.getPassword(), authorities);
+//        return new org.springframework.security.core.userdetails.User(info.getLogin(), decodedPassword, authorities);
 //    }
 //}
