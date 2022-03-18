@@ -20,7 +20,7 @@ public class CasConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl("jdbc:sqlite:db/users.db");
+        dataSource.setUrl("jdbc:sqlite:db/cas.db");
         dataSource.setDriverClassName("org.sqlite.JDBC");
         return dataSource;
     }
