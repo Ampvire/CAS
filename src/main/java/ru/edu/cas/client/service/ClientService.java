@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientSegment;
 import ru.edu.cas.client.dao.ClientType;
+import ru.edu.cas.client.repo.ClientRepository;
 import ru.edu.cas.client.repo.ClientSegmentRepository;
 import ru.edu.cas.client.repo.ClientTypeRepository;
-import ru.edu.cas.client.repo.ClientsRepository;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 
@@ -18,12 +18,12 @@ import java.util.List;
  */
 @Service
 public class ClientService {
-    private ClientsRepository clientsRepository;
+    private ClientRepository clientsRepository;
     private ClientTypeRepository typeRepository;
     private ClientSegmentRepository segmentRepository;
     private UserRepository userRepository;
 
-    public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
+    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
             , ClientSegmentRepository segmentRepository, UserRepository userRepository) {
         this.clientsRepository = clientsRepository;
         this.typeRepository = typeRepository;
