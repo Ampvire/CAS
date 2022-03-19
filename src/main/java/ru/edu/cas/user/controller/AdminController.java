@@ -7,29 +7,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import ru.edu.cas.user.dao.Category;
-import ru.edu.cas.user.dao.Role;
-import ru.edu.cas.user.dao.User;
-import ru.edu.cas.user.repo.UserRepository;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import ru.edu.cas.user.service.UserService;
 
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-
-    private UserRepository repository;
+    private UserService service;
 
     @Autowired
-    public void setRepository(UserRepository repository) {
-        this.repository = repository;
+    public void setService(UserService service) {
+        this.service = service;
     }
 
     @GetMapping("/newUser")
-    public ModelAndView info(HttpServletRequest req
-            , HttpServletResponse res) {
-        return new ModelAndView("/create_user.jsp");
+    public ModelAndView info() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/admin/create_user.jsp");
+        modelAndView.addObject("roles", service.getAllRole());
+        modelAndView.addObject("categories", service.getAllCategory());
+        return modelAndView;
     }
 
     @PostMapping("/update")
@@ -37,29 +33,37 @@ public class AdminController {
                                 @RequestParam("firstName") String firstName,
                                 @RequestParam("secondName") String secondName,
                                 @RequestParam("password") String password,
-                                @RequestParam("categoryId") String categoryId,
-                                @RequestParam("roleId") String roleId,
-                                HttpServletRequest req
-            , HttpServletResponse res) {
-        Role role = new Role();
-        role.setRole(roleId);
-        role.setDescription("Meneger");
-        Category category = new Category();
-        category.setCategory(categoryId);
-        User userEntity = new User();
-        userEntity.setLogin(login);
-        userEntity.setFirstName(firstName);
-        userEntity.setLastName(secondName);
-        userEntity.setPassword(password);
-        userEntity.setCategoryId(category);
-        userEntity.setRoleId(role);
-        if (repository.findByLogin(login) != null) {
-            throw new RuntimeException("User with login " + login + "was found!");
-        }
-        repository.save(userEntity);
+                                @RequestParam("category") String categoryName,
+                                @RequestParam("role") String roleName) {
+        service.createOrUpdateUser(login, firstName, secondName, password, categoryName, roleName);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message","User");
-        modelAndView.setViewName("/success_create.jsp");
+        modelAndView.addObject("message", "User created!");
+        modelAndView.setViewName("/success.jsp");
         return modelAndView;
     }
+
+    @GetMapping("/delete")
+    public ModelAndView delete() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/admin/delete_user.jsp");
+        return modelAndView;
+    }
+
+    @RequestMapping("/deleteUser")
+    public ModelAndView deleteUser(@RequestParam("login") String login) {
+        service.deleteUser(login);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", "User deleted!");
+        modelAndView.setViewName("/success.jsp");
+        return modelAndView;
+    }
+
+    @GetMapping("/allUsers")
+    public ModelAndView getAll() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("list", service.getAllUsers());
+        modelAndView.setViewName("/admin/all_users.jsp");
+        return modelAndView;
+    }
+
 }
