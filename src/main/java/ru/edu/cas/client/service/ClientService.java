@@ -8,6 +8,7 @@ import ru.edu.cas.user.repo.UserRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Класс предназначен для работы с таблицами clients, clientType, clientSegment.
@@ -33,6 +34,7 @@ public class ClientService {
         this.clientReportRepository = clientReportRepository;
     }
 
+
     /**
      * Метод возвращает список всех клиентов по id пользователя
      *
@@ -43,6 +45,27 @@ public class ClientService {
         User user = getUser(userId);
         return clientsRepository.findByUserId(user);
     }
+
+
+    /**
+     * Метод по выручке и штату сотрудников определяет и возвращает id сегмента
+     * */
+    public int calcSegmentId(Client client){
+        //Не разобрался почему у поля clientId тип Client
+        //int clientId = client.getId();
+        //ClientFinance finance = getActualFinanceByClientId(clientId);
+
+        ClientFinance finance = getActualFinanceByClientId(client);
+
+        int staf = finance.getStaf();
+        int revenue =finance.getRevenue();
+
+        if(staf < 250 || revenue <= 400_000_000){
+            return 1;
+        }
+        return 2;
+    }
+
 
     /**
      * Метод возвращает список все клиентов по id сегмента и незакрепленных за пользователем
@@ -163,6 +186,16 @@ public class ClientService {
     private List<ClientFinance> getAllFinanceByClientIDAndDate(Client clientId, String date){
 
         return clientFinanceRepository.findByClientIdAndDate(clientId, date);
+    }
+
+    /**
+     * Метод возвращает запись по соcтоянию на последнюю дату из таблицы finance по clientId
+     * @param clientId - id клиента
+     * @return ClientFinance - список финансовых показателей клиента с самой актуальной датой
+     */
+    public ClientFinance getActualFinanceByClientId(Client clientId){
+        String date = clientFinanceRepository.findMaxDatebyClientId(clientId);
+        return getAllFinanceByClientIDAndDate(clientId, date).get(0);
     }
 
     /**
