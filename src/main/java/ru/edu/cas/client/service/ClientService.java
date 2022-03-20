@@ -50,11 +50,8 @@ public class ClientService {
     /**
      * Метод по выручке и штату сотрудников определяет и возвращает id сегмента
      * */
-    public int calcSegmentId(Client client){
-        //Не разобрался почему у поля clientId тип Client
-        //int clientId = client.getId();
-        //ClientFinance finance = getActualFinanceByClientId(clientId);
-
+    /*
+    public int calcSegmentId(Client client){//идентификатор клиента
         ClientFinance finance = getActualFinanceByClientId(client);
 
         int staf = finance.getStaf();
@@ -65,6 +62,8 @@ public class ClientService {
         }
         return 2;
     }
+
+     */
 
 
     /**
@@ -193,10 +192,13 @@ public class ClientService {
      * @param clientId - id клиента
      * @return ClientFinance - список финансовых показателей клиента с самой актуальной датой
      */
+    /*
     public ClientFinance getActualFinanceByClientId(Client clientId){
-        String date = clientFinanceRepository.findMaxDatebyClientId(clientId);
+        String date = clientFinanceRepository.findMaxDateByClientId(clientId);
         return getAllFinanceByClientIDAndDate(clientId, date).get(0);
     }
+    */
+
 
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId

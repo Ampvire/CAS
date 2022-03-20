@@ -14,11 +14,4 @@ public interface ClientsRepository extends JpaRepository<Client,Integer> {
     List<Client> findByUserId(User userId);
     List<Client> findByUserIdAndSegmentId(Integer userId, ClientSegment segmentId);
     Client findByInn(String inn);
-
-    /**
-     * Изменить значение в поле clients.segment_id (записать идентификатор сегмента)
-     * */
-    @Modifying
-    @Query("update Client c set c.segmentId = :segmentId where c.id = :id")
-    void updateSegmentId (@Param("id")int id, @Param("segmentId")int segmentId);
 }

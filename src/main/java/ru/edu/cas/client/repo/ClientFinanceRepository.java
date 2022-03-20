@@ -11,10 +11,4 @@ import java.util.List;
 public interface ClientFinanceRepository extends JpaRepository<ClientFinance, Integer> {
     List<ClientFinance> findByClientId(Client clientId);
     List<ClientFinance> findByClientIdAndDate(Client clientId, String date);
-
-    /**
-     * Получить последнюю(актуальную) дату отчетности по клиенту
-     * */
-    @Query("select max(f.date) FROM ClientFinance f where f.clientId= :client_id")
-    String findMaxDatebyClientId(@Param("clientId") Client clientId);
 }
