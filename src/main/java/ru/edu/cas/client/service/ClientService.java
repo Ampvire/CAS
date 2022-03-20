@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Класс предназначен для работы с таблицами clients, clientType, clientSegment.
+ * Класс предназначен для работы с таблицами clients, clientType, clientSegment, finance, report
  */
 @Service
 public class ClientService {
@@ -146,52 +146,55 @@ public class ClientService {
 
     /**
      * Метод возвращает записи из таблицы finance по clientId
-     * @param clientId - id клиента
+     * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    private List<ClientFinance> getAllFinanceByClientId(Client clientId){
-
-        return clientFinanceRepository.findByClientId(clientId);
+    public List<ClientFinance> getAllFinanceByClientInn(String inn){
+        Client client = getClient(inn);
+        return clientFinanceRepository.findByClientId(client);
     }
 
     /**
      * Метод возвращает записи из таблицы finance по clientId и date
-     * @param clientId - id клиента
+     * @param inn - ИНН клиента
      * @param date - дата записи в таблице
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    private List<ClientFinance> getAllFinanceByClientIDAndDate(Client clientId, String date){
+    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date){
 
-        return clientFinanceRepository.findByClientIdAndDate(clientId, date);
+        Client client = getClient(inn);
+        return clientFinanceRepository.findByClientIdAndDate(client, date);
     }
 
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId
-     * @param clientId - id клиента
+     * @param inn - ИНН клиента
      * @return List<ClientReport> - список отчетов по клиенту
      */
-    private List<ClientReport> getAllReportByClientId(Client clientId){
+    public List<ClientReport> getAllReportByClientInn(String inn){
 
-        List<ClientFinance> financeList = getAllFinanceByClientId(clientId);
+        Client client = getClient(inn);
+        List<ClientFinance> financeList = getAllFinanceByClientInn(inn);
         ClientFinance lastFinance = financeList.get(financeList.size() - 1);
         ClientReport clientReport = reportCounter(lastFinance);
         clientReportRepository.save(clientReport);
-        return clientReportRepository.findByClientId(clientId);
+        return clientReportRepository.findByClientId(client);
     }
 
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId и дате
-     * @param clientId - id клиента
+     * @param inn - ИНН клиента
      * @param date - дата записи
      * @return List<ClientReport> - список отчетов по клиенту
      */
-    private List<ClientReport> getAllReportByClientIdAndDate(Client clientId, String date){
+    public List<ClientReport> getAllReportByClientInnAndDate(String inn, String date){
 
-        List<ClientFinance> financeList = getAllFinanceByClientIDAndDate(clientId, date);
+        Client client = getClient(inn);
+        List<ClientFinance> financeList = getAllFinanceByClientInnAndDate(inn, date);
         ClientFinance lastFinance = financeList.get(financeList.size() - 1);
         ClientReport clientReport = reportCounter(lastFinance);
         clientReportRepository.save(clientReport);
-        return clientReportRepository.findByClientIdAndDate(clientId, date);
+        return clientReportRepository.findByClientIdAndDate(client, date);
     }
 
     /**
