@@ -1,12 +1,8 @@
 package ru.edu.cas.client.service;
 
 import org.springframework.stereotype.Service;
-import ru.edu.cas.client.dao.Client;
-import ru.edu.cas.client.dao.ClientSegment;
-import ru.edu.cas.client.dao.ClientType;
-import ru.edu.cas.client.repo.ClientSegmentRepository;
-import ru.edu.cas.client.repo.ClientTypeRepository;
-import ru.edu.cas.client.repo.ClientsRepository;
+import ru.edu.cas.client.dao.*;
+import ru.edu.cas.client.repo.*;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 
@@ -22,13 +18,19 @@ public class ClientService {
     private ClientTypeRepository typeRepository;
     private ClientSegmentRepository segmentRepository;
     private UserRepository userRepository;
+    private ClientFinanceRepository clientFinanceRepository;
+    private ClientReportRepository clientReportRepository;
 
     public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
-            , ClientSegmentRepository segmentRepository, UserRepository userRepository) {
+            , ClientSegmentRepository segmentRepository, UserRepository userRepository
+            , ClientFinanceRepository clientFinanceRepository
+            , ClientReportRepository clientReportRepository) {
         this.clientsRepository = clientsRepository;
         this.typeRepository = typeRepository;
         this.segmentRepository = segmentRepository;
         this.userRepository = userRepository;
+        this.clientFinanceRepository = clientFinanceRepository;
+        this.clientReportRepository = clientReportRepository;
     }
 
     /**
@@ -140,5 +142,98 @@ public class ClientService {
      */
     private Client getClient(String inn) {
         return clientsRepository.findByInn(inn);
+    }
+
+    /**
+     * Метод возвращает записи из таблицы finance по clientId
+     * @param clientId - id клиента
+     * @return List<ClientFinance> - список финансовых показателей клиента
+     */
+    private List<ClientFinance> getAllFinanceByClientId(Client clientId){
+
+        return clientFinanceRepository.findByClientId(clientId);
+    }
+
+    /**
+     * Метод возвращает записи из таблицы finance по clientId и date
+     * @param clientId - id клиента
+     * @param date - дата записи в таблице
+     * @return List<ClientFinance> - список финансовых показателей клиента
+     */
+    private List<ClientFinance> getAllFinanceByClientIDAndDate(Client clientId, String date){
+
+        return clientFinanceRepository.findByClientIdAndDate(clientId, date);
+    }
+
+    /**
+     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId
+     * @param clientId - id клиента
+     * @return List<ClientReport> - список отчетов по клиенту
+     */
+    private List<ClientReport> getAllReportByClientId(Client clientId){
+
+        List<ClientFinance> financeList = getAllFinanceByClientId(clientId);
+        ClientFinance lastFinance = financeList.get(financeList.size() - 1);
+        ClientReport clientReport = reportCounter(lastFinance);
+        clientReportRepository.save(clientReport);
+        return clientReportRepository.findByClientId(clientId);
+    }
+
+    /**
+     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId и дате
+     * @param clientId - id клиента
+     * @param date - дата записи
+     * @return List<ClientReport> - список отчетов по клиенту
+     */
+    private List<ClientReport> getAllReportByClientIdAndDate(Client clientId, String date){
+
+        List<ClientFinance> financeList = getAllFinanceByClientIDAndDate(clientId, date);
+        ClientFinance lastFinance = financeList.get(financeList.size() - 1);
+        ClientReport clientReport = reportCounter(lastFinance);
+        clientReportRepository.save(clientReport);
+        return clientReportRepository.findByClientIdAndDate(clientId, date);
+    }
+
+    /**
+     * Вспомогательный метод
+     * Метод производит расчеты коэффициентов из таблицы report по финансовым показателям клиента
+     * @param finance - финансовые показания клиента
+     * @return - отчет по клиенту
+     */
+    private ClientReport reportCounter(ClientFinance finance){
+
+        int profit = finance.getProfit();
+        int revenue = finance.getRevenue();
+        int costPrice = finance.getCostPrice();
+        int reserves = finance.getReserves();
+        int assets = finance.getAssets();
+        int loans = finance.getLoans();
+        int profitabilitySale;
+        int inventoryTurnOver;
+        int quickLiquidity;
+        ClientReport clientReport = new ClientReport();
+
+        if (revenue == 0){
+            profitabilitySale = 0;
+        } else {
+            profitabilitySale = profit / revenue;
+        }
+        clientReport.setProfitabilitySale(profitabilitySale);
+
+        if (reserves == 0){
+            inventoryTurnOver = 0;
+        } else {
+            inventoryTurnOver = costPrice / reserves;
+        }
+        clientReport.setInventoryTurnover(inventoryTurnOver);
+
+        if (loans == 0){
+            quickLiquidity = 0;
+        } else {
+            quickLiquidity = (assets - reserves) / loans;
+        }
+        clientReport.setQuickLiquidity(quickLiquidity);
+
+        return clientReport;
     }
 }
