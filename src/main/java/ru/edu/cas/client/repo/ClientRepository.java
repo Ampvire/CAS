@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client,Integer> {
     List<Client> findByUserId(User userId);
-    List<Client> findByUserIdAndSegmentId(Integer userId, ClientSegment segmentId);
+    List<Client> findByUserIdAndSegmentId(User userId, ClientSegment segmentId);
     Client findByInn(String inn);
 }
