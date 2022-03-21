@@ -1,11 +1,8 @@
 package ru.edu.cas.client.service;
 
 import org.springframework.stereotype.Service;
-import ru.edu.cas.client.dao.Client;
-import ru.edu.cas.client.dao.ClientSegment;
-import ru.edu.cas.client.dao.ClientType;
-import ru.edu.cas.client.repo.ClientSegmentRepository;
-import ru.edu.cas.client.repo.ClientTypeRepository;
+import ru.edu.cas.client.dao.*;
+import ru.edu.cas.client.repo.*;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 
@@ -13,19 +10,18 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Класс предназначен для работы с таблицами clients, clientType, clientSegment.
+ * Класс предназначен для работы с таблицами clients, clientType, clientSegment, finance, report
  */
 @Service
 public class ClientService {
-    private ClientRepository clientsRepository;
+    private ClientsRepository clientsRepository;
     private ClientTypeRepository typeRepository;
     private ClientSegmentRepository segmentRepository;
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
 
-
-    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
+    public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
             , ClientSegmentRepository segmentRepository, UserRepository userRepository
             , ClientFinanceRepository clientFinanceRepository
             , ClientReportRepository clientReportRepository) {
