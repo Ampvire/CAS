@@ -3,14 +3,11 @@ package ru.edu.cas.client.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.edu.cas.client.dao.ClientFinance;
+import ru.edu.cas.client.dao.ClientReport;
 import ru.edu.cas.client.service.ClientService;
-
-import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping(value = "/user/client")
@@ -62,10 +59,13 @@ public class ClientController {
         return modelAndView;
     }
 
-    @GetMapping("/getReport")
-    public ModelAndView getReport() {
+    @GetMapping("/getReport/{inn}")
+    public ModelAndView getReport(@PathVariable("inn") String inn) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("date", LocalDateTime.now());
+        List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
+        List<ClientReport> reports = service.getAllReportByClientInn(inn);
+        modelAndView.addObject("finances", finances);
+        modelAndView.addObject("report", reports);
         modelAndView.setViewName("/client/report.jsp");
         return modelAndView;
     }
