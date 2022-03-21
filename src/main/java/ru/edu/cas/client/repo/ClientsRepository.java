@@ -14,4 +14,5 @@ public interface ClientsRepository extends JpaRepository<Client,Integer> {
     List<Client> findByUserId(User userId);
     List<Client> findByUserIdAndSegmentId(Integer userId, ClientSegment segmentId);
     Client findByInn(String inn);
+    Client findById(int id);
 }

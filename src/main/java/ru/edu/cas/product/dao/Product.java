@@ -1,21 +1,21 @@
-package ru.edu.cas.client.dao;
+package ru.edu.cas.product.dao;
 
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "client_segment")
-@Setter
+@Table(name = "product")
 @Getter
+@Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
-public class ClientSegment {
+@AllArgsConstructor
+public class Product {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "segment")
-    private String segment;
+    @Column(name = "name")
+    private String name;
 }

@@ -1,13 +1,17 @@
 package ru.edu.cas.client.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.*;
 import ru.edu.cas.client.repo.*;
+import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
+import ru.edu.cas.product.service.ProductService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -21,19 +25,28 @@ public class ClientService {
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
+    private ClientProductsRepository clientProductsRepository;
+
+    private ProductService productService;
 
     public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
             , ClientSegmentRepository segmentRepository, UserRepository userRepository
             , ClientFinanceRepository clientFinanceRepository
-            , ClientReportRepository clientReportRepository) {
+            , ClientReportRepository clientReportRepository
+    ,ClientProductsRepository clientProductsRepository) {
         this.clientsRepository = clientsRepository;
         this.typeRepository = typeRepository;
         this.segmentRepository = segmentRepository;
         this.userRepository = userRepository;
         this.clientFinanceRepository = clientFinanceRepository;
         this.clientReportRepository = clientReportRepository;
+        this.clientProductsRepository = clientProductsRepository;
     }
 
+    @Autowired
+    public void setService (ProductService productService) {
+        this.productService = productService;
+    }
 
     /**
      * Метод возвращает список всех клиентов по id пользователя
@@ -46,13 +59,21 @@ public class ClientService {
         return clientsRepository.findByUserId(user);
     }
 
+    /**
+     * Получить клиента по идентификатору
+     * */
+    public Client getClientById(int id){
+        return clientsRepository.findById(id);
+    }
+
 
     /**
      * Метод по выручке и штату сотрудников определяет и возвращает id сегмента
+     * @param client -клиент по которому необходимо определить сегмент
      * */
-    /*
-    public int calcSegmentId(Client client){//идентификатор клиента
-        ClientFinance finance = getActualFinanceByClientId(client);
+    public int calcSegmentId(Client client){
+        List<ClientFinance> financeList = clientFinanceRepository.findByClientId(client);
+        ClientFinance finance = financeList.get(financeList.size()-1);
 
         int staf = finance.getStaf();
         int revenue =finance.getRevenue();
@@ -63,7 +84,61 @@ public class ClientService {
         return 2;
     }
 
-     */
+
+    /**
+     * Метод возвращает список всех продуктов клиента
+     * @param clientId -идентификатор клиента по которому нужно получить информацию
+     * @return  список(без дубликатов) продуктов клиента
+     * */
+    public Set<String> getAllProductsByClient(int clientId){
+        Client client = clientsRepository.findById(clientId);
+        List<ClientProducts> clientProducts  = clientProductsRepository.findAllByClientId(client);
+        Set<String> products = clientProducts.stream()
+                .map(ClientProducts::getProductId)
+                .map(Product::getName)
+                .collect(Collectors.toSet());
+        return products;
+    }
+
+    /**
+     * Метод добавляет продукт клиенту
+     * @param clientId -идентификатор клиента
+     * @param productId -идентификатор продукта
+     * @return при успешном добавлении записи возвращает true иначе false
+     * */
+    public boolean createClientProduct(int clientId, int productId){
+        Client client = getClientById(clientId);
+        Product product = productService.getProductById(productId);
+
+       List<Integer> parameters = Arrays.asList(clientId, productId);
+        if (parameters.contains(null)) {
+            throw new RuntimeException("Fields must not be null!");
+        }
+
+        ClientProducts clientProducts = new ClientProducts();
+        clientProducts.setClientId(client);
+        clientProducts.setProductId(product);
+        clientProductsRepository.save(clientProducts);
+        return true;
+    }
+
+    /**
+     * Метод добавляет продукт клиенту
+     * @param  client -клиент
+     * @param product -продукт
+     * @return при успешном добавлении записи возвращает true иначе false
+     * */
+    public ClientProducts createClientProduct(Client client, Product product){
+        if (client == null || product ==null) {
+            throw new RuntimeException("Fields must not be null!");
+        }
+
+        ClientProducts clientProducts = new ClientProducts();
+        clientProducts.setClientId(client);
+        clientProducts.setProductId(product);
+        clientProductsRepository.save(clientProducts);
+        return clientProducts;
+    }
 
 
     /**
@@ -188,17 +263,6 @@ public class ClientService {
         return clientFinanceRepository.findByClientIdAndDate(client, date);
     }
 
-    /**
-     * Метод возвращает запись по соcтоянию на последнюю дату из таблицы finance по clientId
-     * @param clientId - id клиента
-     * @return ClientFinance - список финансовых показателей клиента с самой актуальной датой
-     */
-    /*
-    public ClientFinance getActualFinanceByClientId(Client clientId){
-        String date = clientFinanceRepository.findMaxDateByClientId(clientId);
-        return getAllFinanceByClientIDAndDate(clientId, date).get(0);
-    }
-    */
 
 
     /**
