@@ -9,6 +9,8 @@ import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
 import ru.edu.cas.client.service.ClientService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/user/client")
 public class ClientController {
