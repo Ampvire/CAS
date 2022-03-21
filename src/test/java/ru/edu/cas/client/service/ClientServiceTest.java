@@ -2,6 +2,7 @@ package ru.edu.cas.client.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientSegment;
@@ -15,9 +16,10 @@ import java.util.List;
  */
 @SpringBootTest
 class ClientServiceTest {
-    private final ClientService service;
+    private ClientService service;
 
-    public ClientServiceTest(ClientService service) {
+    @Autowired
+    public void setService(ClientService service) {
         this.service = service;
     }
 
@@ -55,16 +57,16 @@ class ClientServiceTest {
     @Test
     void getListSegments() {
         List<ClientSegment> segments = service.getListSegments();
-        Assertions.assertEquals(4, segments.size());
+        Assertions.assertEquals(2, segments.size());
     }
 
     /**
-     * Успешное выполение метода getListTypes() 
+     * Успешное выполение метода getListTypes()
      */
     @Test
     void getListTypes() {
         List<ClientType> types = service.getListTypes();
-        Assertions.assertEquals(2, types.size());
+        Assertions.assertEquals(4, types.size());
     }
 
     /**

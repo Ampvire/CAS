@@ -14,13 +14,13 @@
              </colgroup>
             <tr>
                <th>ID</th>
-               <th>LOGIN</td>
-               <th>FIRST_NAME</td>
-               <th>LAST_NAME</td>
-               <th>CATEGORY</td>
-               <th>ROLE</td>
-               <th></td>
-               <th></td>
+               <th>LOGIN</th>
+               <th>FIRST_NAME</th>
+               <th>LAST_NAME</th>
+               <th>CATEGORY</th>
+               <th>ROLE</th>
+               <th></th>
+               <th></th>
            </tr>
     <c:forEach items="${list}" var="user">
            <tr>
@@ -36,16 +36,13 @@
                    </form>
                </td>
                <td>
-                   <form action="deleteUser/${user.login}" method="get">
+                   <form action="deleteUser/${user.login}" method="post">
                        <input type="submit" value="Delete" style="width: 100px; margin-right: auto">
                    </form>
                </td>
            </tr>
     </c:forEach>
     </table>
-
-    <a class="login" href="/logout" title="выйти">
-    </a>
 </form>
 <form action="/logout" method="get">
     <div style="width: 300px; display: flex;margin-top: 20px">

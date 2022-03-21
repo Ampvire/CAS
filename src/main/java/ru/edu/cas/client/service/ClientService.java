@@ -21,9 +21,8 @@ public class ClientService {
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
 
+
     public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
-            , ClientSegmentRepository segmentRepository, UserRepository userRepository) {
-    public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
             , ClientSegmentRepository segmentRepository, UserRepository userRepository
             , ClientFinanceRepository clientFinanceRepository
             , ClientReportRepository clientReportRepository) {
@@ -60,8 +59,8 @@ public class ClientService {
     /**
      * Метод возвращает записть из таблицы ClientSegment по названию сегмента
      *
-     * @param segment
-     * @return
+     * @param segment - сегмент клиента
+     * @return ClientSegment
      */
     public ClientSegment getSegment(String segment) {
         return segmentRepository.findBySegment(segment);
@@ -70,8 +69,8 @@ public class ClientService {
     /**
      * Метод возвращает записть из таблицы ClientType по названию типа клиента
      *
-     * @param type
-     * @return
+     * @param type - тип клиента
+     * @return ClientType
      */
     public ClientType getType(String type) {
         return typeRepository.findByType(type);
@@ -80,8 +79,8 @@ public class ClientService {
     /**
      * Метод возвращает пользователя из таблицы user по id
      *
-     * @param id
-     * @return
+     * @param id - id пользователя
+     * @return User
      */
     public User getUser(int id) {
         return userRepository.getById(id);
@@ -90,7 +89,7 @@ public class ClientService {
     /**
      * Метод возвращает список из таблицы ClientSegment
      *
-     * @return
+     * @return List<ClientSegment>
      */
     public List<ClientSegment> getListSegments() {
         return segmentRepository.findAll();
@@ -99,7 +98,7 @@ public class ClientService {
     /**
      * Метод возвращает список из таблицы ClientType
      *
-     * @return
+     * @return - List<ClientType>
      */
     public List<ClientType> getListTypes() {
         return typeRepository.findAll();
@@ -108,12 +107,12 @@ public class ClientService {
     /**
      * Метод создает или редактирует запись в таблице Client
      *
-     * @param name
-     * @param type
-     * @param inn
-     * @param ogrn
-     * @param segment
-     * @return
+     * @param name -название клиента
+     * @param type -тип клиента
+     * @param inn -inn клиента
+     * @param ogrn -ogrn клиента
+     * @param segment -segment клиента
+     * @return - Client
      */
     public Client createClient(String name,
                                String type,
@@ -139,8 +138,8 @@ public class ClientService {
     /**
      * Метод возвращает запись из таблицы Client по inn
      *
-     * @param inn
-     * @return
+     * @param inn - inn клиента
+     * @return Client
      */
     private Client getClient(String inn) {
         return clientsRepository.findByInn(inn);
@@ -148,12 +147,12 @@ public class ClientService {
 
     /**
      * Метод возвращает записи из таблицы finance по clientId
-     * @param clientId - id клиента
+     * @param inn - inn клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    private List<ClientFinance> getAllFinanceByClientId(Client clientId){
-
-        return clientFinanceRepository.findByClientId(clientId);
+    public List<ClientFinance> getAllFinanceByClientId(String inn){
+        Client client =  getClient(inn);
+        return clientFinanceRepository.findByClientId(client);
     }
 
     /**
@@ -169,16 +168,16 @@ public class ClientService {
 
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId
-     * @param clientId - id клиента
+     * @param inn - inn клиента
      * @return List<ClientReport> - список отчетов по клиенту
      */
-    private List<ClientReport> getAllReportByClientId(Client clientId){
-
-        List<ClientFinance> financeList = getAllFinanceByClientId(clientId);
+    public List<ClientReport> getAllReportByClientId(String inn){
+        Client client =  getClient(inn);
+        List<ClientFinance> financeList = getAllFinanceByClientId(inn);
         ClientFinance lastFinance = financeList.get(financeList.size() - 1);
         ClientReport clientReport = reportCounter(lastFinance);
         clientReportRepository.save(clientReport);
-        return clientReportRepository.findByClientId(clientId);
+        return clientReportRepository.findByClientId(client);
     }
 
     /**
