@@ -9,6 +9,7 @@ import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
 import ru.edu.cas.client.service.ClientService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -41,7 +42,7 @@ public class ClientController {
     public ModelAndView info() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/client/create_client.jsp");
-        modelAndView.addObject("segments",service.getListSegments());
+        modelAndView.addObject("segments", service.getListSegments());
         modelAndView.addObject("types", service.getListTypes());
         return modelAndView;
     }
@@ -52,7 +53,7 @@ public class ClientController {
                                 @RequestParam("inn") String inn,
                                 @RequestParam("ogrn") String ogrn,
                                 @RequestParam("segment") String segment) {
-        SecurityProperties.User user=  new SecurityProperties.User();
+        SecurityProperties.User user = new SecurityProperties.User();
         user.getName();
         service.createClient(name, type, inn, ogrn, segment);
         ModelAndView modelAndView = new ModelAndView();
@@ -64,10 +65,12 @@ public class ClientController {
     @GetMapping("/getReport/{inn}")
     public ModelAndView getReport(@PathVariable("inn") String inn) {
         ModelAndView modelAndView = new ModelAndView();
-        List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
-        List<ClientReport> reports = service.getAllReportByClientInn(inn);
+
+        List<ClientFinance> finances = service.getAllFinanceByClientId(inn);
+        List<ClientReport> reports = service.getAllReportByClientId(inn);
         modelAndView.addObject("finances", finances);
         modelAndView.addObject("report", reports);
+        modelAndView.addObject("date", LocalDateTime.now());
         modelAndView.setViewName("/client/report.jsp");
         return modelAndView;
     }

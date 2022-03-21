@@ -14,14 +14,15 @@ import java.util.List;
  */
 @Service
 public class ClientService {
-    private ClientsRepository clientsRepository;
+    private ClientRepository clientsRepository;
     private ClientTypeRepository typeRepository;
     private ClientSegmentRepository segmentRepository;
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
 
-    public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
+
+    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
             , ClientSegmentRepository segmentRepository, UserRepository userRepository
             , ClientFinanceRepository clientFinanceRepository
             , ClientReportRepository clientReportRepository) {
@@ -239,8 +240,4 @@ public class ClientService {
 
         return clientReport;
     }
-
-//    public void requestLoans(int sum,int years,){
-//
-//    }
 }

@@ -7,7 +7,7 @@
 <body>
 <h1>Admin panel</h1>
 <h2>Delete user</h2>
-<form action="deleteUser">
+<form action="deleteUser" method="post">
     <div style="width: 300px; display: flex">
         <label for="login">Login:</label>
         <input id="login" name="login" style="width: 200px; margin-left: auto">

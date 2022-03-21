@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.edu.cas.user.dao.Category;
 import ru.edu.cas.user.dao.Role;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 @SpringBootTest
 class UserServiceTest {
-    private final UserService service;
-
-    public UserServiceTest(UserService service) {
+    private  UserService service;
+    @Autowired
+    public void setService(UserService service) {
         this.service = service;
     }
 
