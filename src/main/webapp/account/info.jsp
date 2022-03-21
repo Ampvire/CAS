@@ -26,7 +26,7 @@
 <form action="account/loans/${finance.clientId.inn}" method="get">
     <div style="width: 500px; display: flex; margin-top: 20px">
            <label for="request">Отправить заявку на кредит</label>
-          <input id="request" type="submit" value="Рассчитать" style="width: 100px; margin-left: auto">
+          <input id="request" type="submit" value="Отправить" style="width: 100px; margin-left: auto">
     </div>
 </form>
 <form action="/logout" method="get">

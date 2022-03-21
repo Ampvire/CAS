@@ -66,8 +66,8 @@ public class ClientController {
     public ModelAndView getReport(@PathVariable("inn") String inn) {
         ModelAndView modelAndView = new ModelAndView();
 
-        List<ClientFinance> finances = service.getAllFinanceByClientId(inn);
-        List<ClientReport> reports = service.getAllReportByClientId(inn);
+        List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
+        List<ClientReport> reports = service.getAllReportByClientInn(inn);
         modelAndView.addObject("finances", finances);
         modelAndView.addObject("report", reports);
         modelAndView.addObject("date", LocalDateTime.now());

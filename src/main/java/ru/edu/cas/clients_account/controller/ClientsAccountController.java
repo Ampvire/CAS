@@ -36,8 +36,8 @@ public class ClientsAccountController {
         return modelAndView;
     }
 
-    @PostMapping("/calculation")
-    public ModelAndView calculation(@PathVariable("clientId") String clientId,
+    @PostMapping("/loans/{inn}/calculation")
+    public ModelAndView calculation(@PathVariable("inn") String inn,
                                      @RequestParam("sum") String sum,
                                      @RequestParam("years") String years,
                                      @RequestParam("percent") String percent) {
@@ -45,7 +45,7 @@ public class ClientsAccountController {
 
         List<ClientFinance> finance = service.getAllFinanceByClientInn("503613265245");
         modelAndView.addObject("finance", finance.get(0));
-        modelAndView.setViewName("/success.jsp");
+        modelAndView.setViewName("/account/calculation.jsp");
         return modelAndView;
     }
 }

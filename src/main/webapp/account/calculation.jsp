@@ -21,15 +21,13 @@
         <input id="percent" name="percent" style="width: 200px; margin-left: auto">
     </div>
 </form>
-<form action="account/loans/${finance.clientId.inn}/calculation" method="post" >
+<form action="calculation" method="post" >
     <div style="width: 500px; display: flex; margin-top: 20px">
           <input id="request" type="submit" value="Рассчитать" style="width: 100px; margin-left: auto">
     </div>
 </form>
-<form action="/logout" method="get">
-    <div style="width: 300px; display: flex;margin-top: 20px">
-        <input type="submit" value="Logout" style="width: 100px; margin-right: auto">
-    </div>
+<form action="calculation" method="post" >
+
 </form>
 </body>
 </html>
