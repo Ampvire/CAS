@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
 import ru.edu.cas.client.service.ClientService;
@@ -55,10 +56,16 @@ public class ClientController {
                                 @RequestParam("segment") String segment) {
         SecurityProperties.User user = new SecurityProperties.User();
         user.getName();
-        service.createClient(name, type, inn, ogrn, segment);
+        Client client = service.createClient(name, type, inn, ogrn, segment);
+        String message = "Клиент создан";
+        String jsp = "/success.jsp";
+        if (client == null) {
+            message = "Поля должны быть заполнены!";
+            jsp = "/failed.jsp";
+        }
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", "Client created!");
-        modelAndView.setViewName("/success.jsp");
+        modelAndView.addObject("message", message);
+        modelAndView.setViewName(jsp);
         return modelAndView;
     }
 

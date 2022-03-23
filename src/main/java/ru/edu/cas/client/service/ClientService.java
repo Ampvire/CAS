@@ -120,8 +120,8 @@ public class ClientService {
                                String ogrn,
                                String segment) {
         List<String> parameters = Arrays.asList(name, inn);
-        if (parameters.contains(null)) {
-            throw new RuntimeException("Fields must not be null!");
+        if (parameters.contains(null)||parameters.contains("")) {
+           return null;
         }
         Client client = getClient(inn);
         if (client == null) {

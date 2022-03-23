@@ -24,7 +24,7 @@
 //                .and()
 //                .formLogin()
 //                .and()
-//                .exceptionHandling().accessDeniedPage("/authenticate_failed.jsp");
+//                .exceptionHandling().accessDeniedPage("/failed.jsp");
 //    }
 //
 //    @Bean
