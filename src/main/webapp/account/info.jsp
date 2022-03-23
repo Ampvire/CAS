@@ -23,6 +23,12 @@
                  </c:forEach>
              </span>
     </div>
+<form action="/save/${finance.clientId.inn}" method="get">
+    <div style="width: 500px; display: flex">
+       <label for="info">Заполнить данные о компании: </label>
+       <input id="info" type="submit" value="Заполнить" style="width: 100px; margin-left: auto">
+    </div>
+</form>
 <form action="account/loans/${finance.clientId.inn}" method="get">
     <div style="width: 500px; display: flex; margin-top: 20px">
            <label for="request">Отправить заявку на кредит</label>

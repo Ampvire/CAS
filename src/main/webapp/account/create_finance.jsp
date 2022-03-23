@@ -5,8 +5,8 @@
     <title>Client panel</title>
 </head>
 <body>
-<h1>Рассчет кредита</h1>
-<form action="" method="post">
+
+<form action="/info/${inn}" method="post">
     <div style="width: 300px; display: flex">
         <label for="sum">Сумма кредита:</label>
         <input id="sum" name="sum"  value="${sum}" style="width: 200px; margin-left: auto">

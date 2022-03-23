@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.edu.cas.client.dao.ClientFinance;
-import ru.edu.cas.client.dao.ClientReport;
 import ru.edu.cas.client.service.ClientService;
 
 import java.time.LocalDateTime;
@@ -67,9 +66,9 @@ public class ClientController {
         ModelAndView modelAndView = new ModelAndView();
 
         List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
-        List<ClientReport> reports = service.getAllReportByClientInn(inn);
+//        List<ClientReport> reports = service.getAllReportByClientInn(inn);
         modelAndView.addObject("finances", finances);
-        modelAndView.addObject("report", reports);
+//        modelAndView.addObject("report", reports);
         modelAndView.addObject("date", LocalDateTime.now());
         modelAndView.setViewName("/client/report.jsp");
         return modelAndView;

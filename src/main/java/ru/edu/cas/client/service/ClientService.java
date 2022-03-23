@@ -6,6 +6,7 @@ import ru.edu.cas.client.repo.*;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -107,10 +108,10 @@ public class ClientService {
     /**
      * Метод создает или редактирует запись в таблице Client
      *
-     * @param name -название клиента
-     * @param type -тип клиента
-     * @param inn -inn клиента
-     * @param ogrn -ogrn клиента
+     * @param name    -название клиента
+     * @param type    -тип клиента
+     * @param inn     -inn клиента
+     * @param ogrn    -ogrn клиента
      * @param segment -segment клиента
      * @return - Client
      */
@@ -147,21 +148,23 @@ public class ClientService {
 
     /**
      * Метод возвращает записи из таблицы finance по clientId
+     *
      * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInn(String inn){
+    public List<ClientFinance> getAllFinanceByClientInn(String inn) {
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientId(client);
     }
 
     /**
      * Метод возвращает записи из таблицы finance по clientId и date
-     * @param inn - ИНН клиента
+     *
+     * @param inn  - ИНН клиента
      * @param date - дата записи в таблице
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date){
+    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date) {
 
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientIdAndDate(client, date);
@@ -169,10 +172,11 @@ public class ClientService {
 
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId
+     *
      * @param inn - ИНН клиента
      * @return List<ClientReport> - список отчетов по клиенту
      */
-    public List<ClientReport> getAllReportByClientInn(String inn){
+    public List<ClientReport> getAllReportByClientInn(String inn) {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInn(inn);
@@ -184,11 +188,12 @@ public class ClientService {
 
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId и дате
-     * @param inn - ИНН клиента
+     *
+     * @param inn  - ИНН клиента
      * @param date - дата записи
      * @return List<ClientReport> - список отчетов по клиенту
      */
-    public List<ClientReport> getAllReportByClientInnAndDate(String inn, String date){
+    public List<ClientReport> getAllReportByClientInnAndDate(String inn, String date) {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInnAndDate(inn, date);
@@ -201,10 +206,11 @@ public class ClientService {
     /**
      * Вспомогательный метод
      * Метод производит расчеты коэффициентов из таблицы report по финансовым показателям клиента
+     *
      * @param finance - финансовые показания клиента
      * @return - отчет по клиенту
      */
-    private ClientReport reportCounter(ClientFinance finance){
+    private ClientReport reportCounter(ClientFinance finance) {
 
         int profit = finance.getProfit();
         int revenue = finance.getRevenue();
@@ -217,21 +223,21 @@ public class ClientService {
         int quickLiquidity;
         ClientReport clientReport = new ClientReport();
 
-        if (revenue == 0){
+        if (revenue == 0) {
             profitabilitySale = 0;
         } else {
             profitabilitySale = profit / revenue;
         }
         clientReport.setProfitabilitySale(profitabilitySale);
 
-        if (reserves == 0){
+        if (reserves == 0) {
             inventoryTurnOver = 0;
         } else {
             inventoryTurnOver = costPrice / reserves;
         }
         clientReport.setInventoryTurnover(inventoryTurnOver);
 
-        if (loans == 0){
+        if (loans == 0) {
             quickLiquidity = 0;
         } else {
             quickLiquidity = (assets - reserves) / loans;
@@ -239,5 +245,34 @@ public class ClientService {
         clientReport.setQuickLiquidity(quickLiquidity);
 
         return clientReport;
+    }
+
+
+    public List<Integer> calculationLoans(String sum, String years, String percent) {
+        int sumInt = Integer.parseInt(sum);
+        int yearsInt = Integer.parseInt(years);
+        int percentInt = Integer.parseInt(percent);
+        double percentOneMonth = percentInt / 12;
+        int sumLoans = sumInt + ((sumInt * percentInt / 100) * yearsInt);
+        int monthPayment = sumLoans / yearsInt / 12;
+
+        List<Integer> info = new ArrayList<>();
+        info.add(monthPayment);
+        info.add(sumLoans);
+        return info;
+    }
+
+    public void saveFinanceInfo(String inn, String revenue, String staf, String costPrice, String assets,
+                                String reserves, String profit) {
+        ClientFinance finance = new ClientFinance();
+        Client client = getClient(inn);
+        finance.setClientId(client);
+        finance.setAssets(Integer.parseInt(assets));
+        finance.setRevenue(Integer.parseInt(revenue));
+        finance.setCostPrice(Integer.parseInt(costPrice));
+        finance.setStaf(Integer.parseInt(staf));
+        finance.setReserves(Integer.parseInt(reserves));
+        finance.setProfit(Integer.parseInt(profit));
+        clientFinanceRepository.save(finance);
     }
 }
