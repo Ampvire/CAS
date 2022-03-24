@@ -13,12 +13,12 @@
         <col span="5" style="background:#DCDCDC">
     </colgroup>
             <tr>
-               <th>NANE</td>
-               <th>INN</td>
-               <th>OGRN</td>
-               <th>SEGMENT</td>
-               <th>TYPE</td>
-               <th></td>
+               <th>NANE</th>
+               <th>INN</th>
+               <th>OGRN</th>
+               <th>SEGMENT</th>
+               <th>TYPE</th>
+               <th></th>
            </tr>
     <c:forEach items="${list}" var="client">
            <tr>
@@ -28,7 +28,7 @@
                <td>${client.segmentId.segment}</td>
                <td>${client.typeId.type}</td>
                 <td>
-                    <form action="getReport" method="get">
+                    <form action="getReport/${client.inn}" method="get">
                         <div style="width: 300px; display: flex">
                             <input type="submit" value="Report" style="width: 100px; margin-right: auto">
                         </div>

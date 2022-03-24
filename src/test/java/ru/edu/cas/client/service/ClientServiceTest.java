@@ -1,6 +1,5 @@
 package ru.edu.cas.client.service;
 
-import com.sun.xml.bind.v2.TODO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ class ClientServiceTest {
      */
     @Test
     public void createClientProduct_Test() {
-        int clientId = 1;
+        int clientId = 2;
         int productId = 2;
 
         Client client = service.getClientById(clientId);
@@ -72,7 +71,7 @@ class ClientServiceTest {
      */
     @Test
     public void createClientProductById_Test() {
-        int clientId = 1;
+        int clientId = 2;
         int productId = 2;
 
         Set <String> currentProductsByClient = service.getAllProductsByClient(clientId);
@@ -90,15 +89,12 @@ class ClientServiceTest {
      */
     @Test
     void getAllProductsByClient_Test() {
-        int clientId = 1;
+        int clientId = 2;
         int productId = 2;
-
         Client client = service.getClientById(clientId);
         Product product = productService.getProductById(productId);
         service.createClientProduct(client, product);
-
         String productName = product.getName();
-
         Set<String> products = service.getAllProductsByClient(clientId);
         Assertions.assertTrue(products.contains(productName));
     }
@@ -110,7 +106,8 @@ class ClientServiceTest {
      */
     @Test
     public void calcSegmentId_Test() {
-        Client testClient = service.getClientById(1);
+        int clientId = 2;
+        Client testClient = service.getClientById(clientId);
         List<ClientFinance> financeList = service.getAllFinanceByClientInn(testClient.getInn());
         ClientFinance actualFinanceByClient = financeList.get(financeList.size() - 1);
 
@@ -118,7 +115,7 @@ class ClientServiceTest {
         int revenue = actualFinanceByClient.getRevenue();
 
         boolean test_1 = staff < 250 && revenue < 400_000_000;
-        boolean test_2 = service.calcSegmentId(testClient) == 1;
+        boolean test_2 = service.calcSegmentId(clientId) == 1;
         Assertions.assertEquals(test_1, test_2);
 
     }

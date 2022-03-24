@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface ClientProductsRepository extends JpaRepository<ClientProducts, Integer> {
     List<ClientProducts> findAllByClientId(Client clientId);
-    List<ClientProducts> findAllByProductId(Product productId);
-    List<ClientProducts> findByClientIdAndProductId(Client clientId, Product productId);
 }
