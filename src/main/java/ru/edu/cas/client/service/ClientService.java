@@ -108,10 +108,10 @@ public class ClientService {
     /**
      * Метод создает или редактирует запись в таблице Client
      *
-     * @param name    -название клиента
-     * @param type    -тип клиента
-     * @param inn     -inn клиента
-     * @param ogrn    -ogrn клиента
+     * @param name -название клиента
+     * @param type -тип клиента
+     * @param inn -inn клиента
+     * @param ogrn -ogrn клиента
      * @param segment -segment клиента
      * @return - Client
      */
@@ -121,8 +121,8 @@ public class ClientService {
                                String ogrn,
                                String segment) {
         List<String> parameters = Arrays.asList(name, inn);
-        if (parameters.contains(null)) {
-            throw new RuntimeException("Fields must not be null!");
+        if (parameters.contains(null)||parameters.contains("")) {
+           return null;
         }
         Client client = getClient(inn);
         if (client == null) {
@@ -148,23 +148,21 @@ public class ClientService {
 
     /**
      * Метод возвращает записи из таблицы finance по clientId
-     *
      * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInn(String inn) {
+    public List<ClientFinance> getAllFinanceByClientInn(String inn){
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientId(client);
     }
 
     /**
      * Метод возвращает записи из таблицы finance по clientId и date
-     *
-     * @param inn  - ИНН клиента
+     * @param inn - ИНН клиента
      * @param date - дата записи в таблице
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date) {
+    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date){
 
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientIdAndDate(client, date);

@@ -97,8 +97,8 @@ public class UserService {
                                     String categoryName,
                                     String roleName){
         List<String> parameters = Arrays.asList(login,firstName,secondName,password);
-        if (parameters.contains(null)){
-            throw new RuntimeException("Fields must not be null!");
+        if (parameters.contains(null)||parameters.contains("")){
+           return null;
         }
         String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
         User user = getUser(login);

@@ -27,11 +27,19 @@
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
         <label for="category">Category:</label>
-        <input id="category" name="category"  value="${category}" style="width: 200px; margin-left: auto">
+                <select id="category" name="category" style="width: 200px; margin-left: auto">
+                    <c:forEach items="${category}" var="cat">
+                        <option>${cat.category}</option>
+                    </c:forEach>
+                </select>
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
         <label for="role">Role:</label>
-        <input id="role" name="role"  value="${role}" style="width: 200px; margin-left: auto">
+                <select id="role" name="role" style="width: 200px; margin-left: auto">
+                    <c:forEach items="${role}" var="r">
+                        <option>${r.role}</option>
+                    </c:forEach>
+                </select>
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
         <input type="submit" value="Update" style="width: 100px; margin-right: auto">
