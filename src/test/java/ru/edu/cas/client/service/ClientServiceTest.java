@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientSegment;
 import ru.edu.cas.client.dao.ClientType;
-import ru.edu.cas.user.dao.User;
 
 import java.util.List;
 
@@ -40,15 +39,6 @@ class ClientServiceTest {
         ClientType type = service.getType("ИП");
         Assertions.assertNotNull(type);
         Assertions.assertEquals("Индивидуальный предприниматель", type.getNote());
-    }
-
-    /**
-     * Успешное выполение метода getUser()
-     */
-    @Test
-    void getUser() {
-        User user = service.getUser(1);
-        Assertions.assertNotNull(user);
     }
 
     /**

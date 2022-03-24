@@ -1,14 +1,19 @@
 package ru.edu.cas.client.service;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.*;
 import ru.edu.cas.client.repo.*;
+import ru.edu.cas.clients_account.service.AccountClientService;
+import ru.edu.cas.user.dao.Role;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
+import ru.edu.cas.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Класс предназначен для работы с таблицами clients, clientType, clientSegment, finance, report
@@ -21,18 +26,18 @@ public class ClientService {
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
+    private AccountClientService accountClientService;
+    private UserService userService;
 
-
-    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
-            , ClientSegmentRepository segmentRepository, UserRepository userRepository
-            , ClientFinanceRepository clientFinanceRepository
-            , ClientReportRepository clientReportRepository) {
+    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository, ClientSegmentRepository segmentRepository, UserRepository userRepository, ClientFinanceRepository clientFinanceRepository, ClientReportRepository clientReportRepository, AccountClientService accountClientService, UserService userService) {
         this.clientsRepository = clientsRepository;
         this.typeRepository = typeRepository;
         this.segmentRepository = segmentRepository;
         this.userRepository = userRepository;
         this.clientFinanceRepository = clientFinanceRepository;
         this.clientReportRepository = clientReportRepository;
+        this.accountClientService = accountClientService;
+        this.userService = userService;
     }
 
     /**
@@ -42,7 +47,7 @@ public class ClientService {
      * @return
      */
     public List<Client> getAllClients(int userId) {
-        User user = getUser(userId);
+        User user = userService.getUser(userId);
         return clientsRepository.findByUserId(user);
     }
 
@@ -78,16 +83,6 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает пользователя из таблицы user по id
-     *
-     * @param id - id пользователя
-     * @return User
-     */
-    public User getUser(int id) {
-        return userRepository.getById(id);
-    }
-
-    /**
      * Метод возвращает список из таблицы ClientSegment
      *
      * @return List<ClientSegment>
@@ -108,10 +103,10 @@ public class ClientService {
     /**
      * Метод создает или редактирует запись в таблице Client
      *
-     * @param name -название клиента
-     * @param type -тип клиента
-     * @param inn -inn клиента
-     * @param ogrn -ogrn клиента
+     * @param name    -название клиента
+     * @param type    -тип клиента
+     * @param inn     -inn клиента
+     * @param ogrn    -ogrn клиента
      * @param segment -segment клиента
      * @return - Client
      */
@@ -121,19 +116,29 @@ public class ClientService {
                                String ogrn,
                                String segment) {
         List<String> parameters = Arrays.asList(name, inn);
-        if (parameters.contains(null)||parameters.contains("")) {
-           return null;
+        boolean isSaveAccount = false;
+        if (parameters.contains(null) || parameters.contains("")) {
+            return null;
         }
         Client client = getClient(inn);
         if (client == null) {
             client = new Client();
+            isSaveAccount = true;
         }
         client.setName(name);
         client.setTypeId(getType(type));
         client.setInn(inn);
         client.setOgrn(ogrn);
         client.setSegmentId(getSegment(segment));
-        return clientsRepository.save(client);
+        client = clientsRepository.save(client);
+        if (isSaveAccount) {
+            Random random = new Random();
+            Role role = userService.getRole("Client");
+            String login = name + random.nextInt(101);
+            String password = RandomStringUtils.randomAlphabetic(5);
+            accountClientService.saveOrUpdate(login, password, client, role);
+        }
+        return client;
     }
 
     /**
@@ -148,21 +153,23 @@ public class ClientService {
 
     /**
      * Метод возвращает записи из таблицы finance по clientId
+     *
      * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInn(String inn){
+    public List<ClientFinance> getAllFinanceByClientInn(String inn) {
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientId(client);
     }
 
     /**
      * Метод возвращает записи из таблицы finance по clientId и date
-     * @param inn - ИНН клиента
+     *
+     * @param inn  - ИНН клиента
      * @param date - дата записи в таблице
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date){
+    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date) {
 
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientIdAndDate(client, date);

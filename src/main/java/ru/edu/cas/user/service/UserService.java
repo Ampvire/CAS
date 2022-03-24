@@ -40,48 +40,64 @@ public class UserService {
 
     /**
      * Данный метод возвращает список ролей пользователя из таблицы role.
+     *
      * @return
      */
-    public List<Role> getAllRole(){
+    public List<Role> getAllRole() {
         return roleRepository.findAll();
     }
 
     /**
      * Данный метод возвращает список категорий пользователя из таблиы category.
+     *
      * @return
      */
-    public List<Category> getAllCategory(){
+    public List<Category> getAllCategory() {
         return categoryRepository.findAll();
     }
 
     /**
      * Метод возвращает список пользователей из таблицы user
+     *
      * @return
      */
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return repository.findAll();
     }
 
     /**
+     * Метод возвращает пользователя из таблицы user по id
+     *
+     * @param id - id пользователя
+     * @return User
+     */
+    public User getUser(int id) {
+        return repository.getById(id);
+    }
+
+    /**
      * Метод возвращает запись из таблицы role по названию роли.
+     *
      * @param role
      * @return
      */
-    public Role getRole(String role){
-      return   roleRepository.findByRole(role);
+    public Role getRole(String role) {
+        return roleRepository.findByRole(role);
     }
 
     /**
      * Метод возвращает запись из таблицы category по названию категории.
+     *
      * @param category
      * @return
      */
-    public Category getCategory(String category){
+    public Category getCategory(String category) {
         return categoryRepository.findByCategory(category);
     }
 
     /**
      * Метод создает запись в таблице user или редактирует ее.
+     *
      * @param login
      * @param firstName
      * @param secondName
@@ -90,19 +106,19 @@ public class UserService {
      * @param roleName
      * @return
      */
-    public User createOrUpdateUser( String login,
-                                    String firstName,
-                                    String secondName,
-                                    String password,
-                                    String categoryName,
-                                    String roleName){
-        List<String> parameters = Arrays.asList(login,firstName,secondName,password);
-        if (parameters.contains(null)||parameters.contains("")){
-           return null;
+    public User createOrUpdateUser(String login,
+                                   String firstName,
+                                   String secondName,
+                                   String password,
+                                   String categoryName,
+                                   String roleName) {
+        List<String> parameters = Arrays.asList(login, firstName, secondName, password);
+        if (parameters.contains(null) || parameters.contains("")) {
+            return null;
         }
         String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
         User user = getUser(login);
-        if (user==null){
+        if (user == null) {
             user = new User();
         }
         user.setCategoryId(getCategory(categoryName));
@@ -112,7 +128,7 @@ public class UserService {
         user.setRoleId(getRole(roleName));
         user.setLogin(login);
         repository.save(user);
-         return user;
+        return user;
     }
 
     public User getUser(String login) {
@@ -121,9 +137,10 @@ public class UserService {
 
     /**
      * Метод удаляет запись из таблицы user по логину
+     *
      * @param login
      */
-    public void deleteUser(String login ){
+    public void deleteUser(String login) {
         User user = getUser(login);
         if (getUser(login) == null) {
             throw new RuntimeException("User with login " + login + " not found!");
