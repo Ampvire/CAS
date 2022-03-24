@@ -146,7 +146,7 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает записи из таблицы finance по clientId
+     * Метод возвращает записи из таблицы finance по inn
      * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
@@ -156,7 +156,7 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает записи из таблицы finance по clientId и date
+     * Метод возвращает записи из таблицы finance по inn и date
      * @param inn - ИНН клиента
      * @param date - дата записи в таблице
      * @return List<ClientFinance> - список финансовых показателей клиента
@@ -168,7 +168,7 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId
+     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn
      * @param inn - ИНН клиента
      * @return List<ClientReport> - список отчетов по клиенту
      */
@@ -176,14 +176,20 @@ public class ClientService {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInn(inn);
-        ClientFinance lastFinance = financeList.get(financeList.size() - 1);
-        ClientReport clientReport = reportCounter(lastFinance);
-        clientReportRepository.save(clientReport);
+        if (financeList.size() == 0){
+            return clientReportRepository.findByClientId(client);
+        }
+        else {
+            for (ClientFinance finance : financeList){
+                ClientReport clientReport = reportCounter(finance);
+                clientReportRepository.save(clientReport);
+            }
+        }
         return clientReportRepository.findByClientId(client);
     }
 
     /**
-     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId и дате
+     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn и дате
      * @param inn - ИНН клиента
      * @param date - дата записи
      * @return List<ClientReport> - список отчетов по клиенту
@@ -192,10 +198,36 @@ public class ClientService {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInnAndDate(inn, date);
-        ClientFinance lastFinance = financeList.get(financeList.size() - 1);
-        ClientReport clientReport = reportCounter(lastFinance);
-        clientReportRepository.save(clientReport);
+        if (financeList.size() == 0){
+            return clientReportRepository.findByClientIdAndDate(client, date);
+        }
+        else {
+            for (ClientFinance finance : financeList){
+                ClientReport clientReport = reportCounter(finance);
+                clientReportRepository.save(clientReport);
+            }
+        }
         return clientReportRepository.findByClientIdAndDate(client, date);
+    }
+
+    /**
+     * Метод возвращает последний отчет по некоторым коэффициентам клиента из таблицы report
+     * @param inn - ИНН клиента
+     * @return ClientReport - отчёт по клиенту
+     */
+    public ClientReport getLastReportByClientInn(String inn){
+
+        Client client = getClient(inn);
+        ClientReport lastReport;
+        List<ClientReport> clientReports = getAllReportByClientInn(inn);
+        if (clientReports.size() == 0){
+            return clientReportRepository.findByClientIdAndFinanceId(client, null);
+        }
+        else {
+            lastReport = clientReports.get(clientReports.size() - 1);
+        }
+        ClientFinance finance = lastReport.getFinanceId();
+        return clientReportRepository.findByClientIdAndFinanceId(client, finance);
     }
 
     /**
@@ -206,6 +238,7 @@ public class ClientService {
      */
     private ClientReport reportCounter(ClientFinance finance){
 
+        Client clientId = finance.getClientId();
         int profit = finance.getProfit();
         int revenue = finance.getRevenue();
         int costPrice = finance.getCostPrice();
@@ -215,7 +248,13 @@ public class ClientService {
         int profitabilitySale;
         int inventoryTurnOver;
         int quickLiquidity;
-        ClientReport clientReport = new ClientReport();
+
+        ClientReport clientReport = clientReportRepository.findByClientIdAndFinanceId(clientId, finance);
+        if (clientReport == null){
+            clientReport = new ClientReport();
+            clientReport.setClientId(clientId);
+            clientReport.setFinanceId(finance);
+        }
 
         if (revenue == 0){
             profitabilitySale = 0;
