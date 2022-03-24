@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "clientSegment")
+@Table(name = "client_segment")
 @Setter
 @Getter
 @ToString

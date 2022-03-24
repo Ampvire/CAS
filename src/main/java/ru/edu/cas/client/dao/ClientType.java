@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "clientType")
+@Table(name = "client_type")
 @Setter
 @Getter
 @ToString

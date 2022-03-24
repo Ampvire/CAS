@@ -14,14 +14,15 @@ import java.util.List;
  */
 @Service
 public class ClientService {
-    private ClientsRepository clientsRepository;
+    private ClientRepository clientsRepository;
     private ClientTypeRepository typeRepository;
     private ClientSegmentRepository segmentRepository;
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
 
-    public ClientService(ClientsRepository clientsRepository, ClientTypeRepository typeRepository
+
+    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
             , ClientSegmentRepository segmentRepository, UserRepository userRepository
             , ClientFinanceRepository clientFinanceRepository
             , ClientReportRepository clientReportRepository) {
@@ -58,8 +59,8 @@ public class ClientService {
     /**
      * Метод возвращает записть из таблицы ClientSegment по названию сегмента
      *
-     * @param segment
-     * @return
+     * @param segment - сегмент клиента
+     * @return ClientSegment
      */
     public ClientSegment getSegment(String segment) {
         return segmentRepository.findBySegment(segment);
@@ -68,8 +69,8 @@ public class ClientService {
     /**
      * Метод возвращает записть из таблицы ClientType по названию типа клиента
      *
-     * @param type
-     * @return
+     * @param type - тип клиента
+     * @return ClientType
      */
     public ClientType getType(String type) {
         return typeRepository.findByType(type);
@@ -78,8 +79,8 @@ public class ClientService {
     /**
      * Метод возвращает пользователя из таблицы user по id
      *
-     * @param id
-     * @return
+     * @param id - id пользователя
+     * @return User
      */
     public User getUser(int id) {
         return userRepository.getById(id);
@@ -88,7 +89,7 @@ public class ClientService {
     /**
      * Метод возвращает список из таблицы ClientSegment
      *
-     * @return
+     * @return List<ClientSegment>
      */
     public List<ClientSegment> getListSegments() {
         return segmentRepository.findAll();
@@ -97,7 +98,7 @@ public class ClientService {
     /**
      * Метод возвращает список из таблицы ClientType
      *
-     * @return
+     * @return - List<ClientType>
      */
     public List<ClientType> getListTypes() {
         return typeRepository.findAll();
@@ -106,12 +107,12 @@ public class ClientService {
     /**
      * Метод создает или редактирует запись в таблице Client
      *
-     * @param name
-     * @param type
-     * @param inn
-     * @param ogrn
-     * @param segment
-     * @return
+     * @param name -название клиента
+     * @param type -тип клиента
+     * @param inn -inn клиента
+     * @param ogrn -ogrn клиента
+     * @param segment -segment клиента
+     * @return - Client
      */
     public Client createClient(String name,
                                String type,
@@ -119,8 +120,8 @@ public class ClientService {
                                String ogrn,
                                String segment) {
         List<String> parameters = Arrays.asList(name, inn);
-        if (parameters.contains(null)) {
-            throw new RuntimeException("Fields must not be null!");
+        if (parameters.contains(null)||parameters.contains("")) {
+           return null;
         }
         Client client = getClient(inn);
         if (client == null) {
@@ -137,8 +138,8 @@ public class ClientService {
     /**
      * Метод возвращает запись из таблицы Client по inn
      *
-     * @param inn
-     * @return
+     * @param inn - inn клиента
+     * @return Client
      */
     private Client getClient(String inn) {
         return clientsRepository.findByInn(inn);
