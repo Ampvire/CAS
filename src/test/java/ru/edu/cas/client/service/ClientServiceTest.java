@@ -237,16 +237,26 @@ class ClientServiceTest {
         System.out.println(lastReport);
     }
 
+    /**
+     * Успешное выполнение метода saveFinanceInfo
+     */
     @Test
     void saveFinanceInfoTest(){
 
         String inn = "33333898989";
         Client client = service.getClient(inn);
-        System.out.println(client);
+        ClientSegment clientSegment = client.getSegmentId();
+        int segmentId = clientSegment.getId();
+        Assertions.assertEquals(2, segmentId);
 
         service.saveFinanceInfo(inn, "1000000", "240", "21000", "78000", "3150", "83000");
 
         client = service.getClient(inn);
-        System.out.println(client);
+        clientSegment = client.getSegmentId();
+        segmentId = clientSegment.getId();
+        Assertions.assertEquals(1, segmentId);
+
+        service.saveFinanceInfo(inn, "1500000000", "3950", "20000", "78000", "3150", "83000");
+
     }
 }
