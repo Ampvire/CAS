@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.edu.cas.client.dao.*;
-import ru.edu.cas.client.repo.ClientReportRepository;
-import ru.edu.cas.client.dao.*;
 import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.product.service.ProductService;
+import ru.edu.cas.user.dao.User;
 
 import java.util.List;
 import java.util.Set;
