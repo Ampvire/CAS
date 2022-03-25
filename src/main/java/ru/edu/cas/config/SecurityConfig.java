@@ -23,9 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/client/**").hasAnyRole("Meneger")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin();
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/failed.jsp");
+                .formLogin()
+                .and()
+                .exceptionHandling().accessDeniedPage("/failed.jsp");
     }
 
     @Bean
