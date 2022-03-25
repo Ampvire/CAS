@@ -9,6 +9,7 @@ import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.product.service.ProductService;
 import ru.edu.cas.user.dao.User;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -234,5 +235,18 @@ class ClientServiceTest {
         String inn = "33333898989";
         ClientReport lastReport = service.getLastReportByClientInn(inn);
         System.out.println(lastReport);
+    }
+
+    @Test
+    void saveFinanceInfoTest(){
+
+        String inn = "33333898989";
+        Client client = service.getClient(inn);
+        System.out.println(client);
+
+        service.saveFinanceInfo(inn, "1000000", "240", "21000", "78000", "3150", "83000");
+
+        client = service.getClient(inn);
+        System.out.println(client);
     }
 }

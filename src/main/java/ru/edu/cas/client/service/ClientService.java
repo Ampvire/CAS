@@ -26,8 +26,8 @@ import java.util.Random;
 @Service
 public class ClientService {
     private ClientRepository clientsRepository;
-    private ClientTypeRepository typeRepository;
-    private ClientSegmentRepository segmentRepository;
+    private ClientTypeRepository clientTypeRepository;
+    private ClientSegmentRepository clientSegmentRepository;
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
@@ -38,15 +38,15 @@ public class ClientService {
     private UserService userService;
 
 
-    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
-                , ClientSegmentRepository segmentRepository, UserRepository userRepository
+    public ClientService(ClientRepository clientsRepository, ClientTypeRepository clientTypeRepository
+                , ClientSegmentRepository clientSegmentRepository, UserRepository userRepository
                 , ClientFinanceRepository clientFinanceRepository
                 , ClientReportRepository clientReportRepository
                 , ClientProductsRepository clientProductsRepository
                 , AccountClientService accountClientService, UserService userService) {
         this.clientsRepository = clientsRepository;
-        this.typeRepository = typeRepository;
-        this.segmentRepository = segmentRepository;
+        this.clientTypeRepository = clientTypeRepository;
+        this.clientSegmentRepository = clientSegmentRepository;
         this.userRepository = userRepository;
         this.clientFinanceRepository = clientFinanceRepository;
         this.clientReportRepository = clientReportRepository;
@@ -176,7 +176,7 @@ public class ClientService {
      * @return ClientSegment
      */
     public ClientSegment getSegment(String segment) {
-        return segmentRepository.findBySegment(segment);
+        return clientSegmentRepository.findBySegment(segment);
     }
 
     /**
@@ -186,7 +186,7 @@ public class ClientService {
      * @return ClientType
      */
     public ClientType getType(String type) {
-        return typeRepository.findByType(type);
+        return clientTypeRepository.findByType(type);
     }
 
     /**
@@ -205,7 +205,7 @@ public class ClientService {
      * @return List<ClientSegment>
      */
     public List<ClientSegment> getListSegments() {
-        return segmentRepository.findAll();
+        return clientSegmentRepository.findAll();
     }
 
     /**
@@ -214,7 +214,7 @@ public class ClientService {
      * @return - List<ClientType>
      */
     public List<ClientType> getListTypes() {
-        return typeRepository.findAll();
+        return clientTypeRepository.findAll();
     }
 
     /**
@@ -430,5 +430,9 @@ public class ClientService {
         finance.setReserves(Integer.parseInt(reserves));
         finance.setProfit(Integer.parseInt(profit));
         clientFinanceRepository.save(finance);
+        int countedSegment = calcSegmentId(client.getId());
+        ClientSegment newClientSegment = clientSegmentRepository.findById(countedSegment);
+        client.setSegmentId(newClientSegment);
+        clientsRepository.save(client);
     }
 }
