@@ -1,18 +1,24 @@
 package ru.edu.cas.client.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.*;
 import ru.edu.cas.client.repo.*;
 import ru.edu.cas.product.dao.Product;
+import ru.edu.cas.clients_account.service.AccountClientService;
+import ru.edu.cas.user.dao.Role;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
 import ru.edu.cas.product.service.ProductService;
+import ru.edu.cas.user.service.UserService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 /**
  * Класс предназначен для работы с таблицами clients, clientType, clientSegment, finance, report
@@ -28,19 +34,24 @@ public class ClientService {
     private ClientProductsRepository clientProductsRepository;
 
     private ProductService productService;
+    private AccountClientService accountClientService;
+    private UserService userService;
 
 
     public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
-            , ClientSegmentRepository segmentRepository, UserRepository userRepository
-            , ClientFinanceRepository clientFinanceRepository
-            , ClientReportRepository clientReportRepository
-    ,ClientProductsRepository clientProductsRepository) {
+                , ClientSegmentRepository segmentRepository, UserRepository userRepository
+                , ClientFinanceRepository clientFinanceRepository
+                , ClientReportRepository clientReportRepository
+                , ClientProductsRepository clientProductsRepository
+                , AccountClientService accountClientService, UserService userService) {
         this.clientsRepository = clientsRepository;
         this.typeRepository = typeRepository;
         this.segmentRepository = segmentRepository;
         this.userRepository = userRepository;
         this.clientFinanceRepository = clientFinanceRepository;
         this.clientReportRepository = clientReportRepository;
+        this.accountClientService = accountClientService;
+        this.userService = userService;
         this.clientProductsRepository = clientProductsRepository;
     }
 
@@ -56,7 +67,7 @@ public class ClientService {
      * @return
      */
     public List<Client> getAllClients(int userId) {
-        User user = getUser(userId);
+        User user = userService.getUser(userId);
         return clientsRepository.findByUserId(user);
     }
 
@@ -209,10 +220,10 @@ public class ClientService {
     /**
      * Метод создает или редактирует запись в таблице Client
      *
-     * @param name -название клиента
-     * @param type -тип клиента
-     * @param inn -inn клиента
-     * @param ogrn -ogrn клиента
+     * @param name    -название клиента
+     * @param type    -тип клиента
+     * @param inn     -inn клиента
+     * @param ogrn    -ogrn клиента
      * @param segment -segment клиента
      * @return - Client
      */
@@ -222,19 +233,29 @@ public class ClientService {
                                String ogrn,
                                String segment) {
         List<String> parameters = Arrays.asList(name, inn);
-        if (parameters.contains(null)||parameters.contains("")) {
-           return null;
+        boolean isSaveAccount = false;
+        if (parameters.contains(null) || parameters.contains("")) {
+            return null;
         }
         Client client = getClient(inn);
         if (client == null) {
             client = new Client();
+            isSaveAccount = true;
         }
         client.setName(name);
         client.setTypeId(getType(type));
         client.setInn(inn);
         client.setOgrn(ogrn);
         client.setSegmentId(getSegment(segment));
-        return clientsRepository.save(client);
+        client = clientsRepository.save(client);
+        if (isSaveAccount) {
+            Random random = new Random();
+            Role role = userService.getRole("Client");
+            String login = name + random.nextInt(101);
+            String password = RandomStringUtils.randomAlphabetic(5);
+            accountClientService.saveOrUpdate(login, password, client, role);
+        }
+        return client;
     }
 
     /**
@@ -243,7 +264,7 @@ public class ClientService {
      * @param inn - inn клиента
      * @return Client
      */
-    private Client getClient(String inn) {
+    public Client getClient(String inn) {
         return clientsRepository.findByInn(inn);
     }
 
@@ -252,7 +273,7 @@ public class ClientService {
      * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInn(String inn){
+    public List<ClientFinance> getAllFinanceByClientInn(String inn) {
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientId(client);
     }
@@ -263,20 +284,18 @@ public class ClientService {
      * @param date - дата записи в таблице
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
-    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date){
+    public List<ClientFinance> getAllFinanceByClientInnAndDate(String inn, String date) {
 
         Client client = getClient(inn);
         return clientFinanceRepository.findByClientIdAndDate(client, date);
     }
-
-
 
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn
      * @param inn - ИНН клиента
      * @return List<ClientReport> - список отчетов по клиенту
      */
-    public List<ClientReport> getAllReportByClientInn(String inn){
+    public List<ClientReport> getAllReportByClientInn(String inn) {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInn(inn);
@@ -298,7 +317,7 @@ public class ClientService {
      * @param date - дата записи
      * @return List<ClientReport> - список отчетов по клиенту
      */
-    public List<ClientReport> getAllReportByClientInnAndDate(String inn, String date){
+    public List<ClientReport> getAllReportByClientInnAndDate(String inn, String date) {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInnAndDate(inn, date);
@@ -340,7 +359,7 @@ public class ClientService {
      * @param finance - финансовые показания клиента
      * @return - отчет по клиенту
      */
-    private ClientReport reportCounter(ClientFinance finance){
+    private ClientReport reportCounter(ClientFinance finance) {
 
         Client clientId = finance.getClientId();
         int profit = finance.getProfit();
@@ -360,21 +379,21 @@ public class ClientService {
             clientReport.setFinanceId(finance);
         }
 
-        if (revenue == 0){
+        if (revenue == 0) {
             profitabilitySale = 0;
         } else {
             profitabilitySale = profit / revenue;
         }
         clientReport.setProfitabilitySale(profitabilitySale);
 
-        if (reserves == 0){
+        if (reserves == 0) {
             inventoryTurnOver = 0;
         } else {
             inventoryTurnOver = costPrice / reserves;
         }
         clientReport.setInventoryTurnover(inventoryTurnOver);
 
-        if (loans == 0){
+        if (loans == 0) {
             quickLiquidity = 0;
         } else {
             quickLiquidity = (assets - reserves) / loans;
@@ -382,5 +401,34 @@ public class ClientService {
         clientReport.setQuickLiquidity(quickLiquidity);
 
         return clientReport;
+    }
+
+
+    public List<Integer> calculationLoans(String sum, String years, String percent) {
+        int sumInt = Integer.parseInt(sum);
+        int yearsInt = Integer.parseInt(years);
+        int percentInt = Integer.parseInt(percent);
+        double percentOneMonth = percentInt / 12;
+        int sumLoans = sumInt + ((sumInt * percentInt / 100) * yearsInt);
+        int monthPayment = sumLoans / yearsInt / 12;
+
+        List<Integer> info = new ArrayList<>();
+        info.add(monthPayment);
+        info.add(sumLoans);
+        return info;
+    }
+
+    public void saveFinanceInfo(String inn, String revenue, String staf, String costPrice, String assets,
+                                String reserves, String profit) {
+        ClientFinance finance = new ClientFinance();
+        Client client = getClient(inn);
+        finance.setClientId(client);
+        finance.setAssets(Integer.parseInt(assets));
+        finance.setRevenue(Integer.parseInt(revenue));
+        finance.setCostPrice(Integer.parseInt(costPrice));
+        finance.setStaf(Integer.parseInt(staf));
+        finance.setReserves(Integer.parseInt(reserves));
+        finance.setProfit(Integer.parseInt(profit));
+        clientFinanceRepository.save(finance);
     }
 }
