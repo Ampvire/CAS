@@ -52,10 +52,10 @@ public class ClientsAccountController {
     @PostMapping("/loans/calculation/{inn}")
     public ModelAndView calculation(@PathVariable("inn") String inn,
                                     @RequestParam("sum") String sum,
-                                    @RequestParam("years") String years,
-                                    @RequestParam("percent") String percent) {
+                                    @RequestParam("years") String years) {
         ModelAndView modelAndView = new ModelAndView();
-        List<Integer> calculation = service.calculationLoans(sum, years, percent);
+        Percent percent = productService.getPercentByYear(years);
+        List<Integer> calculation = service.calculationLoans(sum, years, String.valueOf(percent.getPercent()));
 
         List<ClientFinance> finance = service.getAllFinanceByClientInn(inn);
         modelAndView.addObject("sum", sum);

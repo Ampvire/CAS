@@ -71,4 +71,14 @@ public class ProductService {
         List<Percent> percents = percentRepository.findAll();
         return percents;
     }
+
+    /**
+     * Метод возвращает данные таблицы Percent
+     * @param year - кол-во лет
+     * @return Percent
+     */
+    public  Percent  getPercentByYear(String year) {
+        Percent percent = percentRepository.findPercentByYears(Integer.parseInt(year));
+        return percent;
+    }
 }
