@@ -92,6 +92,22 @@ public class ClientService {
         return 2;
     }
 
+    /**
+     * Метод возвращает список всех продуктов клиента
+     *
+     * @param inn -inn клиента по которому нужно получить информацию
+     * @return список(без дубликатов) продуктов клиента
+     */
+    public List<String> getAllProductsByClientInn(String  inn) {
+        List<String> clientProductsName = new ArrayList<>();
+        Client client = clientsRepository.findByInn(inn);
+        List<ClientProducts> clientProducts = clientProductsRepository.findAllByClientId(client);
+        Set<String> products = clientProducts.stream()
+                .map(ClientProducts::getProductId)
+                .map(Product::getName)
+                .collect(Collectors.toSet());
+        return clientProductsName;
+    }
 
     /**
      * Метод возвращает список всех продуктов клиента
@@ -99,7 +115,7 @@ public class ClientService {
      * @param clientId -идентификатор клиента по которому нужно получить информацию
      * @return список(без дубликатов) продуктов клиента
      */
-    public Set<String> getAllProductsByClient(int clientId) {
+    public Set<String> getAllProductsByClient(int  clientId) {
         Client client = clientsRepository.findById(clientId);
         List<ClientProducts> clientProducts = clientProductsRepository.findAllByClientId(client);
         Set<String> products = clientProducts.stream()

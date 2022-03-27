@@ -96,8 +96,10 @@ public class ClientController {
         ModelAndView modelAndView = new ModelAndView();
         List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
         List<ClientReport> reports = service.getAllReportByClientInn(inn);
+        List<String> productsName = service.getAllProductsByClientInn(inn);
         modelAndView.addObject("finances", finances);
         modelAndView.addObject("report", reports);
+        modelAndView.addObject("products", productsName);
         modelAndView.addObject("date", LocalDateTime.now());
         modelAndView.setViewName("/client/report.jsp");
         return modelAndView;
