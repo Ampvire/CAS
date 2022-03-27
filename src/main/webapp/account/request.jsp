@@ -19,16 +19,18 @@
                 <option>${percent.years}</option>
             </c:forEach>
         </select>
-
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
          <label for="per">Процент:</label>
          <input id="per" name="percent"  disabled style="width: 200px; margin-left: auto">
     </div>
-        <div style="width:200px; display: flex; margin-top: 20px">
-              <input id="request" type="submit" value="Рассчитать" style="width: 200px; margin-right: auto">
-        </div>
+    <div style="width:200px; display: flex; margin-top: 20px">
+          <input id="request" type="submit" value="Рассчитать" style="width: 200px; margin-right: auto">
+    </div>
+
 </form>
+
+
 <form action="/logout" method="get">
     <div style="width: 300px; display: flex;margin-top: 20px">
         <input type="submit" value="Logout" style="width: 100px; margin-right: auto">

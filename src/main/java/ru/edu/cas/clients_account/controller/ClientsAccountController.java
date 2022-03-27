@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.service.ClientService;
+import ru.edu.cas.product.dao.Application;
 import ru.edu.cas.product.dao.Percent;
+import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.product.service.ProductService;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 public class ClientsAccountController {
     private ClientService service;
     private ProductService productService;
+    private String inn;
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -30,16 +34,18 @@ public class ClientsAccountController {
     @GetMapping()
     public ModelAndView getAllUserClients() {
         ModelAndView modelAndView = new ModelAndView();
-        String inn = "33333898989";
+        inn = "33333898989";
         List<ClientFinance> finance = service.getAllFinanceByClientInn(inn);
         List<String> products = service.getAllProductsByClientInn(inn);
+        List<Product> banksProducts = productService.getAllProduct();
+        modelAndView.addObject("banksProducts", banksProducts);
         modelAndView.addObject("finance", finance.get(0));
         modelAndView.addObject("products", products);
         modelAndView.setViewName("/account/info.jsp");
         return modelAndView;
     }
 
-    @GetMapping("/loans/{inn}")
+    @GetMapping("/Кредитование/{inn}")
     public ModelAndView requestLoans(@PathVariable("inn") String inn) {
         List<Percent> percents = productService.getPercent();
         ModelAndView modelAndView = new ModelAndView();
@@ -49,18 +55,17 @@ public class ClientsAccountController {
         return modelAndView;
     }
 
-    @PostMapping("/loans/calculation/{inn}")
+    @PostMapping("/Кредитование/calculation/{inn}")
     public ModelAndView calculation(@PathVariable("inn") String inn,
                                     @RequestParam("sum") String sum,
                                     @RequestParam("years") String years) {
-        ModelAndView modelAndView = new ModelAndView();
         Percent percent = productService.getPercentByYear(years);
         List<Integer> calculation = service.calculationLoans(sum, years, String.valueOf(percent.getPercent()));
-
-        List<ClientFinance> finance = service.getAllFinanceByClientInn(inn);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("inn", inn);
+        modelAndView.addObject("percent", percent.getPercent());
         modelAndView.addObject("sum", sum);
         modelAndView.addObject("years", years);
-        modelAndView.addObject("percent", percent);
         modelAndView.addObject("payment", calculation.get(0));
         modelAndView.addObject("loans", calculation.get(1));
         modelAndView.setViewName("/account/calculation.jsp");
@@ -95,4 +100,21 @@ public class ClientsAccountController {
         modelAndView.setViewName(jsp);
         return modelAndView;
     }
+
+    @PostMapping("/Кредитование/calculation/saveApplication")
+    public ModelAndView saveApplication(@RequestParam("sum") String sum,
+                                        @RequestParam("years") String years,
+                                        @RequestParam("payment") String payment,
+                                        @RequestParam("loans") String loans) {
+        Percent percent = productService.getPercentByYear(years);
+        Client client = service.getClient(inn);
+        Application application = productService.saveApplication(client, percent, sum, payment, loans);
+        String message = "Заявка" + (application == null ? " не отправлена" : " отправлена");
+        String jsp = application == null ? "/failed.jsp" : "/success.jsp";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", message);
+        modelAndView.setViewName(jsp);
+        return modelAndView;
+    }
+
 }

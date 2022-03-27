@@ -6,6 +6,12 @@
  </head>
 <body>
  <h1>Приветствуем Вас в Банке!</h1>
+ <form action="account/save/${finance.clientId.inn}" method="get">
+     <div style="width: 500px; display: flex">
+        <label for="info">Заполнить данные о компании: </label>
+        <input id="info" type="submit" value="Заполнить" style="width: 100px; margin-left: auto">
+     </div>
+ </form>
    <div style="width: 500px; display: flex">
       <label for="all">Всего средств на счетах (руб): </label>
       <p id="all" style="width: 200px; margin-left: auto">${finance.assets}</p>
@@ -23,18 +29,15 @@
                  </c:forEach>
              </span>
     </div>
-<form action="account/save/${finance.clientId.inn}" method="get">
-    <div style="width: 500px; display: flex">
-       <label for="info">Заполнить данные о компании: </label>
-       <input id="info" type="submit" value="Заполнить" style="width: 100px; margin-left: auto">
-    </div>
-</form>
-<form action="account/loans/${finance.clientId.inn}" method="get">
-    <div style="width: 500px; display: flex; margin-top: 20px">
-           <label for="request">Отправить заявку на кредит</label>
-          <input id="request" type="submit" value="Отправить" style="width: 100px; margin-left: auto">
-    </div>
-</form>
+<h2>Все продукты Банка:</h2>
+<c:forEach items="${banksProducts}" var="bProduct">
+  <form action="account/${bProduct.name}/${finance.clientId.inn}" method="get">
+     <div style="width: 500px; display: flex; margin-top: 20px">
+         <label for="${bProduct.name}">${bProduct.name}:</label>
+         <input id="${bProduct.name}" type="submit" value="Подать заявку" style="width: 100px; margin-left: auto">
+     </div>
+  </form>
+</c:forEach>
 <form action="/logout" method="get">
     <div style="width: 300px; display: flex;margin-top: 20px">
         <input type="submit" value="Logout" style="width: 100px; margin-right: auto">
