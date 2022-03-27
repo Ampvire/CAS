@@ -1,9 +1,9 @@
 package ru.edu.cas.client.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
+import ru.edu.cas.client.dao.Client;
 
 import java.util.List;
 

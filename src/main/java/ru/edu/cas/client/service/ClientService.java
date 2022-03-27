@@ -58,7 +58,6 @@ public class ClientService {
     @Autowired
     public void setService (ProductService productService) {
         this.productService = productService;
-        this.clientProductsRepository = clientProductsRepository;
     }
 
     /**
@@ -121,7 +120,6 @@ public class ClientService {
 
     /**
      * Метод возвращает список всех продуктов клиента
-     *
      * @param clientId -идентификатор клиента по которому нужно получить информацию
      * @return список(без дубликатов) продуктов клиента
      */
@@ -274,9 +272,6 @@ public class ClientService {
             accountClientService.saveOrUpdate(login, password, client, role);
         }
         return client;
-        client = clientsRepository.save(client);
-
-        return client;
     }
 
     /**
@@ -311,8 +306,6 @@ public class ClientService {
         return clientFinanceRepository.findByClientIdAndDate(client, date);
     }
 
-
-
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn
      * @param inn - ИНН клиента
@@ -337,9 +330,6 @@ public class ClientService {
     /**
      * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn и дате
      * @param inn - ИНН клиента
-     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId и дате
-     *
-     * @param inn  - ИНН клиента
      * @param date - дата записи
      * @return List<ClientReport> - список отчетов по клиенту
      */
