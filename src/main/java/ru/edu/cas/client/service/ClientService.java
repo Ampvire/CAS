@@ -61,11 +61,6 @@ public class ClientService {
         this.clientProductsRepository = clientProductsRepository;
     }
 
-    @Autowired
-    public void setService (ProductService productService) {
-        this.productService = productService;
-    }
-
     /**
      * Метод возвращает список всех клиентов по id пользователя
      *
