@@ -8,25 +8,25 @@
  <h1>User panel</h1>
 <form action="client/getAllClients" method="get">
    <div style="width: 500px; display: flex">
-      <label for="all">Get all my clients:</label>
-       <input id="all" type="submit" value="Get" style="width: 100px; margin-left: auto">
+      <label for="all">Мои клиенты:</label>
+       <input id="all" type="submit" value="Показать" style="width: 100px; margin-left: auto">
    </div>
 </form>
 <form action="client/getNewClients" method="get">
   <div style="width: 500px; display: flex; margin-top: 20px">
-         <label for="segment">Get all new clients by segment:</label>
+         <label for="segment">Выбрать клиентов по сегменту:</label>
          <select id="segment" name="segment" style="width: 200px; margin-left: auto">
              <c:forEach items="${segments}" var="seg">
                  <option>${seg.segment}</option>
              </c:forEach>
          </select>
-         <input type="submit" value="Get" style="width: 100px; margin-left: auto">
+         <input type="submit" value="Выбрать" style="width: 100px; margin-left: auto">
     </div>
 </form>
 <form action="client/newClient" method="get">
     <div style="width: 500px; display: flex; margin-top: 20px">
-       <label for="client">Create new client:</label>
-        <input id="client" type="submit" value="Create" style="width: 100px; margin-left: auto">
+       <label for="client">Создать клиентов:</label>
+        <input id="client" type="submit" value="Создать" style="width: 100px; margin-left: auto">
     </div>
 </form>
 <form action="/logout" method="get">
