@@ -176,4 +176,86 @@ class ClientServiceTest {
                 , "123", "Микро и малый бизнес");
         Assertions.assertNotNull(client);
     }
+
+
+    /**
+     * Успешное выполнение метода getAllFinanceByClientInn
+     */
+    @Test
+    void getAllFinanceByClientInn(){
+
+        String inn = "33333898989";
+        List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
+        Assertions.assertEquals(2, finances.size());
+    }
+
+    /**
+     * Успешное выполнение метода getAllFinanceByClientInnAndDate
+     */
+    @Test
+    void getAllFinanceByClientInnAndDate(){
+
+        String inn = "33333898989";
+        String date = "1998-01-07";
+        List<ClientFinance> finances = service.getAllFinanceByClientInnAndDate(inn, date);
+        Assertions.assertEquals(1, finances.size());
+    }
+
+    /**
+     * Успешное выполнение метода getAllReportByClientInn
+     */
+    @Test
+    void getAllReportByClientInn(){
+
+        String inn = "33333898989";
+        List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
+        List<ClientReport> reports = service.getAllReportByClientInn(inn);
+        Assertions.assertEquals(finances.size(), reports.size());
+    }
+
+    /**
+     * Успешное выполнение метода getAllReportByClientInnAndDate
+     */
+    @Test
+    void getAllReportByClientInnAndDate(){
+
+        String inn = "33333898989";
+        String date = "2022-03-24";
+        List<ClientReport> reports = service.getAllReportByClientInnAndDate(inn, date);
+        Assertions.assertEquals(2, reports.size());
+    }
+
+    /**
+     * Успешное выполнение метода getLastReportByClientInn
+     */
+    @Test
+    void getLastReportByClientInn(){
+
+        String inn = "33333898989";
+        ClientReport lastReport = service.getLastReportByClientInn(inn);
+        System.out.println(lastReport);
+    }
+
+    /**
+     * Успешное выполнение метода saveFinanceInfo
+     */
+    @Test
+    void saveFinanceInfoTest(){
+
+        String inn = "33333898989";
+        Client client = service.getClient(inn);
+        ClientSegment clientSegment = client.getSegmentId();
+        int segmentId = clientSegment.getId();
+        Assertions.assertEquals(2, segmentId);
+
+        service.saveFinanceInfo(inn, "1000000", "240", "21000", "78000", "3150", "83000");
+
+        client = service.getClient(inn);
+        clientSegment = client.getSegmentId();
+        segmentId = clientSegment.getId();
+        Assertions.assertEquals(1, segmentId);
+
+        service.saveFinanceInfo(inn, "1500000000", "3950", "20000", "78000", "3150", "83000");
+
+    }
 }

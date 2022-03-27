@@ -5,4 +5,5 @@ import ru.edu.cas.client.dao.ClientSegment;
 
 public interface ClientSegmentRepository extends JpaRepository<ClientSegment,Integer> {
     ClientSegment findBySegment(String segment);
+    ClientSegment findById(int id);
 }
