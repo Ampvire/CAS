@@ -58,6 +58,12 @@ public class ClientService {
     @Autowired
     public void setService (ProductService productService) {
         this.productService = productService;
+        this.clientProductsRepository = clientProductsRepository;
+    }
+
+    @Autowired
+    public void setService (ProductService productService) {
+        this.productService = productService;
     }
 
     /**
