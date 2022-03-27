@@ -73,8 +73,8 @@ public class ClientService {
 
     /**
      * Получить клиента по идентификатору
-     * */
-    public Client getClientById(int id){
+     */
+    public Client getClientById(int id) {
         return clientsRepository.findById(id);
     }
 
@@ -82,32 +82,48 @@ public class ClientService {
     /**
      * Метод по выручке и штату сотрудников определяет и возвращает id сегмента
      * @param clientId -идентификатор клиент по которому необходимо определить сегмент
-     * */
-    public int calcSegmentId(int clientId){
+     */
+    public int calcSegmentId(int clientId) {
         Client client = clientsRepository.getById(clientId);
         List<ClientFinance> financeList = clientFinanceRepository.findByClientId(client);
-        if(financeList.isEmpty()){
+        if (financeList.isEmpty()) {
             return 1;
         }
 
-        ClientFinance finance = financeList.get(financeList.size()-1);
+        ClientFinance finance = financeList.get(financeList.size() - 1);
 
         int staf = finance.getStaf();
-        int revenue =finance.getRevenue();
+        int revenue = finance.getRevenue();
 
-        if(staf < 250 || revenue <= 400_000_000){
+        if (staf < 250 || revenue <= 400_000_000) {
             return 1;
         }
         return 2;
     }
 
+    /**
+     * Метод возвращает список всех продуктов клиента
+     *
+     * @param inn -inn клиента по которому нужно получить информацию
+     * @return список(без дубликатов) продуктов клиента
+     */
+    public List<String> getAllProductsByClientInn(String  inn) {
+        List<String> clientProductsName = new ArrayList<>();
+        Client client = clientsRepository.findByInn(inn);
+        List<ClientProducts> clientProducts = clientProductsRepository.findAllByClientId(client);
+        Set<String> products = clientProducts.stream()
+                .map(ClientProducts::getProductId)
+                .map(Product::getName)
+                .collect(Collectors.toSet());
+        return clientProductsName;
+    }
 
     /**
      * Метод возвращает список всех продуктов клиента
      * @param clientId -идентификатор клиента по которому нужно получить информацию
-     * @return  список(без дубликатов) продуктов клиента
-     * */
-    public Set<String> getAllProductsByClient(int clientId){
+     * @return список(без дубликатов) продуктов клиента
+     */
+    public Set<String> getAllProductsByClient(int  clientId) {
         Client client = clientsRepository.findById(clientId);
         List<ClientProducts> clientProducts  = clientProductsRepository.findAllByClientId(client);
         Set<String> products = clientProducts.stream()
@@ -122,12 +138,12 @@ public class ClientService {
      * @param clientId -идентификатор клиента
      * @param productId -идентификатор продукта
      * @return при успешном добавлении записи возвращает true иначе false
-     * */
-    public boolean createClientProduct(int clientId, int productId){
+     */
+    public boolean createClientProduct(int clientId, int productId) {
         Client client = getClientById(clientId);
         Product product = productService.getProductById(productId);
 
-       List<Integer> parameters = Arrays.asList(clientId, productId);
+        List<Integer> parameters = Arrays.asList(clientId, productId);
         if (parameters.contains(null)) {
             throw new RuntimeException("Fields must not be null!");
         }
@@ -144,9 +160,9 @@ public class ClientService {
      * @param  client -клиент
      * @param product -продукт
      * @return при успешном добавлении записи возвращает true иначе false
-     * */
-    public ClientProducts createClientProduct(Client client, Product product){
-        if (client == null || product ==null) {
+     */
+    public ClientProducts createClientProduct(Client client, Product product) {
+        if (client == null || product == null) {
             throw new RuntimeException("Fields must not be null!");
         }
 
