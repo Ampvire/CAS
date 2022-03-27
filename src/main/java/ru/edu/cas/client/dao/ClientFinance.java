@@ -1,8 +1,8 @@
 package ru.edu.cas.client.dao;
 
 import lombok.*;
+
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "finance")
@@ -44,5 +44,5 @@ public class ClientFinance {
     private int loans;
 
     @Column(name = "date")
-    private String date = LocalDate.now().toString();
+    private String date ;
 }

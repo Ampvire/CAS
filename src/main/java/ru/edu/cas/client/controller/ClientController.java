@@ -82,12 +82,8 @@ public class ClientController {
                                 @RequestParam("ogrn") String ogrn,
                                 @RequestParam("segment") String segment) {
         Client client = service.createClient(name, type, inn, ogrn, segment);
-        String message = "Клиент создан";
-        String jsp = "/success.jsp";
-        if (client == null) {
-            message = "Поля должны быть заполнены!";
-            jsp = "/failed.jsp";
-        }
+        String message = client == null ? "Поля должны быть заполнены!" : "Клиент изменен.";
+        String jsp = client == null ? "/failed.jsp" : "/success.jsp";
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
@@ -130,12 +126,9 @@ public class ClientController {
                                             @RequestParam("segment") String segment) {
         Client client = service.createClient(name, type, inn, ogrn, segment);
         ModelAndView modelAndView = new ModelAndView();
-        String message = "Клиент изменен";
-        String jsp = "/success.jsp";
-        if (client == null) {
-            message = "Поля должны быть заполнены!";
-            jsp = "/failed.jsp";
-        } else {
+        String message = client == null ? "Поля должны быть заполнены!" : "Клиент изменен.";
+        String jsp = client == null ? "/failed.jsp" : "/success.jsp";
+        if (client != null) {
             AccountClient accountClient = accountClientService.getAccount(client);
             accountClient.setPassword(password);
             accountClientService.save(accountClient);

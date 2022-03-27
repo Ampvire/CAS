@@ -13,11 +13,17 @@
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
         <label for="year">Количество лет:</label>
-        <input id="year" name="years" style="width: 200px; margin-left: auto">
+        <select onchange="handleClick('${percents}', this.selectedIndex)"
+          id="year" name="years" style="width: 200px; margin-left: auto">
+            <c:forEach items="${percents}" var="percent">
+                <option>${percent.years}</option>
+            </c:forEach>
+        </select>
+
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="percent">Процент:</label>
-        <input id="percent" name="percent" style="width: 200px; margin-left: auto">
+         <label for="percent">Процент:</label>
+         <input id="percent" name="percent" value=${percent.years} style="width: 200px; margin-left: auto">
     </div>
         <div style="width:200px; display: flex; margin-top: 20px">
               <input id="request" type="submit" value="Рассчитать" style="width: 200px; margin-right: auto">
@@ -29,4 +35,12 @@
     </div>
 </form>
 </body>
+<script type="text/javascript">
+var per = ${percents}
+  function handleClick(percents,selectedIndex)
+  {
+
+console.log(per)
+  }
+</script>
 </html>

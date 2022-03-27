@@ -18,12 +18,12 @@
     <div style="width: 500px; display: flex; margin-top: 20px">
            <label for="product">Подключенные услуги:</label>
              <span id="product" name="product" style="width: 200px; margin-left: auto">
-                 <c:forEach items="${products}" var="p">
-                     <option>${p.name}</option>
+                 <c:forEach items="${products}" var="product">
+                     <option>${product}</option>
                  </c:forEach>
              </span>
     </div>
-<form action="/save/${finance.clientId.inn}" method="get">
+<form action="account/save/${finance.clientId.inn}" method="get">
     <div style="width: 500px; display: flex">
        <label for="info">Заполнить данные о компании: </label>
        <input id="info" type="submit" value="Заполнить" style="width: 100px; margin-left: auto">
