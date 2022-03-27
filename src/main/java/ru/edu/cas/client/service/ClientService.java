@@ -1,18 +1,23 @@
 package ru.edu.cas.client.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.*;
 import ru.edu.cas.client.repo.*;
+import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.clients_account.service.AccountClientService;
 import ru.edu.cas.user.dao.Role;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
+import ru.edu.cas.product.service.ProductService;
 import ru.edu.cas.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.Random;
 
 /**
@@ -21,23 +26,39 @@ import java.util.Random;
 @Service
 public class ClientService {
     private ClientRepository clientsRepository;
-    private ClientTypeRepository typeRepository;
-    private ClientSegmentRepository segmentRepository;
+    private ClientTypeRepository clientTypeRepository;
+    private ClientSegmentRepository clientSegmentRepository;
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
+    private ClientProductsRepository clientProductsRepository;
+
+    private ProductService productService;
     private AccountClientService accountClientService;
     private UserService userService;
 
-    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository, ClientSegmentRepository segmentRepository, UserRepository userRepository, ClientFinanceRepository clientFinanceRepository, ClientReportRepository clientReportRepository, AccountClientService accountClientService, UserService userService) {
+
+    public ClientService(ClientRepository clientsRepository, ClientTypeRepository clientTypeRepository
+                , ClientSegmentRepository clientSegmentRepository, UserRepository userRepository
+                , ClientFinanceRepository clientFinanceRepository
+                , ClientReportRepository clientReportRepository
+                , ClientProductsRepository clientProductsRepository
+                , AccountClientService accountClientService, UserService userService) {
         this.clientsRepository = clientsRepository;
-        this.typeRepository = typeRepository;
-        this.segmentRepository = segmentRepository;
+        this.clientTypeRepository = clientTypeRepository;
+        this.clientSegmentRepository = clientSegmentRepository;
         this.userRepository = userRepository;
         this.clientFinanceRepository = clientFinanceRepository;
         this.clientReportRepository = clientReportRepository;
         this.accountClientService = accountClientService;
         this.userService = userService;
+        this.clientProductsRepository = clientProductsRepository;
+    }
+
+    @Autowired
+    public void setService (ProductService productService) {
+        this.productService = productService;
+        this.clientProductsRepository = clientProductsRepository;
     }
 
     /**
@@ -50,6 +71,93 @@ public class ClientService {
         User user = userService.getUser(userId);
         return clientsRepository.findByUserId(user);
     }
+
+    /**
+     * Получить клиента по идентификатору
+     * */
+    public Client getClientById(int id){
+        return clientsRepository.findById(id);
+    }
+
+
+    /**
+     * Метод по выручке и штату сотрудников определяет и возвращает id сегмента
+     * @param clientId -идентификатор клиент по которому необходимо определить сегмент
+     * */
+    public int calcSegmentId(int clientId){
+        Client client = clientsRepository.getById(clientId);
+        List<ClientFinance> financeList = clientFinanceRepository.findByClientId(client);
+        if(financeList.isEmpty()){
+            return 1;
+        }
+
+        ClientFinance finance = financeList.get(financeList.size()-1);
+
+        int staf = finance.getStaf();
+        int revenue =finance.getRevenue();
+
+        if(staf < 250 || revenue <= 400_000_000){
+            return 1;
+        }
+        return 2;
+    }
+
+
+    /**
+     * Метод возвращает список всех продуктов клиента
+     * @param clientId -идентификатор клиента по которому нужно получить информацию
+     * @return  список(без дубликатов) продуктов клиента
+     * */
+    public Set<String> getAllProductsByClient(int clientId){
+        Client client = clientsRepository.findById(clientId);
+        List<ClientProducts> clientProducts  = clientProductsRepository.findAllByClientId(client);
+        Set<String> products = clientProducts.stream()
+                .map(ClientProducts::getProductId)
+                .map(Product::getName)
+                .collect(Collectors.toSet());
+        return products;
+    }
+
+    /**
+     * Метод добавляет продукт клиенту
+     * @param clientId -идентификатор клиента
+     * @param productId -идентификатор продукта
+     * @return при успешном добавлении записи возвращает true иначе false
+     * */
+    public boolean createClientProduct(int clientId, int productId){
+        Client client = getClientById(clientId);
+        Product product = productService.getProductById(productId);
+
+       List<Integer> parameters = Arrays.asList(clientId, productId);
+        if (parameters.contains(null)) {
+            throw new RuntimeException("Fields must not be null!");
+        }
+
+        ClientProducts clientProducts = new ClientProducts();
+        clientProducts.setClientId(client);
+        clientProducts.setProductId(product);
+        clientProductsRepository.save(clientProducts);
+        return true;
+    }
+
+    /**
+     * Метод добавляет продукт клиенту
+     * @param  client -клиент
+     * @param product -продукт
+     * @return при успешном добавлении записи возвращает true иначе false
+     * */
+    public ClientProducts createClientProduct(Client client, Product product){
+        if (client == null || product ==null) {
+            throw new RuntimeException("Fields must not be null!");
+        }
+
+        ClientProducts clientProducts = new ClientProducts();
+        clientProducts.setClientId(client);
+        clientProducts.setProductId(product);
+        clientProductsRepository.save(clientProducts);
+        return clientProducts;
+    }
+
 
     /**
      * Метод возвращает список все клиентов по id сегмента и незакрепленных за пользователем
@@ -69,7 +177,7 @@ public class ClientService {
      * @return ClientSegment
      */
     public ClientSegment getSegment(String segment) {
-        return segmentRepository.findBySegment(segment);
+        return clientSegmentRepository.findBySegment(segment);
     }
 
     /**
@@ -79,7 +187,17 @@ public class ClientService {
      * @return ClientType
      */
     public ClientType getType(String type) {
-        return typeRepository.findByType(type);
+        return clientTypeRepository.findByType(type);
+    }
+
+    /**
+     * Метод возвращает пользователя из таблицы user по id
+     *
+     * @param id - id пользователя
+     * @return User
+     */
+    public User getUser(int id) {
+        return userRepository.getById(id);
     }
 
     /**
@@ -88,7 +206,7 @@ public class ClientService {
      * @return List<ClientSegment>
      */
     public List<ClientSegment> getListSegments() {
-        return segmentRepository.findAll();
+        return clientSegmentRepository.findAll();
     }
 
     /**
@@ -97,7 +215,7 @@ public class ClientService {
      * @return - List<ClientType>
      */
     public List<ClientType> getListTypes() {
-        return typeRepository.findAll();
+        return clientTypeRepository.findAll();
     }
 
     /**
@@ -152,8 +270,7 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает записи из таблицы finance по clientId
-     *
+     * Метод возвращает записи из таблицы finance по inn
      * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
@@ -163,9 +280,8 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает записи из таблицы finance по clientId и date
-     *
-     * @param inn  - ИНН клиента
+     * Метод возвращает записи из таблицы finance по inn и date
+     * @param inn - ИНН клиента
      * @param date - дата записи в таблице
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
@@ -176,8 +292,7 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId
-     *
+     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn
      * @param inn - ИНН клиента
      * @return List<ClientReport> - список отчетов по клиенту
      */
@@ -185,16 +300,21 @@ public class ClientService {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInn(inn);
-        ClientFinance lastFinance = financeList.get(financeList.size() - 1);
-        ClientReport clientReport = reportCounter(lastFinance);
-        clientReportRepository.save(clientReport);
+        if (financeList.size() == 0){
+            return clientReportRepository.findByClientId(client);
+        }
+        else {
+            for (ClientFinance finance : financeList){
+                ClientReport clientReport = reportCounter(finance);
+                clientReportRepository.save(clientReport);
+            }
+        }
         return clientReportRepository.findByClientId(client);
     }
 
     /**
-     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId и дате
-     *
-     * @param inn  - ИНН клиента
+     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn и дате
+     * @param inn - ИНН клиента
      * @param date - дата записи
      * @return List<ClientReport> - список отчетов по клиенту
      */
@@ -202,16 +322,41 @@ public class ClientService {
 
         Client client = getClient(inn);
         List<ClientFinance> financeList = getAllFinanceByClientInnAndDate(inn, date);
-        ClientFinance lastFinance = financeList.get(financeList.size() - 1);
-        ClientReport clientReport = reportCounter(lastFinance);
-        clientReportRepository.save(clientReport);
+        if (financeList.size() == 0){
+            return clientReportRepository.findByClientIdAndDate(client, date);
+        }
+        else {
+            for (ClientFinance finance : financeList){
+                ClientReport clientReport = reportCounter(finance);
+                clientReportRepository.save(clientReport);
+            }
+        }
         return clientReportRepository.findByClientIdAndDate(client, date);
+    }
+
+    /**
+     * Метод возвращает последний отчет по некоторым коэффициентам клиента из таблицы report
+     * @param inn - ИНН клиента
+     * @return ClientReport - отчёт по клиенту
+     */
+    public ClientReport getLastReportByClientInn(String inn){
+
+        Client client = getClient(inn);
+        ClientReport lastReport;
+        List<ClientReport> clientReports = getAllReportByClientInn(inn);
+        if (clientReports.size() == 0){
+            return clientReportRepository.findByClientIdAndFinanceId(client, null);
+        }
+        else {
+            lastReport = clientReports.get(clientReports.size() - 1);
+        }
+        ClientFinance finance = lastReport.getFinanceId();
+        return clientReportRepository.findByClientIdAndFinanceId(client, finance);
     }
 
     /**
      * Вспомогательный метод
      * Метод производит расчеты коэффициентов из таблицы report по финансовым показателям клиента
-     *
      * @param finance - финансовые показания клиента
      * @return - отчет по клиенту
      */
@@ -279,5 +424,9 @@ public class ClientService {
         finance.setReserves(Integer.parseInt(reserves));
         finance.setProfit(Integer.parseInt(profit));
         clientFinanceRepository.save(finance);
+        int countedSegment = calcSegmentId(client.getId());
+        ClientSegment newClientSegment = clientSegmentRepository.findById(countedSegment);
+        client.setSegmentId(newClientSegment);
+        clientsRepository.save(client);
     }
 }
