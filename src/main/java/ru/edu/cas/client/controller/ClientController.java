@@ -1,8 +1,6 @@
 package ru.edu.cas.client.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,11 +8,11 @@ import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
 import ru.edu.cas.client.service.ClientService;
-import ru.edu.cas.user.service.CustomDetailUserService;
+import ru.edu.cas.clients_account.dao.AccountClient;
+import ru.edu.cas.clients_account.service.AccountClientService;
 import ru.edu.cas.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,21 +20,24 @@ import java.util.List;
 @RequestMapping(value = "/user/client")
 public class ClientController {
     private ClientService service;
-    private CustomDetailUserService detailUserService;
+    private AccountClientService accountClientService;
+    //    private CustomDetailUserService detailUserService;
     private UserService userService;
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
     @Autowired
-    public CustomDetailUserService getDetailUserService() {
-        return detailUserService;
+    public void setAccountClientService(AccountClientService accountClientService) {
+        this.accountClientService = accountClientService;
     }
-
-    public void setDetailUserService(CustomDetailUserService detailUserService) {
-        this.detailUserService = detailUserService;
-    }
+//    @Autowired
+//    public CustomDetailUserService getDetailUserService() {
+//        return detailUserService;
+//    }
+//
 
     @Autowired
     public void setService(ClientService service) {
@@ -45,12 +46,14 @@ public class ClientController {
 
     @GetMapping("/getAllClients")
     public ModelAndView getAllUserClients(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        SecurityContextImpl context = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-        User user = (User) context.getAuthentication().getPrincipal();
-        ru.edu.cas.user.dao.User daoUser = userService.getUser(user.getUsername());
+//        HttpSession session = req.getSession();
+//        SecurityContextImpl context = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+//        User user = (User) context.getAuthentication().getPrincipal();
+//        ru.edu.cas.user.dao.User daoUser = userService.getUser(user.getUsername());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("list", service.getAllClients(daoUser.getId()));
+//        modelAndView.addObject("list", service.getAllClients(daoUser.getId()));
+        modelAndView.addObject("list", service.getAllClients(2));
+
         modelAndView.setViewName("/client/all_clients.jsp");
         return modelAndView;
     }
@@ -102,6 +105,45 @@ public class ClientController {
         modelAndView.addObject("products", productsName);
         modelAndView.addObject("date", LocalDateTime.now());
         modelAndView.setViewName("/client/report.jsp");
+        return modelAndView;
+    }
+
+    @GetMapping("/updateClient/{inn}")
+    public ModelAndView updateClient(@PathVariable("inn") String inn) {
+        Client client = service.getClient(inn);
+        AccountClient accountClient = accountClientService.getAccount(client);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/client/update_client.jsp");
+        modelAndView.addObject("name", client.getName());
+        modelAndView.addObject("inn", client.getInn());
+        modelAndView.addObject("ogrn", client.getOgrn());
+        modelAndView.addObject("password", accountClient.getPassword());
+        modelAndView.addObject("segments", service.getListSegments());
+        modelAndView.addObject("types", service.getListTypes());
+        return modelAndView;
+    }
+
+    @PostMapping("/updateClient/success")
+    public ModelAndView updateUpdateSuccess(@RequestParam("password") String password,
+                                            @RequestParam("name") String name,
+                                            @RequestParam("type") String type,
+                                            @RequestParam("inn") String inn,
+                                            @RequestParam("ogrn") String ogrn,
+                                            @RequestParam("segment") String segment) {
+        Client client = service.createClient(name, type, inn, ogrn, segment);
+        ModelAndView modelAndView = new ModelAndView();
+        String message = "Клиент изменен";
+        String jsp = "/success.jsp";
+        if (client == null) {
+            message = "Поля должны быть заполнены!";
+            jsp = "/failed.jsp";
+        } else {
+            AccountClient accountClient = accountClientService.getAccount(client);
+            accountClient.setPassword(password);
+            accountClientService.save(accountClient);
+        }
+        modelAndView.addObject("message", message);
+        modelAndView.setViewName(jsp);
         return modelAndView;
     }
 }

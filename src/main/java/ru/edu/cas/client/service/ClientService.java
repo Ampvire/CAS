@@ -1,19 +1,24 @@
 package ru.edu.cas.client.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.*;
 import ru.edu.cas.client.repo.*;
 import ru.edu.cas.product.dao.Product;
-import ru.edu.cas.product.service.ProductService;
+import ru.edu.cas.clients_account.service.AccountClientService;
+import ru.edu.cas.user.dao.Role;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
+import ru.edu.cas.product.service.ProductService;
+import ru.edu.cas.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 /**
  * Класс предназначен для работы с таблицами clients, clientType, clientSegment, finance, report
@@ -21,32 +26,37 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
     private ClientRepository clientsRepository;
-    private ClientTypeRepository typeRepository;
-    private ClientSegmentRepository segmentRepository;
+    private ClientTypeRepository clientTypeRepository;
+    private ClientSegmentRepository clientSegmentRepository;
     private UserRepository userRepository;
     private ClientFinanceRepository clientFinanceRepository;
     private ClientReportRepository clientReportRepository;
     private ClientProductsRepository clientProductsRepository;
 
     private ProductService productService;
+    private AccountClientService accountClientService;
+    private UserService userService;
 
 
-    public ClientService(ClientRepository clientsRepository, ClientTypeRepository typeRepository
-            , ClientSegmentRepository segmentRepository, UserRepository userRepository
-            , ClientFinanceRepository clientFinanceRepository
-            , ClientReportRepository clientReportRepository
-            , ClientProductsRepository clientProductsRepository) {
+    public ClientService(ClientRepository clientsRepository, ClientTypeRepository clientTypeRepository
+                , ClientSegmentRepository clientSegmentRepository, UserRepository userRepository
+                , ClientFinanceRepository clientFinanceRepository
+                , ClientReportRepository clientReportRepository
+                , ClientProductsRepository clientProductsRepository
+                , AccountClientService accountClientService, UserService userService) {
         this.clientsRepository = clientsRepository;
-        this.typeRepository = typeRepository;
-        this.segmentRepository = segmentRepository;
+        this.clientTypeRepository = clientTypeRepository;
+        this.clientSegmentRepository = clientSegmentRepository;
         this.userRepository = userRepository;
         this.clientFinanceRepository = clientFinanceRepository;
         this.clientReportRepository = clientReportRepository;
+        this.accountClientService = accountClientService;
+        this.userService = userService;
         this.clientProductsRepository = clientProductsRepository;
     }
 
     @Autowired
-    public void setService(ProductService productService) {
+    public void setService (ProductService productService) {
         this.productService = productService;
     }
 
@@ -57,7 +67,7 @@ public class ClientService {
      * @return
      */
     public List<Client> getAllClients(int userId) {
-        User user = getUser(userId);
+        User user = userService.getUser(userId);
         return clientsRepository.findByUserId(user);
     }
 
@@ -71,7 +81,6 @@ public class ClientService {
 
     /**
      * Метод по выручке и штату сотрудников определяет и возвращает id сегмента
-     *
      * @param clientId -идентификатор клиент по которому необходимо определить сегмент
      */
     public int calcSegmentId(int clientId) {
@@ -111,13 +120,12 @@ public class ClientService {
 
     /**
      * Метод возвращает список всех продуктов клиента
-     *
      * @param clientId -идентификатор клиента по которому нужно получить информацию
      * @return список(без дубликатов) продуктов клиента
      */
     public Set<String> getAllProductsByClient(int  clientId) {
         Client client = clientsRepository.findById(clientId);
-        List<ClientProducts> clientProducts = clientProductsRepository.findAllByClientId(client);
+        List<ClientProducts> clientProducts  = clientProductsRepository.findAllByClientId(client);
         Set<String> products = clientProducts.stream()
                 .map(ClientProducts::getProductId)
                 .map(Product::getName)
@@ -127,8 +135,7 @@ public class ClientService {
 
     /**
      * Метод добавляет продукт клиенту
-     *
-     * @param clientId  -идентификатор клиента
+     * @param clientId -идентификатор клиента
      * @param productId -идентификатор продукта
      * @return при успешном добавлении записи возвращает true иначе false
      */
@@ -150,8 +157,7 @@ public class ClientService {
 
     /**
      * Метод добавляет продукт клиенту
-     *
-     * @param client  -клиент
+     * @param  client -клиент
      * @param product -продукт
      * @return при успешном добавлении записи возвращает true иначе false
      */
@@ -186,7 +192,7 @@ public class ClientService {
      * @return ClientSegment
      */
     public ClientSegment getSegment(String segment) {
-        return segmentRepository.findBySegment(segment);
+        return clientSegmentRepository.findBySegment(segment);
     }
 
     /**
@@ -196,7 +202,7 @@ public class ClientService {
      * @return ClientType
      */
     public ClientType getType(String type) {
-        return typeRepository.findByType(type);
+        return clientTypeRepository.findByType(type);
     }
 
     /**
@@ -215,7 +221,7 @@ public class ClientService {
      * @return List<ClientSegment>
      */
     public List<ClientSegment> getListSegments() {
-        return segmentRepository.findAll();
+        return clientSegmentRepository.findAll();
     }
 
     /**
@@ -224,7 +230,7 @@ public class ClientService {
      * @return - List<ClientType>
      */
     public List<ClientType> getListTypes() {
-        return typeRepository.findAll();
+        return clientTypeRepository.findAll();
     }
 
     /**
@@ -258,7 +264,13 @@ public class ClientService {
         client.setOgrn(ogrn);
         client.setSegmentId(getSegment(segment));
         client = clientsRepository.save(client);
-
+        if (isSaveAccount) {
+            Random random = new Random();
+            Role role = userService.getRole("Client");
+            String login = name + random.nextInt(101);
+            String password = RandomStringUtils.randomAlphabetic(5);
+            accountClientService.saveOrUpdate(login, password, client, role);
+        }
         return client;
     }
 
@@ -273,8 +285,7 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает записи из таблицы finance по clientId
-     *
+     * Метод возвращает записи из таблицы finance по inn
      * @param inn - ИНН клиента
      * @return List<ClientFinance> - список финансовых показателей клиента
      */
@@ -317,9 +328,8 @@ public class ClientService {
     }
 
     /**
-     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по clientId и дате
-     *
-     * @param inn  - ИНН клиента
+     * Метод возвращает отчет по некоторым коэффициентам клиента из таблицы report по inn и дате
+     * @param inn - ИНН клиента
      * @param date - дата записи
      * @return List<ClientReport> - список отчетов по клиенту
      */
@@ -437,7 +447,7 @@ public class ClientService {
         finance.setProfit(Integer.parseInt(profit));
         clientFinanceRepository.save(finance);
         int countedSegment = calcSegmentId(client.getId());
-        ClientSegment newClientSegment = segmentRepository.findById(countedSegment);
+        ClientSegment newClientSegment = clientSegmentRepository.findById(countedSegment);
         client.setSegmentId(newClientSegment);
         clientsRepository.save(client);
     }

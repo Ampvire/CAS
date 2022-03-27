@@ -29,10 +29,17 @@
                <td>${client.typeId.type}</td>
                 <td>
                     <form action="getReport/${client.inn}" method="get">
-                        <div style="width: 300px; display: flex">
-                            <input type="submit" value="Report" style="width: 100px; margin-right: auto">
+                        <div style="width: 200px; display: flex">
+                            <input type="submit" value="Report" style="width: 100px; margin-left: auto">
                         </div>
                     </form>
+                </td>
+                <td>
+                   <form action="updateClient/${client.inn}" method="get">
+                       <div style="width: 200px; display: flex">
+                           <input type="submit" value="Update" style="width: 100px; margin-left: auto">
+                       </div>
+                   </form>
                 </td>
            </tr>
     </c:forEach>

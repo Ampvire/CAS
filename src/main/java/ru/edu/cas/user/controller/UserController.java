@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ru.edu.cas.client.service.ClientService;
 
+/**
+ *
+ */
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
