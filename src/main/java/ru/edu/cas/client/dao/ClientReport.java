@@ -1,9 +1,6 @@
 package ru.edu.cas.client.dao;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class ClientReport {
 
     @Id
@@ -24,6 +22,10 @@ public class ClientReport {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client clientId;
+
+    @OneToOne
+    @JoinColumn(name = "finance_id")
+    private ClientFinance financeId;
 
     @Column(name = "profitability_sale")
     private int profitabilitySale;
