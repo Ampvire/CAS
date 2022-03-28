@@ -13,23 +13,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
-                .ignoringAntMatchers("/admin/update")
-                .and()
+        http
                 .authorizeRequests()
+                .antMatchers("/", "/main.css").permitAll()
                 .antMatchers("/admin").hasAnyRole("Admin")
                 .antMatchers("/admin/**").hasAnyRole("Admin")
                 .antMatchers("/user/**").hasAnyRole("Meneger")
                 .antMatchers("/user/client/**").hasAnyRole("Meneger")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin();
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/failed.jsp");
+                .formLogin()
+                .and()
+                .logout()
+                .permitAll();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
+
 }
