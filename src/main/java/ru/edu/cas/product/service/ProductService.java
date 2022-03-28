@@ -95,21 +95,45 @@ public class ProductService {
 
     /**
      * Метод записывает данные заявки в таблицу Application
-     * @param client - клиент
+     *
+     * @param client   - клиент
      * @param percent- процент
-     * @param sum    -  сумма
+     * @param sum      -  сумма
      * @param payment- платеж ежемесячный
-     * @param total  - общая сумма выплат
+     * @param total    - общая сумма выплат
      * @return Application
      */
-    public Application saveApplication(Client client, Percent percent, String sum, String payment, String total) {
+    public Application saveApplication(Client client, String percent, String sum, String payment, String total, String product) {
         Application application = new Application();
         application.setClientId(client);
-        application.setPercent(percent);
-        application.setStatus("NEW");
-        application.setSum(Integer.parseInt(sum));
-        application.setTotalAmount(Integer.parseInt(total));
-        application.setPayment(Integer.parseInt(payment));
+        if (percent != null)
+            application.setPercent(getPercentByYear(percent));
+
+        if (sum != null)
+            application.setSum(Integer.parseInt(sum));
+
+        if (total != null)
+            application.setTotalAmount(Integer.parseInt(total));
+
+        if (payment != null)
+            application.setPayment(Integer.parseInt(payment));
+
+        if (product != null)
+            application.setProductId(getProductByName(product));
+        application.setStatus("Заявка на рассмотрении");
         return applicationRepository.save(application);
+    }
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    public Product getProductByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    public List<Application> getApplication(Client client){
+        return applicationRepository.findByClientId(client);
     }
 }

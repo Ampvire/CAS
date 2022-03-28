@@ -418,6 +418,12 @@ public class ClientService {
         return clientReport;
     }
 
+    /**
+     * @param sum
+     * @param years
+     * @param percent
+     * @return
+     */
 
     public List<Integer> calculationLoans(String sum, String years, String percent) {
         int sumInt = Integer.parseInt(sum);
@@ -433,14 +439,25 @@ public class ClientService {
         return info;
     }
 
+    /**
+     * @param inn
+     * @param revenue
+     * @param staf
+     * @param costPrice
+     * @param assets
+     * @param reserves
+     * @param profit
+     * @param date
+     * @return
+     */
     public ClientFinance saveFinanceInfo(String inn, String revenue, String staf, String costPrice, String assets,
-                                  String reserves, String profit, String date) {
+                                         String reserves, String profit, String date) {
         Client client = getClient(inn);
         ClientFinance finance = getAllFinanceByClientInnAndDate(inn, date);
 
         if (finance != null) {
             return null;
-        }else {
+        } else {
             finance = new ClientFinance();
         }
         finance.setClientId(client);
@@ -467,5 +484,10 @@ public class ClientService {
             year++;
         }
         return years;
+    }
+
+    public ClientFinance getLastFinance(String inn) {
+        Client client = getClient(inn);
+        return clientFinanceRepository.findFirstByClientIdOrderByIdDesc(client);
     }
 }

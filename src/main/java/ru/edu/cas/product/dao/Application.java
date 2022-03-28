@@ -23,6 +23,10 @@ public class Application {
     private Client clientId;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product productId;
+
+    @ManyToOne
     @JoinColumn(name = "percent_id")
     private Percent percent;
 

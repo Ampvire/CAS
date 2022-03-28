@@ -9,4 +9,6 @@ import java.util.List;
 public interface ClientFinanceRepository extends JpaRepository<ClientFinance, Integer> {
     List<ClientFinance> findByClientId(Client clientId);
     ClientFinance findByClientIdAndDate(Client clientId, String date);
+
+    ClientFinance findFirstByClientIdOrderByIdDesc(Client clientId);
 }

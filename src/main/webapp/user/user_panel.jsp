@@ -29,6 +29,14 @@
         <input id="client" type="submit" value="Создать" style="width: 100px; margin-left: auto">
     </div>
 </form>
+<c:forEach items="${applications}" var="application">
+  <form action="" method="get">
+     <div style="width: 500px; display: flex; margin-top: 20px">
+         <label for="${application.name}">${application.name}:</label>
+         <input id="${application.name}" type="submit" value="Рассмотреть заявку" style="width: 100px; margin-left: auto">
+     </div>
+  </form>
+</c:forEach>
 <form action="/logout" method="get">
     <div style="width: 300px; display: flex;margin-top: 20px">
         <input type="submit" value="Logout" style="width: 100px; margin-right: auto">

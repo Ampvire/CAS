@@ -1,12 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=utf-8" %>
+
 <html>
 <head>
     <title>Client panel</title>
 </head>
 <body>
 <h1>Расчет кредита</h1>
-<form action="calculation/${inn}" method="post">
+<form action="calculation" method="post">
     <div style="width: 300px; display: flex">
         <label for="sum">Сумма кредита:</label>
         <input id="sum" name="sum" style="width: 200px; margin-left: auto">

@@ -35,18 +35,20 @@ public class ClientsAccountController {
     public ModelAndView getAllUserClients() {
         ModelAndView modelAndView = new ModelAndView();
         inn = "33333898989";
-        List<ClientFinance> finance = service.getAllFinanceByClientInn(inn);
+        ClientFinance finance = service.getLastFinance(inn);
         List<String> products = service.getAllProductsByClientInn(inn);
         List<Product> banksProducts = productService.getAllProduct();
+        List<Application> applicationList = productService.getApplication(service.getClient(inn));
+        modelAndView.addObject("applications",applicationList);
         modelAndView.addObject("banksProducts", banksProducts);
-        modelAndView.addObject("finance", finance.get(0));
+        modelAndView.addObject("finance", finance);
         modelAndView.addObject("products", products);
         modelAndView.setViewName("/account/info.jsp");
         return modelAndView;
     }
 
-    @GetMapping("/Кредитование/{inn}")
-    public ModelAndView requestLoans(@PathVariable("inn") String inn) {
+    @GetMapping("/Кредитование")
+    public ModelAndView requestLoans() {
         List<Percent> percents = productService.getPercent();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("inn", inn);
@@ -55,9 +57,8 @@ public class ClientsAccountController {
         return modelAndView;
     }
 
-    @PostMapping("/Кредитование/calculation/{inn}")
-    public ModelAndView calculation(@PathVariable("inn") String inn,
-                                    @RequestParam("sum") String sum,
+    @PostMapping("/calculation")
+    public ModelAndView calculation(@RequestParam("sum") String sum,
                                     @RequestParam("years") String years) {
         Percent percent = productService.getPercentByYear(years);
         List<Integer> calculation = service.calculationLoans(sum, years, String.valueOf(percent.getPercent()));
@@ -101,14 +102,13 @@ public class ClientsAccountController {
         return modelAndView;
     }
 
-    @PostMapping("/Кредитование/calculation/saveApplication")
+    @PostMapping("/saveApplication")
     public ModelAndView saveApplication(@RequestParam("sum") String sum,
                                         @RequestParam("years") String years,
                                         @RequestParam("payment") String payment,
                                         @RequestParam("loans") String loans) {
-        Percent percent = productService.getPercentByYear(years);
         Client client = service.getClient(inn);
-        Application application = productService.saveApplication(client, percent, sum, payment, loans);
+        Application application = productService.saveApplication(client, years, sum, payment, loans,"Кредитование");
         String message = "Заявка" + (application == null ? " не отправлена" : " отправлена");
         String jsp = application == null ? "/failed.jsp" : "/success.jsp";
         ModelAndView modelAndView = new ModelAndView();
@@ -116,5 +116,18 @@ public class ClientsAccountController {
         modelAndView.setViewName(jsp);
         return modelAndView;
     }
+
+    @GetMapping("/{product}")
+    public ModelAndView requestCashService(@PathVariable("product")String product) {
+        ModelAndView modelAndView = new ModelAndView();
+        Client client = service.getClient(inn);
+        Application application = productService.saveApplication(client, null, null, null, null,product);
+        String message = "Заявка" + (application == null ? " не отправлена" : " отправлена");
+        String jsp = application == null ? "/failed.jsp" : "/success.jsp";
+        modelAndView.addObject("message", message);
+        modelAndView.setViewName(jsp);
+        return modelAndView;
+    }
+
 
 }
