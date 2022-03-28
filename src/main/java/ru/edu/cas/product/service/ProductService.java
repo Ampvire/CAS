@@ -136,4 +136,8 @@ public class ProductService {
     public List<Application> getApplication(Client client){
         return applicationRepository.findByClientId(client);
     }
+
+    public List<Application> getApplicationByClient(List<Client> clients) {
+        return applicationRepository.findByClientIdIn(clients);
+    }
 }

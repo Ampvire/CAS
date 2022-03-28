@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application,Integer> {
     List<Application> findByClientId(Client client);
+
+    List<Application> findByClientIdIn(List<Client> clients);
 }

@@ -10,6 +10,8 @@ import ru.edu.cas.client.dao.ClientReport;
 import ru.edu.cas.client.service.ClientService;
 import ru.edu.cas.clients_account.dao.AccountClient;
 import ru.edu.cas.clients_account.service.AccountClientService;
+import ru.edu.cas.product.dao.Application;
+import ru.edu.cas.product.service.ProductService;
 import ru.edu.cas.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +23,14 @@ import java.util.List;
 public class ClientController {
     private ClientService service;
     private AccountClientService accountClientService;
-    //    private CustomDetailUserService detailUserService;
     private UserService userService;
+    private ProductService productService;
+    private int id;
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -33,11 +41,6 @@ public class ClientController {
     public void setAccountClientService(AccountClientService accountClientService) {
         this.accountClientService = accountClientService;
     }
-//    @Autowired
-//    public CustomDetailUserService getDetailUserService() {
-//        return detailUserService;
-//    }
-//
 
     @Autowired
     public void setService(ClientService service) {
@@ -50,9 +53,10 @@ public class ClientController {
 //        SecurityContextImpl context = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
 //        User user = (User) context.getAuthentication().getPrincipal();
 //        ru.edu.cas.user.dao.User daoUser = userService.getUser(user.getUsername());
+        id = 6;
         ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.addObject("list", service.getAllClients(daoUser.getId()));
-        modelAndView.addObject("list", service.getAllClients(2));
+        modelAndView.addObject("list", service.getAllClients(id));
 
         modelAndView.setViewName("/client/all_clients.jsp");
         return modelAndView;
@@ -135,6 +139,16 @@ public class ClientController {
         }
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
+        return modelAndView;
+    }
+
+    @GetMapping("/application")
+    public ModelAndView getAllApplications() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Client> clients = service.getAllClients(id);
+        List<Application> applicationList = productService.getApplicationByClient(clients);
+        modelAndView.addObject("applications", applicationList);
+        modelAndView.setViewName("/client/application.jsp");
         return modelAndView;
     }
 }
