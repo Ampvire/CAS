@@ -6,7 +6,7 @@
  </head>
 <body>
  <h1>User panel</h1>
- <h2>Client report</h2>
+ <h2>Финансовые показатели</h2>
  <div style="width: 300px; display: flex;margin-top: 20px">
  <table >
   <colgroup>
@@ -36,6 +36,7 @@
      </c:forEach>
      </table>
  </div>
+  <h2>Отчет за прошедший год</h2>
   <div style="width: 300px; display: flex;margin-top: 20px">
   <table >
    <colgroup>
@@ -57,5 +58,20 @@
       </c:forEach>
       </table>
   </div>
+    <div style="width: 300px; display: flex;margin-top: 20px">
+    <table >
+     <colgroup>
+            <col span="4" style="background:#DCDCDC">
+        </colgroup>
+                <tr>
+                   <th>Подключенные продукты</th>
+               </tr>
+        <c:forEach items="${products}" var="product">
+               <tr>
+                   <td>${product}</td>
+               </tr>
+        </c:forEach>
+        </table>
+    </div>
 </body>
 </html>

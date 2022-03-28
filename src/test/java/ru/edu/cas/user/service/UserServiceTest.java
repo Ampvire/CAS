@@ -43,6 +43,16 @@ class UserServiceTest {
     }
 
     /**
+     * Успешное выполение метода getUser()
+     */
+    @Test
+    void getUser() {
+        User user = service.getUser(1);
+        Assertions.assertNotNull(user);
+    }
+
+
+    /**
      * Успешное выполение метода getAllRole()
      */
     @Test
