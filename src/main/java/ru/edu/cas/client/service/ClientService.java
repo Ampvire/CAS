@@ -274,7 +274,8 @@ public class ClientService {
             Role role = userService.getRole("Client");
             String login = name + random.nextInt(101);
             String password = RandomStringUtils.randomAlphabetic(5);
-            accountClientService.saveOrUpdate(login, password, client, role);
+            String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+            accountClientService.saveOrUpdate(login, encodedPassword, client, role);
         }
         return client;
     }
