@@ -123,8 +123,6 @@ public class ClientService {
      * @param clientId -идентификатор клиента по которому нужно получить информацию
      * @return список(без дубликатов) продуктов клиента
      */
-     * @return список(без дубликатов) продуктов клиента
-     */
     public Set<String> getAllProductsByClient(int clientId) {
         Client client = clientsRepository.findById(clientId);
         List<ClientProducts> clientProducts = clientProductsRepository.findAllByClientId(client);
