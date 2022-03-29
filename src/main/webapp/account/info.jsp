@@ -24,13 +24,19 @@
       <label for="year">Год: </label>
       <input id="year"  value="${finance.date}" disabled style="width: 200px; margin-left: auto">
    </div>
+   <h2>Подключенные услуги:</h2>
     <div style="width: 500px; display: flex; margin-top: 20px">
-           <label for="product">Подключенные услуги:</label>
-             <span id="product" name="product" style="width: 200px; margin-left: auto">
-                 <c:forEach items="${products}" var="product">
-                     <option>${product}</option>
-                 </c:forEach>
-             </span>
+             <table >
+              <colgroup>
+                     <col span="5" style="background:#DCDCDC">
+                 </colgroup>
+
+             <c:forEach items="${products}" var="product">
+                        <tr>
+                            <td>${product}</td>
+                        </tr>
+             </c:forEach>
+                 </table>
     </div>
 <h2>Все продукты Банка:</h2>
 <c:forEach items="${banksProducts}" var="bProduct">

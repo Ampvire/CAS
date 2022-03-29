@@ -113,6 +113,7 @@ public class ClientService {
                 .map(ClientProducts::getProductId)
                 .map(Product::getName)
                 .collect(Collectors.toSet());
+         clientProductsName.addAll(products);
         return clientProductsName;
     }
 
