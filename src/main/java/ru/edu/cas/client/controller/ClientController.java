@@ -1,18 +1,21 @@
 package ru.edu.cas.client.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
+import ru.edu.cas.client.dao.ClientSegment;
 import ru.edu.cas.client.service.ClientService;
 import ru.edu.cas.clients_account.dao.AccountClient;
 import ru.edu.cas.clients_account.service.AccountClientService;
+import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,8 +24,19 @@ import java.util.List;
 public class ClientController {
     private ClientService service;
     private AccountClientService accountClientService;
-    //    private CustomDetailUserService detailUserService;
     private UserService userService;
+
+    @PostMapping(value ="/addManager")
+    public ModelAndView addManager(@RequestParam("inn") String inn) {
+        Client client = service.getClient(inn);
+        User user = getCurrentUser();
+        service.addManager(client, user);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("client", client);
+//        modelAndView.setViewName("/client/new_clients.jsp");
+//        return modelAndView;
+        return getAllUserClients();
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -33,11 +47,14 @@ public class ClientController {
     public void setAccountClientService(AccountClientService accountClientService) {
         this.accountClientService = accountClientService;
     }
-//    @Autowired
-//    public CustomDetailUserService getDetailUserService() {
-//        return detailUserService;
-//    }
-//
+
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication == null ? null : authentication.getName();
+        return userService.getUser(currentPrincipalName);
+    }
+
 
     @Autowired
     public void setService(ClientService service) {
@@ -45,23 +62,22 @@ public class ClientController {
     }
 
     @GetMapping("/getAllClients")
-    public ModelAndView getAllUserClients(HttpServletRequest req) {
-//        HttpSession session = req.getSession();
-//        SecurityContextImpl context = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-//        User user = (User) context.getAuthentication().getPrincipal();
-//        ru.edu.cas.user.dao.User daoUser = userService.getUser(user.getUsername());
+    public ModelAndView getAllUserClients() {
+        User user = getCurrentUser();
         ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("list", service.getAllClients(daoUser.getId()));
-        modelAndView.addObject("list", service.getAllClients(2));
-
+        modelAndView.addObject("list", service.getAllClients(user.getId()));
         modelAndView.setViewName("/client/all_clients.jsp");
         return modelAndView;
     }
 
     @GetMapping("/getNewClients")
     public ModelAndView getNew(@RequestParam("segment") String segment) {
+        User user = getCurrentUser();
+        ClientSegment clientSegment = service.getSegment(segment);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("list", service.getAllClientsWithoutUser(segment));
+        modelAndView.addObject("check", service.chekUserCategory(clientSegment, user));
         modelAndView.setViewName("/client/new_clients.jsp");
         return modelAndView;
     }
@@ -75,8 +91,9 @@ public class ClientController {
         return modelAndView;
     }
 
+
     @PostMapping("/create")
-    public ModelAndView newUser(@RequestParam("name") String name,
+    public ModelAndView newClient(@RequestParam("name") String name,
                                 @RequestParam("type") String type,
                                 @RequestParam("inn") String inn,
                                 @RequestParam("ogrn") String ogrn,
@@ -122,6 +139,7 @@ public class ClientController {
         modelAndView.addObject("types", service.getListTypes());
         return modelAndView;
     }
+
 
     @PostMapping("/updateClient/success")
     public ModelAndView updateUpdateSuccess(@RequestParam("password") String password,

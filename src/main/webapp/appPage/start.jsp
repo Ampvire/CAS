@@ -26,7 +26,7 @@
                     <a href="/user/info" class="btn btn-primary  w-100 shadow-sm">Войти как сотрудник</a>
                 </div>
                 <div class="mx-auto w-75 m-2">
-                    <a href="/user/info" class="btn btn-primary w-100 shadow-sm">Войти как клиент</a>
+                    <a href="/account" class="btn btn-primary w-100 shadow-sm">Войти как клиент</a>
                 </div>
             </div>
         </div>
