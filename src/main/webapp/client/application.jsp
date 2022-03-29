@@ -21,6 +21,7 @@
            <th>КОЛ-ВО ЛЕТ</th>
            <th>СТАТУС</th>
            <th>КОММЕНТАРИЙ</th>
+           <th></th>
          </tr>
          <c:forEach items="${applications}" var="application">
          <tr>
@@ -32,9 +33,27 @@
            <td>${application.percent.percent}</td>
            <td>${application.percent.years}</td>
            <td>${application.status}</td>
-           <td>${application.rejectReason}</td>
+               <form action="result" method="post">
+           <td>
+            <div style="width: 200px; display: flex">
+               <input name="reason"  style="width: 200px; margin-right: auto">
+            </div>
+           </td>
+           <td>
+
+              <input name="id" value ="${application.id}" style="visibility:hidden">
+                      <div style="width: 200px; display: flex">
+                          <select name="result" style="width: 200px; margin-left: auto">
+                              <c:forEach items="${results}" var="res">
+                                  <option>${res}</option>
+                              </c:forEach>
+                          </select>
+                          <input type="submit" value="Отправить" style="width: 100px; margin-left: auto">
+                  </div>
+              </form>
+           </td>
          </tr>
-                 </c:forEach>
+        </c:forEach>
     </table>
 
 </div>

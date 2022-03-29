@@ -133,11 +133,30 @@ public class ProductService {
         return productRepository.findByName(name);
     }
 
+    /**
+     *
+     * @param client
+     * @return
+     */
     public List<Application> getApplication(Client client){
         return applicationRepository.findByClientId(client);
     }
 
+    /**
+     *
+     * @param clients
+     * @return
+     */
     public List<Application> getApplicationByClient(List<Client> clients) {
         return applicationRepository.findByClientIdIn(clients);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public Application getApplicationById(int id){
+        return applicationRepository.getById(id);
     }
 }

@@ -16,7 +16,9 @@ import ru.edu.cas.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/user/client")
@@ -146,9 +148,31 @@ public class ClientController {
     public ModelAndView getAllApplications() {
         ModelAndView modelAndView = new ModelAndView();
         List<Client> clients = service.getAllClients(id);
+        List<String> result = Arrays.asList("Согласовано","Отказано");
         List<Application> applicationList = productService.getApplicationByClient(clients);
         modelAndView.addObject("applications", applicationList);
+        modelAndView.addObject("results", result);
         modelAndView.setViewName("/client/application.jsp");
+        return modelAndView;
+    }
+
+    @PostMapping("/result")
+    public ModelAndView saveResult(@RequestParam("result") String result,
+                                   @RequestParam("id") String id,
+                                   @RequestParam("reason") String reason){
+        ModelAndView modelAndView = new ModelAndView();
+
+        Application application = productService.getApplicationById(Integer.parseInt(id));
+        application.setStatus(result);
+        if (!Objects.equals(reason, "")){
+            application.setRejectReason(reason);
+        }
+       if (result.equals("Согласовано")){
+           service.createClientProduct(application.getClientId().getId(),application.getProductId().getId());
+       }
+
+        modelAndView.addObject("message", result);
+        modelAndView.setViewName("/success.jsp");
         return modelAndView;
     }
 }
