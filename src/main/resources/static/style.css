@@ -1,0 +1,249 @@
+/*.welcome {*/
+/*    font-family: monospace;*/
+/*    font-weight: 100;*/
+/*    margin: 2px 45% auto;*/
+/*    text-align: center;*/
+/*    border: 2px solid black;*/
+/*    background-color: gainsboro;*/
+/*}*/
+/*.myButton {*/
+/*    height: 100px;*/
+/*    width: 200px;*/
+/*    margin: 2% 75% auto;*/
+/*    border-style: groove;*/
+/*    font-family: monospace;*/
+/*}*/
+/*.myTableButton{*/
+/*    height: 100px;*/
+/*    width: 100px;*/
+/*    margin: 2% 75% auto;*/
+/*    border-style: groove;*/
+/*    font-family: monospace;*/
+/*}*/
+/*#divBody {*/
+/*    font-style: normal;*/
+/*    height: 100%;*/
+/*    background-color: lightgray;*/
+/*    border: 1px solid black;*/
+/*}*/
+/*#all{*/
+/*    height: 100px;*/
+/*    width: 200px;*/
+/*    margin: 2% 75% auto;*/
+/*    border-style: groove;*/
+/*}*/
+.main {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    background-color: #2f2f2f;
+    margin: 0;
+    padding: 0;
+}
+.d1 {
+    position: absolute;
+    background-image: url(https://newevolutiondesigns.com/images/freebies/4k-wallpaper-3.jpg);
+    background-size: 2700px 1500px;
+
+    height: 30vh;
+    width: 15vw;
+
+    background-position: 0 50%;
+
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.8);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    animation: dd1 10s 1, dd12 10s 1;
+    animation-delay: 4s, 14s;
+}
+.d2 {
+    position: absolute;
+    background-image: url(https://newevolutiondesigns.com/images/freebies/4k-wallpaper-3.jpg);
+    background-size: 2700px 1500px;
+
+    height: 50vh;
+    width: 25vw;
+
+    background-position: -10vw 50%;
+    left: 10vw;
+
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    animation: dd2 10s 2;
+    animation-delay: 4s;
+}
+.d3 {
+    position: absolute;
+    background-image: url(https://newevolutiondesigns.com/images/freebies/4k-wallpaper-3.jpg);
+    background-size: 2700px 1500px;
+    overflow: hidden;
+
+    height: 100vh;
+    width: 40vw;
+    left: 25vw;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.8);
+    background-position: -35vw 50%;
+
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    animation: dd3 10s 2;
+    animation-delay: 4s;
+}
+.d4 {
+    position: absolute;
+    overflow: hidden;
+    background-image: url(https://newevolutiondesigns.com/images/freebies/4k-wallpaper-3.jpg);
+    background-size: 2700px 1500px;
+
+    height: 80vh;
+    width: 25vw;
+    left: 60vw;
+    background-position: -70vw 50%;
+
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    animation: dd4 10s 2;
+    animation-delay: 4s;
+}
+
+@keyframes dd1 {
+    0% {
+    }
+    50% {
+        width: 95vw;
+    }
+}
+@keyframes dd12 {
+    0% {
+    }
+    50% {
+        background-position: Calc(0vw - 40px) 50%;
+    }
+}
+@keyframes dd2 {
+    0% {
+    }
+    50% {
+        background-position: Calc(-10vw - 40px) 50%;
+    }
+}
+@keyframes dd3 {
+    0% {
+    }
+    50% {
+        background-position: Calc(-35vw - 40px) 50%;
+    }
+}
+@keyframes dd4 {
+    0% {
+    }
+    50% {
+        background-position: Calc(-70vw - 40px) 50%;
+    }
+}
+
+
+/* Меню боковой панели */
+.sidenav {
+    height: 100%; /* Полная высота: удалите это, если вы хотите "авто" высота */
+    width: 200px; /* Установите ширину боковой панели */
+    position: fixed; /* Фиксированная боковая панель (оставайтесь на месте при прокрутке) */
+    z-index: 1; /* Оставайтесь с верху */
+    top: 0; /* Оставайтесь на вершине */
+    left: 0;
+    background-color: #191919;
+    overflow-x: hidden; /* Отключить горизонтальную прокрутку */
+    padding-top: 20px;
+}
+
+/* Ссылки в меню навигации */
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #D3D3D3;
+
+
+    display: block;
+}
+
+/* При наведении курсора мыши на навигационные ссылки измените их цвет */
+.sidenav a:hover {
+    color: #f1f1f1;
+    border-color: #0062cc;
+}
+
+/* Стиль содержимого страницы */
+/*.main {
+  margin-left: 200px;  То же, что и ширина боковой панели
+  padding: 0px 10px;
+}*/
+
+/* На небольших экранах, где высота меньше 450px, измените стиль боковой панели (меньше отступов и меньший размер шрифта) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+.divBody {
+    height: 100%; /* Полная высота: удалите это, если вы хотите "авто" высота */
+    width: 200px; /* Установите ширину боковой панели */
+    position: fixed; /* Фиксированная боковая панель (оставайтесь на месте при прокрутке) */
+    z-index: 1; /* Оставайтесь с верху */
+    top: 0; /* Оставайтесь на вершине */
+    left: 0;
+    background-color: #191919;
+    overflow-x: hidden; /* Отключить горизонтальную прокрутку */
+    padding-top: 20px;
+}
+.divSecondBody{
+    margin-left: 200px;
+    padding: 50px 50px;
+}
+.myTable {
+    margin-top: 3%;
+    margin-left: 4%;
+}
+.input-form{
+    margin-left: 50%;
+    width: 200px;
+    padding: 50px 50px;
+}
+
+select{
+    appearance:none;
+    -webkit-appearance:none;
+    /* usual styles */
+    padding:10px;
+    border:none;
+    background-color:#3F51B5;
+    color:#fff;
+    font-weight:600;
+    border-radius:10px;
+    width:200px;
+}
+input[type=submit]{
+    /* remove default behavior */
+    appearance:none;
+    -webkit-appearance:none;
+    /* usual styles */
+    padding:10px;
+    border:none;
+    background-color:#3F51B5;
+    color:#fff;
+    font-weight:600;
+    border-radius:10px;
+    width:200px;
+
+}
+input[type=text]{
+    padding: 10px;
+    width: 200px;
+    margin: 7px 0;
+}
+td{
+    padding: 50px;
+}
