@@ -55,7 +55,6 @@ public class ClientService {
     @Autowired
     public void setService(ProductService productService) {
         this.productService = productService;
-        this.clientProductsRepository = clientProductsRepository;
     }
 
     /**
@@ -120,7 +119,10 @@ public class ClientService {
     /**
      * Метод возвращает список всех продуктов клиента
      *
+     *
      * @param clientId -идентификатор клиента по которому нужно получить информацию
+     * @return список(без дубликатов) продуктов клиента
+     */
      * @return список(без дубликатов) продуктов клиента
      */
     public Set<String> getAllProductsByClient(int clientId) {
@@ -140,6 +142,7 @@ public class ClientService {
      * @param productId -идентификатор продукта
      * @return при успешном добавлении записи возвращает true иначе false
      */
+
     public boolean createClientProduct(int clientId, int productId) {
         Client client = getClientById(clientId);
         Product product = productService.getProductById(productId);
@@ -163,6 +166,7 @@ public class ClientService {
      * @param product -продукт
      * @return при успешном добавлении записи возвращает true иначе false
      */
+
     public ClientProducts createClientProduct(Client client, Product product) {
         if (client == null || product == null) {
             throw new RuntimeException("Fields must not be null!");
@@ -344,13 +348,12 @@ public class ClientService {
         List<ClientFinance> financeList = getAllFinanceByClientInn(inn);
         if (financeList.size() == 0) {
             return clientReportRepository.findByClientIdAndDate(client, date);
+        } else {
+            for (ClientFinance finance : financeList) {
+                ClientReport clientReport = reportCounter(finance);
+                clientReportRepository.save(clientReport);
+            }
         }
-
-        for (ClientFinance finance : financeList) {
-            ClientReport clientReport = reportCounter(finance);
-            clientReportRepository.save(clientReport);
-        }
-
         return clientReportRepository.findByClientIdAndDate(client, date);
     }
 
@@ -383,6 +386,7 @@ public class ClientService {
      */
     private ClientReport reportCounter(ClientFinance finance) {
 
+        Client clientId = finance.getClientId();
         int profit = finance.getProfit();
         int revenue = finance.getRevenue();
         int costPrice = finance.getCostPrice();
@@ -392,7 +396,13 @@ public class ClientService {
         int profitabilitySale;
         int inventoryTurnOver;
         int quickLiquidity;
-        ClientReport clientReport = new ClientReport();
+
+        ClientReport clientReport = clientReportRepository.findByClientIdAndFinanceId(clientId, finance);
+        if (clientReport == null) {
+            clientReport = new ClientReport();
+            clientReport.setClientId(clientId);
+            clientReport.setFinanceId(finance);
+        }
 
         if (revenue == 0) {
             profitabilitySale = 0;
@@ -467,6 +477,7 @@ public class ClientService {
         finance.setStaf(Integer.parseInt(staf));
         finance.setReserves(Integer.parseInt(reserves));
         finance.setProfit(Integer.parseInt(profit));
+        clientFinanceRepository.save(finance);
         finance.setDate(date);
         finance = clientFinanceRepository.save(finance);
         int countedSegment = calcSegmentId(client.getId());
