@@ -116,15 +116,16 @@ public class UserService {
         if (parameters.contains(null) || parameters.contains("")) {
             return null;
         }
-        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+
         User user = getUser(login);
         if (user == null) {
+            String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
             user = new User();
+            user.setPassword(encodedPassword);
         }
         user.setCategoryId(getCategory(categoryName));
         user.setFirstName(firstName);
         user.setLastName(secondName);
-        user.setPassword(encodedPassword);
         user.setRoleId(getRole(roleName));
         user.setLogin(login);
         repository.save(user);

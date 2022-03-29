@@ -8,10 +8,6 @@
 <h1>User panel</h1>
 <h2>Update client</h2>
 <form action="success" method="post">
-        <div style="width: 300px; display: flex; margin-top: 20px">
-            <label for="pass">Password:</label>
-            <input id="pass" name="password"  value="${password}" style="width: 200px; margin-left: auto">
-        </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
         <label for="name">Client name:</label>
         <input id="name" name="name" value ="${name}" style="width: 200px; margin-left: auto">

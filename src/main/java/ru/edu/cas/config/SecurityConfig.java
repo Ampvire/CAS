@@ -13,16 +13,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
-                .ignoringAntMatchers("/admin/updateUser/**")
-                .and()
+        http.csrf().disable()
+//                .ignoringAntMatchers("/admin/updateUser/**")
+//                 .ignoringAntMatchers("/user/info/**")
+//                .and()
                 .authorizeRequests()
                 .antMatchers("/admin").hasAnyRole("Admin")
                 .antMatchers("/admin/**").hasAnyRole("Admin")
                 .antMatchers("/user/**").hasAnyRole("Meneger")
-                .antMatchers("/user/client/**").hasAnyRole("Meneger")
-                .antMatchers("/user/client/create/**").hasAnyRole("Meneger")
-
+                .antMatchers("/account/**").hasAnyRole("Client")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin();
