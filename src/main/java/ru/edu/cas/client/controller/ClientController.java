@@ -31,12 +31,9 @@ public class ClientController {
         Client client = service.getClient(inn);
         User user = getCurrentUser();
         service.addManager(client, user);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("client", client);
-//        modelAndView.setViewName("/client/new_clients.jsp");
-//        return modelAndView;
         return getAllUserClients();
     }
+
 
     @Autowired
     public void setUserService(UserService userService) {
