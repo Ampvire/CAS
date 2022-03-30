@@ -1,5 +1,6 @@
 package ru.edu.cas.user.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,8 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
