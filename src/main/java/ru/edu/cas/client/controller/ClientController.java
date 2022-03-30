@@ -16,7 +16,6 @@ import ru.edu.cas.clients_account.service.AccountClientService;
 import ru.edu.cas.product.dao.Application;
 import ru.edu.cas.product.service.ProductService;
 import ru.edu.cas.user.dao.User;
-import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.service.UserService;
 
 import java.time.LocalDateTime;
