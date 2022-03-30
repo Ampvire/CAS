@@ -8,7 +8,6 @@ import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.CategoryRepository;
 import ru.edu.cas.user.repo.RoleRepository;
 import ru.edu.cas.user.repo.UserRepository;
-
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -75,6 +74,21 @@ public class UserService {
         return repository.getById(id);
     }
 
+    /**Метод возвращает пользователя из таблицы user по login
+     * @param login  -логин пользователя
+     * */
+    public User getUser(String login) {
+        return repository.findByLogin(login);
+    }
+
+
+    /**Метод возвращает список пользователей из таблицы user categoryId
+     * @param categoryId  -логин пользователя
+     * */
+    public List<User> getUsersByCategory(Category categoryId) {
+        return repository.findByCategoryId(categoryId);
+    }
+
     /**
      * Метод возвращает запись из таблицы role по названию роли.
      *
@@ -93,6 +107,17 @@ public class UserService {
      */
     public Category getCategory(String category) {
         return categoryRepository.findByCategory(category);
+    }
+
+
+    /**
+     * Метод возвращает запись из таблицы category по идентификатору категории.
+     *
+     * @param categoryId -идентификатор категории
+     * @return
+     */
+    public Category getCategory(int categoryId) {
+        return categoryRepository.findById(categoryId);
     }
 
     /**
@@ -132,9 +157,6 @@ public class UserService {
         return user;
     }
 
-    public User getUser(String login) {
-        return repository.findByLogin(login);
-    }
 
     /**
      * Метод удаляет запись из таблицы user по логину
@@ -148,4 +170,5 @@ public class UserService {
         }
         repository.delete(user);
     }
+
 }

@@ -1,9 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page contentType="text/html;charset=utf-8" %>
+
 <html>
  <head>
     <title>User panel</title>
+     <link rel="stylesheet" type="text/css" href="/main.css">
  </head>
+
 <body>
  <h1>User panel</h1>
 <form action="client/getAllClients" method="get">

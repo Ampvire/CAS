@@ -9,11 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
+import ru.edu.cas.client.dao.ClientSegment;
 import ru.edu.cas.client.service.ClientService;
 import ru.edu.cas.clients_account.dao.AccountClient;
 import ru.edu.cas.clients_account.service.AccountClientService;
 import ru.edu.cas.product.dao.Application;
 import ru.edu.cas.product.service.ProductService;
+import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.service.UserService;
 
@@ -34,6 +36,15 @@ public class ClientController {
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
+
+    @PostMapping(value ="/addManager")
+    public ModelAndView addManager(@RequestParam("inn") String inn) {
+        Client client = service.getClient(inn);
+        User user = getCurrentUser();
+        service.addManager(client, user);
+        return getAllUserClients();
+    }
+
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -69,8 +80,12 @@ public class ClientController {
 
     @GetMapping("/getNewClients")
     public ModelAndView getNew(@RequestParam("segment") String segment) {
+        User user = getCurrentUser();
+        ClientSegment clientSegment = service.getSegment(segment);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("list", service.getAllClientsWithoutUser(segment));
+        modelAndView.addObject("check", service.chekUserCategory(clientSegment, user));
         modelAndView.setViewName("/client/new_clients.jsp");
         return modelAndView;
     }
@@ -85,7 +100,7 @@ public class ClientController {
     }
 
     @PostMapping("/create")
-    public ModelAndView newUser(@RequestParam("name") String name,
+    public ModelAndView newClient(@RequestParam("name") String name,
                                 @RequestParam("type") String type,
                                 @RequestParam("inn") String inn,
                                 @RequestParam("ogrn") String ogrn,

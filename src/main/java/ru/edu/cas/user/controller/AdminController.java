@@ -17,7 +17,7 @@ public class AdminController {
         this.service = service;
     }
 
-    @GetMapping()
+    @GetMapping("/info")
     public ModelAndView info() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/admin/info.jsp");
