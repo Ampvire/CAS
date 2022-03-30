@@ -6,7 +6,7 @@
  </head>
 <body>
  <h1>Приветствуем Вас в Банке!</h1>
- <form action="account/save/${finance.clientId.inn}" method="get">
+ <form action="account/saveFinance" method="get">
      <div style="width: 500px; display: flex">
         <label for="info">Заполнить данные о компании: </label>
         <input id="info" type="submit" value="Заполнить" style="width: 100px; margin-left: auto">

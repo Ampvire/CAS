@@ -81,19 +81,18 @@ public class ClientsAccountController {
         return modelAndView;
     }
 
-    @GetMapping("/save/{inn}")
-    public ModelAndView getInfo(@PathVariable("inn") String inn) {
+    @GetMapping("/saveFinance")
+    public ModelAndView getInfo() {
         List<Integer> years = service.getListOfYears();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("years", years);
-        modelAndView.addObject("inn", inn);
+        modelAndView.addObject("inn", getCurrentClient().getInn());
         modelAndView.setViewName("/account/create_finance.jsp");
         return modelAndView;
     }
 
-    @PostMapping("/save/info/{inn}")
-    public ModelAndView saveClientInfo(@PathVariable("inn") String inn,
-                                       @RequestParam("revenue") String revenue,
+    @PostMapping("/financeInfo")
+    public ModelAndView saveClientInfo(@RequestParam("revenue") String revenue,
                                        @RequestParam("staf") String staf,
                                        @RequestParam("costPrice") String costPrice,
                                        @RequestParam("assets") String assets,
@@ -102,7 +101,7 @@ public class ClientsAccountController {
                                        @RequestParam("profit") String profit) {
 
         ModelAndView modelAndView = new ModelAndView();
-        ClientFinance finance = service.saveFinanceInfo(inn, revenue, staf, costPrice, assets, reserves, profit, "31-12-" + year);
+        ClientFinance finance = service.saveFinanceInfo(getCurrentClient().getInn(), revenue, staf, costPrice, assets, reserves, profit, "31-12-" + year);
         String message = "Финансовые показатели" + (finance == null ? " не заполнены" : " заполнены");
         String jsp = finance == null ? "/failed.jsp" : "/success.jsp";
         modelAndView.addObject("message", message);
@@ -136,6 +135,4 @@ public class ClientsAccountController {
         modelAndView.setViewName(jsp);
         return modelAndView;
     }
-
-
 }

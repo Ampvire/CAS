@@ -5,7 +5,7 @@
     <title>Client panel</title>
 </head>
 <body>
-<form action="info/${inn}" method="post">
+<form action="financeInfo" method="post">
     <div style="width: 300px; display: flex">
         <label for="rev">Revenue:</label>
         <input id="rev" name="revenue"  style="width: 200px; margin-left: auto">
