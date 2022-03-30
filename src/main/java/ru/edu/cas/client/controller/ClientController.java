@@ -29,7 +29,6 @@ public class ClientController {
     private AccountClientService accountClientService;
     private UserService userService;
     private ProductService productService;
-    private int id;
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -47,7 +46,7 @@ public class ClientController {
     }
 
 
-    public User getCurrentUser() {
+    private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication == null ? null : authentication.getName();
         return userService.getUser(currentPrincipalName);
@@ -123,7 +122,6 @@ public class ClientController {
         modelAndView.addObject("name", client.getName());
         modelAndView.addObject("inn", client.getInn());
         modelAndView.addObject("ogrn", client.getOgrn());
-//        modelAndView.addObject("password", accountClient.getPassword());
         modelAndView.addObject("segments", service.getListSegments());
         modelAndView.addObject("types", service.getListTypes());
         return modelAndView;
@@ -151,7 +149,7 @@ public class ClientController {
     @GetMapping("/application")
     public ModelAndView getAllApplications() {
         ModelAndView modelAndView = new ModelAndView();
-        List<Client> clients = service.getAllClients(id);
+        List<Client> clients = service.getAllClients(getCurrentUser().getId());
         List<String> result = Arrays.asList("Согласовано", "Отказано");
         List<Application> applicationList = productService.getApplicationByClient(clients);
         modelAndView.addObject("applications", applicationList);

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.edu.cas.client.dao.*;
 import ru.edu.cas.client.repo.*;
+import ru.edu.cas.clients_account.dao.AccountClient;
 import ru.edu.cas.clients_account.service.AccountClientService;
 import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.product.service.ProductService;
@@ -500,5 +501,11 @@ public class ClientService {
     public ClientFinance getLastFinance(String inn) {
         Client client = getClient(inn);
         return clientFinanceRepository.findFirstByClientIdOrderByIdDesc(client);
+    }
+
+    public Client getClientByLogin(String login){
+        AccountClient accountClient = accountClientService.getAccountByLogin(login);
+        Client client = getClientById(accountClient.getClientId().getId());
+        return client;
     }
 }

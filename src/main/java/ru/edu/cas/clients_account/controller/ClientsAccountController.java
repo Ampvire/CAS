@@ -1,6 +1,8 @@
 package ru.edu.cas.clients_account.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +21,6 @@ import java.util.List;
 public class ClientsAccountController {
     private ClientService service;
     private ProductService productService;
-    private String inn;
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -31,15 +32,22 @@ public class ClientsAccountController {
         this.service = service;
     }
 
+    private Client getCurrentClient() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication == null ? null : authentication.getName();
+        return service.getClientByLogin(currentPrincipalName);
+    }
+
     @GetMapping()
     public ModelAndView getAllUserClients() {
+
         ModelAndView modelAndView = new ModelAndView();
-        inn = "33333898989";
-        ClientFinance finance = service.getLastFinance(inn);
-        List<String> products = service.getAllProductsByClientInn(inn);
+        Client client = getCurrentClient();
+        ClientFinance finance = service.getLastFinance(client.getInn());
+        List<String> products = service.getAllProductsByClientInn(client.getInn());
         List<Product> banksProducts = productService.getAllProduct();
-        List<Application> applicationList = productService.getApplication(service.getClient(inn));
-        modelAndView.addObject("applications",applicationList);
+        List<Application> applicationList = productService.getApplication(client);
+        modelAndView.addObject("applications", applicationList);
         modelAndView.addObject("banksProducts", banksProducts);
         modelAndView.addObject("finance", finance);
         modelAndView.addObject("products", products);
@@ -51,7 +59,7 @@ public class ClientsAccountController {
     public ModelAndView requestLoans() {
         List<Percent> percents = productService.getPercent();
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("inn", inn);
+        modelAndView.addObject("inn", getCurrentClient().getInn());
         modelAndView.addObject("percents", percents);
         modelAndView.setViewName("/account/request.jsp");
         return modelAndView;
@@ -63,7 +71,7 @@ public class ClientsAccountController {
         Percent percent = productService.getPercentByYear(years);
         List<Integer> calculation = service.calculationLoans(sum, years, String.valueOf(percent.getPercent()));
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("inn", inn);
+        modelAndView.addObject("inn", getCurrentClient().getInn());
         modelAndView.addObject("percent", percent.getPercent());
         modelAndView.addObject("sum", sum);
         modelAndView.addObject("years", years);
@@ -107,8 +115,8 @@ public class ClientsAccountController {
                                         @RequestParam("years") String years,
                                         @RequestParam("payment") String payment,
                                         @RequestParam("loans") String loans) {
-        Client client = service.getClient(inn);
-        Application application = productService.saveApplication(client, years, sum, payment, loans,"Кредитование");
+        Client client = getCurrentClient();
+        Application application = productService.saveApplication(client, years, sum, payment, loans, "Кредитование");
         String message = "Заявка" + (application == null ? " не отправлена" : " отправлена");
         String jsp = application == null ? "/failed.jsp" : "/success.jsp";
         ModelAndView modelAndView = new ModelAndView();
@@ -118,10 +126,10 @@ public class ClientsAccountController {
     }
 
     @GetMapping("/{product}")
-    public ModelAndView requestCashService(@PathVariable("product")String product) {
+    public ModelAndView requestCashService(@PathVariable("product") String product) {
         ModelAndView modelAndView = new ModelAndView();
-        Client client = service.getClient(inn);
-        Application application = productService.saveApplication(client, null, null, null, null,product);
+        Client client = getCurrentClient();
+        Application application = productService.saveApplication(client, null, null, null, null, product);
         String message = "Заявка" + (application == null ? " не отправлена" : " отправлена");
         String jsp = application == null ? "/failed.jsp" : "/success.jsp";
         modelAndView.addObject("message", message);
