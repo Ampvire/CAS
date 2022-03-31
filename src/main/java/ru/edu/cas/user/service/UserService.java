@@ -75,6 +75,14 @@ public class UserService {
         return repository.getById(id);
     }
 
+
+    /**Метод возвращает список пользователей из таблицы user categoryId
+     * @param categoryId  -логин пользователя
+     * */
+    public List<User> getUsersByCategory(Category categoryId) {
+        return repository.findByCategoryId(categoryId);
+    }
+
     /**
      * Метод возвращает запись из таблицы role по названию роли.
      *
@@ -93,6 +101,17 @@ public class UserService {
      */
     public Category getCategory(String category) {
         return categoryRepository.findByCategory(category);
+    }
+
+
+    /**
+     * Метод возвращает запись из таблицы category по идентификатору категории.
+     *
+     * @param categoryId -идентификатор категории
+     * @return
+     */
+    public Category getCategory(int categoryId) {
+        return categoryRepository.findById(categoryId);
     }
 
     /**
