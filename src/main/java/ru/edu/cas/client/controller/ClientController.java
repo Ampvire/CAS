@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.edu.cas.client.dao.Client;
 import ru.edu.cas.client.dao.ClientFinance;
 import ru.edu.cas.client.dao.ClientReport;
+import ru.edu.cas.client.dao.ClientSegment;
 import ru.edu.cas.client.service.ClientService;
 import ru.edu.cas.clients_account.dao.AccountClient;
 import ru.edu.cas.clients_account.service.AccountClientService;
@@ -30,6 +31,13 @@ public class ClientController {
     private UserService userService;
     private ProductService productService;
 
+    @PostMapping(value ="/addManager")
+    public ModelAndView addManager(@RequestParam("inn") String inn) {
+        Client client = service.getClient(inn);
+        User user = getCurrentUser();
+        service.addManager(client, user);
+        return getNew(client.getSegmentId().getSegment());
+    }
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
@@ -70,7 +78,9 @@ public class ClientController {
     @GetMapping("/getNewClients")
     public ModelAndView getNew(@RequestParam("segment") String segment) {
         ModelAndView modelAndView = new ModelAndView();
+        ClientSegment clientSegment = service.getSegment(segment);
         modelAndView.addObject("list", service.getAllClientsWithoutUser(segment));
+        modelAndView.addObject("check", service.chekUserCategory(clientSegment, getCurrentUser()));
         modelAndView.setViewName("/client/new_clients.jsp");
         return modelAndView;
     }

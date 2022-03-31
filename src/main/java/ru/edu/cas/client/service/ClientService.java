@@ -9,6 +9,7 @@ import ru.edu.cas.clients_account.dao.AccountClient;
 import ru.edu.cas.clients_account.service.AccountClientService;
 import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.product.service.ProductService;
+import ru.edu.cas.user.dao.Category;
 import ru.edu.cas.user.dao.Role;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.repo.UserRepository;
@@ -69,11 +70,43 @@ public class ClientService {
         return clientsRepository.findByUserId(user);
     }
 
+
+    /**
+     * Метод возвращает список всех клиентов по id пользователя
+     *
+     * @param login -логин пользователя
+     * @return
+     */
+    public List<Client> getAllClients(String login) {
+        User user = userService.getUser(login);
+        return clientsRepository.findByUserId(user);
+    }
+
     /**
      * Получить клиента по идентификатору
      */
     public Client getClientById(int id) {
         return clientsRepository.findById(id);
+    }
+
+
+    /**
+     * Получить идентификатор сегмента
+     * @param segment -объект класса Segment
+     * */
+    public int getSegmentId(ClientSegment segment){
+        return segment.getId();
+    }
+
+
+    /**
+     * Метод для выбора клиентов возможных для закрепления
+     * */
+    public boolean chekUserCategory(ClientSegment segment, User user){
+        int segmentId =  getSegmentId(segment);
+        Category category = userService.getCategory(String.valueOf(segmentId));
+        List<User>users = userService.getUsersByCategory(category);
+        return users.contains(user);
     }
 
 
@@ -133,6 +166,20 @@ public class ClientService {
                 .map(Product::getName)
                 .collect(Collectors.toSet());
         return products;
+    }
+
+
+
+    /**
+     * Изменяет менеджера у клиента
+     */
+    public void addManager (Client client, User user) {
+
+        if (user == null || client ==null) {
+            throw new RuntimeException("Fields must not be null!");
+        }
+        client.setUserId(user);
+        clientsRepository.save(client);
     }
 
     /**
