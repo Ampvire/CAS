@@ -52,7 +52,7 @@ public class ClientController {
 //        ru.edu.cas.user.dao.User daoUser = userService.getUser(user.getUsername());
         ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.addObject("list", service.getAllClients(daoUser.getId()));
-        modelAndView.addObject("list", service.getAllClients(2));
+        modelAndView.addObject("list", service.getAllClients(8));
 
         modelAndView.setViewName("/client/all_clients.jsp");
         return modelAndView;

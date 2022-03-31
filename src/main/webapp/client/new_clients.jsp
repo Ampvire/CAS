@@ -1,49 +1,62 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
- <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <title>User panel</title>
- </head>
+</head>
 <body>
- <h1>User panel</h1>
- <h2>All new clients</h2>
-<div style="width: 300px; display: flex;margin-top: 20px">
-<table>
- <colgroup>
-        <col span="5" style="background:#DCDCDC">
-    </colgroup>
+<div class="sidenav">
+    <form action="getAllClients" method="get">
+        <button class="btn">Мои клиенты</button>
+    </form>
+    <form action="newClient" method="get">
+        <button class="btn">Создать клиента</button>
+    </form>
+    <form action="../../user/info" method="get">
+        <button class="btn">На главную</button>
+    </form>
+</div>
+<div class="divSecondBody">
+    <table class="myTable">
+        <h2>All new clients</h2>
+        <colgroup>
+            <col span="5" style="background:white">
+        </colgroup>
+        <tr>
+            <th>NANE</th>
+            <th>INN</th>
+            <th>OGRN</th>
+            <th>SEGMENT</th>
+            <th>TYPE</th>
+            <th>ОТЧЕТ</th>
+            <th>ОБНОВИТЬ</th>
+        </tr>
+        <c:forEach items="${list}" var="client">
             <tr>
-               <th>NANE</th>
-               <th>INN</th>
-               <th>OGRN</th>
-               <th>SEGMENT</th>
-               <th>TYPE</th>
-               <th></th>
-               <th></th>
-           </tr>
-    <c:forEach items="${list}" var="client">
-           <tr>
-               <td>${client.name}</td>
-               <td>${client.inn}</td>
-               <td>${client.ogrn}</td>
-               <td>${client.segmentId.segment}</td>
-               <td>${client.typeId.type}</td>
+                <td>${client.name}</td>
+                <td>${client.inn}</td>
+                <td>${client.ogrn}</td>
+                <td>${client.segmentId.segment}</td>
+                <td>${client.typeId.type}</td>
                 <td>
                     <form action="getReport/${client.inn}" method="get">
-                        <div style="width: 300px; display: flex">
-                            <input type="submit" value="Report" style="width: 100px; margin-right: auto">
+                        <div>
+                            <button class="myTableButton">Отчёт</button>
                         </div>
                     </form>
                 </td>
                 <td>
                     <form action="updateClient/${client.inn}" method="get">
-                        <div style="width: 300px; display: flex">
-                            <input type="submit" value="Update" style="width: 100px; margin-right: auto">
+                        <div>
+                            <button class="myTableButton">Обновить</button>
                         </div>
                     </form>
                 </td>
-           </tr>
-    </c:forEach>
+            </tr>
+        </c:forEach>
     </table>
 </div>
 </body>

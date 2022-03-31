@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=utf-8" %>
 
 <html>
@@ -10,17 +10,25 @@
 </head>
 <body>
 <div class="sidenav">
-    <a href="../client/all_clients.jsp">Мои клиенты</a>
-    <a href="../client/create_client.jsp">Создать клиента</a>
-<%--    <a href="/">Выбрать незакрепленного клиента</a>--%>
-    <a href="">Заявки</a>
+    <form action="/logout" method="get">
+        <button class="btn" type="submit">Выход</button>
+    </form>
+    <form action="client/getAllClients" method="get">
+        <button class="btn">Мои клиенты</button>
+    </form>
+    <form action="client/newClient" method="get">
+        <button class="btn">Создать клиента</button>
+    </form>
+    <form action="client/getNewClients" method="get">
+        <button class="btn" type="submit">Незакрепленные клиенты по сегменту:</button>
+        <select class="btn-select" name="segment">
+            <c:forEach items="${segments}" var="seg">
+                <option>${seg.segment}</option>
+            </c:forEach>
+        </select>
+    </form>
 </div>
-
-<div class="main">
-    <div class="d1"></div>
-    <div class="d2"></div>
-    <div class="d3"></div>
-    <div class="d4"></div>
+<div>
 </div>
 </body>
 </html>
