@@ -38,6 +38,10 @@ public class ClientController {
         service.addManager(client, user);
         return getNew(client.getSegmentId().getSegment());
     }
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
