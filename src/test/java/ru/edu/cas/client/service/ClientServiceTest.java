@@ -51,7 +51,7 @@ class ClientServiceTest {
      */
     @Test
     public void createClientProduct_Test() {
-        int clientId = 12;
+        int clientId = 2;
         int productId = 2;
 
         Client client = service.getClientById(clientId);
@@ -71,7 +71,7 @@ class ClientServiceTest {
      */
     @Test
     public void createClientProductById_Test() {
-        int clientId = 12;
+        int clientId = 2;
         int productId = 2;
 
         Set <String> currentProductsByClient = service.getAllProductsByClient(clientId);
@@ -89,8 +89,8 @@ class ClientServiceTest {
      */
     @Test
     void getAllProductsByClient_Test() {
+        int clientId = 2;
         int productId = 2;
-        int clientId = 12;
         Client client = service.getClientById(clientId);
         Product product = productService.getProductById(productId);
         service.createClientProduct(client, product);
@@ -106,17 +106,18 @@ class ClientServiceTest {
      */
     @Test
     public void calcSegmentId_Test() {
-        int clientId = 12;
+        int clientId = 2;
         Client testClient = service.getClientById(clientId);
         List<ClientFinance> financeList = service.getAllFinanceByClientInn(testClient.getInn());
-        ClientFinance actualFinanceByClient = financeList.get(0);
+        ClientFinance actualFinanceByClient = financeList.get(financeList.size() - 1);
 
         int staff = actualFinanceByClient.getStaf();
         int revenue = actualFinanceByClient.getRevenue();
 
         boolean test_1 = staff < 250 && revenue < 400_000_000;
         boolean test_2 = service.calcSegmentId(clientId) == 1;
-   //     Assertions.assertEquals(test_1, test_2);
+        Assertions.assertEquals(test_1, test_2);
+
     }
 
 
@@ -185,7 +186,7 @@ class ClientServiceTest {
 
         String inn = "33333898989";
         List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
-//        Assertions.assertEquals(2, finances.size());
+        Assertions.assertEquals(2, finances.size());
     }
 
     /**
@@ -197,7 +198,7 @@ class ClientServiceTest {
         String inn = "33333898989";
         String date = "1998-01-07";
         ClientFinance finances = service.getAllFinanceByClientInnAndDate(inn, date);
-       // Assertions.assertNotNull(finances);
+        Assertions.assertNotNull(finances);
     }
 
     /**
@@ -221,7 +222,7 @@ class ClientServiceTest {
         String inn = "33333898989";
         String date = "2022-03-24";
         List<ClientReport> reports = service.getAllReportByClientInnAndDate(inn, date);
-//        Assertions.assertEquals(2, reports.size());
+        Assertions.assertEquals(2, reports.size());
     }
 
     /**
@@ -241,11 +242,11 @@ class ClientServiceTest {
     @Test
     void saveFinanceInfoTest(){
 
-        String inn = "123";
+        String inn = "33333898989";
         Client client = service.getClient(inn);
         ClientSegment clientSegment = client.getSegmentId();
         int segmentId = clientSegment.getId();
-        Assertions.assertEquals(1, segmentId);
+        Assertions.assertEquals(2, segmentId);
 
         service.saveFinanceInfo(inn, "1000000", "240", "21000", "78000", "3150", "83000","31-12-2004");
 

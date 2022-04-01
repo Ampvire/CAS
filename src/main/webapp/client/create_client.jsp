@@ -23,6 +23,9 @@
             </c:forEach>
         </select>
     </form>
+    <form action="client/application" method="get">
+        <button class="btn">Заявки на продукты Банка:</button>
+    </form>
 </div>
 <div class="divSecondBody">
     <div class="input-form">

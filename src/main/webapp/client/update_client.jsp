@@ -2,48 +2,71 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <title>Admin panel</title>
 </head>
 <body>
-<h1>User panel</h1>
-<h2>Update client</h2>
-<form action="success" method="post">
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="name">Client name:</label>
-        <input id="name" name="name" value ="${name}" style="width: 200px; margin-left: auto">
+<div class="sidenav">
+    <form action="../../../logout" method="get">
+        <button class="btn" type="submit">Выход</button>
+    </form>
+    <form action="../getAllClients" method="get">
+        <button class="btn">Мои клиенты</button>
+    </form>
+    <form action="../../../user/info" method="get">
+        <button class="btn">На главную</button>
+    </form>
+    <form action="../getNewClients" method="get">
+        <button class="btn" type="submit">Незакрепленные клиенты по сегменту:</button>
+        <select class="btn-select" name="segment">
+            <c:forEach items="${segments}" var="seg">
+                <option>${seg.segment}</option>
+            </c:forEach>
+        </select>
+    </form>
+    <form action="../application" method="get">
+        <button class="btn">Заявки на продукты Банка:</button>
+    </form>
+</div>
+<div class="divSecondBody">
+    <div class="input-form">
+        <h2>Обновление данных по клиенту</h2>
+        <form action="success" method="post">
+            <div>
+                <label for="name" class="col-25">Название:</label>
+                <input type="text" id="name" name="name" value="${name}" class="col-75">
+            </div>
+            <div>
+                <label for="inn" class="col-25">ИНН:</label>
+                <input type="text" id="inn" name="inn" value="${inn}" class="col-75">
+            </div>
+            <div>
+                <label for="ogrn" class="col-25">ОГРН:</label>
+                <input type="text" id="ogrn" name="ogrn" value="${ogrn}" class="col-75">
+            </div>
+            <div>
+                <label for="type" class="col-25">Тип:</label>
+                <select id="type" name="type" class="col-75">
+                    <c:forEach items="${types}" var="t">
+                        <option>${t.type}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div>
+                <label for="segment" class="col-25">Сегмент:</label>
+                <select id="segment" name="segment" class="col-75">
+                    <c:forEach items="${segments}" var="seg">
+                        <option>${seg.segment}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div>
+                <input type="submit" value="Обновить" style="width: 400px">
+            </div>
+        </form>
     </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="inn">INN:</label>
-        <input id="inn" name="inn"  value="${inn}" style="width: 200px; margin-left: auto">
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="ogrn">OGRN:</label>
-        <input id="ogrn" name="ogrn"  value="${ogrn}" style="width: 200px; margin-left: auto">
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="type">Type:</label>
-         <select id="type" name="type" style="width: 200px; margin-left: auto">
-             <c:forEach items="${types}" var="t">
-                 <option>${t.type}</option>
-             </c:forEach>
-         </select>
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-         <label for="segment">Segment:</label>
-          <select id="segment" name="segment" style="width: 200px; margin-left: auto">
-              <c:forEach items="${segments}" var="seg">
-                  <option>${seg.segment}</option>
-              </c:forEach>
-          </select>
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <input type="submit" value="Update" style="width: 100px; margin-right: auto">
-    </div>
-</form>
-<form action="/logout" method="get">
-    <div style="width: 300px; display: flex;margin-top: 20px">
-        <input type="submit" value="Logout" style="width: 100px; margin-right: auto">
-    </div>
-</form>
+</div>
 </body>
 </html>
