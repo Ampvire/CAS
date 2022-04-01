@@ -5,24 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="/style.css">
-    <title>User panel</title>
+    <title>Отчет</title>
 </head>
 <body>
 <div class="sidenav">
-    <form action="/logout" method="get">
-        <button class="btn" type="submit">Выход</button>
-    </form>
-    <form action="../../../user/info" method="get">
-        <button class="btn">На главную</button>
-    </form>
-    <form action="../getAllClients" method="get">
+    <form action="/user/info" method="get">
         <button class="btn">Мои клиенты</button>
     </form>
-    <form action="../newClient" method="get">
+    <form action="/user/newClient" method="get">
         <button class="btn">Создать клиента</button>
     </form>
-    <form action="../application" method="get">
+    <form action="/user/application" method="get">
         <button class="btn">Заявки на продукты Банка:</button>
+    </form>
+    <form action="/logout" method="get">
+        <button class="btn" type="submit">Выход</button>
     </form>
 </div>
 <div class="divSecondBody">
@@ -32,14 +29,14 @@
             <col span="8">
         </colgroup>
         <tr>
-            <th>REVENUE</th>
-            <th>STAF</th>
-            <th>COST_PRICE</th>
-            <th>ASSETS</th>
-            <th>RESERVES</th>
-            <th>PROFIT</th>
-            <th>LOANS</th>
-            <th>DATE</th>
+            <th>Выручка</th>
+            <th>Численность</th>
+            <th>Себестоимость</th>
+            <th>Активы</th>
+            <th>Запасы</th>
+            <th>Чистая прибыль</th>
+            <th>Кредиты и займы</th>
+            <th>Дата</th>
             <hr>
         </tr>
         <c:forEach items="${finances}" var="client">
@@ -55,16 +52,16 @@
             </tr>
         </c:forEach>
     </table>
-    <h2>Отчет за прошедший год</h2>
+    <h2>Анализ финансовых показателей</h2>
     <table class="myTable">
         <colgroup>
             <col span="4">
         </colgroup>
         <tr>
-            <th>PROFITABILITY_SALE</th>
-            <th>INVENTORY_SALE</th>
-            <th>QUICK_LIQUIDITY</th>
-            <th>DATE</th>
+            <th>Рентабельность продаж</th>
+            <th>Оборачиваемость запасов</th>
+            <th>Коэффициент быстрой ликвидности</th>
+            <th>Дата</th>
             <hr>
         </tr>
         <c:forEach items="${report}" var="report">
@@ -76,12 +73,13 @@
             </tr>
         </c:forEach>
     </table>
+    <h2>Подключенные банковские услуги:</h2>
     <table class="myTable">
         <colgroup>
             <col span="4">
         </colgroup>
         <tr>
-            <th>Подключенные продукты</th>
+            <th>Наименование</th>
             <hr>
         </tr>
         <c:forEach items="${products}" var="product">

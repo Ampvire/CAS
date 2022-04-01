@@ -2,11 +2,28 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
  <head>
-    <title>Failed</title>
+    <title>Ошибка</title>
+     <link rel="stylesheet" type="text/css" href="/style.css">
  </head>
 <body>
+<div class="sidenav">
+    <form action="/user/info" method="get">
+        <button class="btn">Мои клиенты</button>
+    </form>
+    <form action="/user/newClient" method="get">
+        <button class="btn">Создать клиента</button>
+    </form>
+    <form action="/user/application" method="get">
+        <button class="btn">Заявки на продукты Банка</button>
+    </form>
+    <form action="/logout" method="get">
+        <button class="btn" type="submit">Выход</button>
+    </form>
+</div>
+<div class="divSecondBody">
     <div style="width: 300px; display: flex">
-        <p style="width: 200px; margin-left: auto">${message}</p>
+        <h2>${message}</h2>
     </div>
+</div>
 </body>
 </html>

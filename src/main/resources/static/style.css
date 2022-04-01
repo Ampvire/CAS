@@ -1,7 +1,19 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+body{
+    background: #c7ced5;
+}
+
+
 /* Меню боковой панели */
 .sidenav {
     height: 100%; /* Полная высота: удалите это, если вы хотите "авто" высота */
-    width: 200px; /* Установите ширину боковой панели */
+    width: 300px; /* Установите ширину боковой панели */
     position: fixed; /* Фиксированная боковая панель (оставайтесь на месте при прокрутке) */
     z-index: 1; /* Оставайтесь с верху */
     top: 0; /* Оставайтесь на вершине */
@@ -75,7 +87,7 @@
 
 .divBody {
     height: 100%; /* Полная высота: удалите это, если вы хотите "авто" высота */
-    width: 200px; /* Установите ширину боковой панели */
+    width: 300px; /* Установите ширину боковой панели */
     position: fixed; /* Фиксированная боковая панель (оставайтесь на месте при прокрутке) */
     z-index: 1; /* Оставайтесь с верху */
     top: 0; /* Оставайтесь на вершине */
@@ -86,21 +98,40 @@
 }
 
 .divSecondBody {
-    margin-left: 200px;
+    margin-left: 300px;
     padding: 50px 50px;
-    background: #c7ced5;
     height: 100%;
-    height: content-box;
 }
 
-.myTable {
-    margin-top: 3%;
-    margin-left: 4%;
-    border: #191919;
-    border: 1px;
-    border-color: #191919;
-    background: #c7ced5;
+.myTable, #applications-list{
+    /*margin-top: 3%;*/
+    /*margin-left: 4%;*/
+    margin: 0;
+    padding: 20px;
+    background: white;
+}
 
+
+
+.myTable form .myTableButton{
+    border: solid 1px black;
+    background: white;
+    color: black;
+    height: 70px;
+    width: 120px;
+    cursor: pointer;
+    border-radius: 10px;
+
+}
+
+.myTable form .myTableButton:hover{
+    background: black;
+    color: white;
+}
+
+.table-block{
+    background: white;
+    border-radius: 5px;
 }
 
 .input-form {
@@ -114,7 +145,7 @@
     text-align: center;
 }
 
-select {
+select{
     appearance: none;
     -webkit-appearance: none;
     /* usual styles */
@@ -144,15 +175,20 @@ input[type=submit] {
 
 }
 
-input[type=text] {
+input[type=text], .text-field{
     padding: 10px;
     width: 300px;
     margin: 7px 0;
     align-content: center;
 }
 
-td {
+td, th{
     padding: 45px;
+}
+
+#applications-list td, #applications-list th{
+    padding: 20px;
+    border: 1px solid #c7ced5;
 }
 
 .col-25 {

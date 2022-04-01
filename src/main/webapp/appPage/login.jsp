@@ -20,7 +20,7 @@
             <input class="text-field" name="username" type="text" placeholder="Username"
                    autofocus="true"/>
             <input class="text-field" name="password" type="password" placeholder="Password"/>
-            <button class="btn-send" type="submit">Войти</button>
+            <input type="submit" value="Войти">
         </div>
     </form>
 </div>

@@ -5,34 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="/style.css">
-    <title>User panel</title>
+    <title>Клиенты</title>
 </head>
 <body>
 <div class="sidenav">
-    <form action="getAllClients" method="get">
+    <form action="/user/info" method="get">
         <button class="btn">Мои клиенты</button>
     </form>
-    <form action="newClient" method="get">
+    <form action="/user/newClient" method="get">
         <button class="btn">Создать клиента</button>
     </form>
-    <form action="../../user/info" method="get">
-        <button class="btn">На главную</button>
+    <form action="/user/application" method="get">
+        <button class="btn">Заявки на продукты Банка</button>
+    </form>
+    <form action="/logout" method="get">
+        <button class="btn" type="submit">Выход</button>
     </form>
 </div>
 <div class="divSecondBody">
+    <h2>Не закрепленные клиенты сегмента "${segment}"</h2>
+    <div class="table-block">
     <table class="myTable">
-        <h2>All new clients</h2>
         <colgroup>
             <col span="5" style="background:white">
         </colgroup>
         <tr>
-            <th>NANE</th>
-            <th>INN</th>
-            <th>OGRN</th>
-            <th>SEGMENT</th>
-            <th>TYPE</th>
-            <th>ОТЧЕТ</th>
-            <th>ОБНОВИТЬ</th>
+            <th>Наименование</th>
+            <th>ИНН</th>
+            <th>ОГРН</th>
+            <th>Сегмент</th>
+            <th>Тип</th>
+            <th></th>
         </tr>
         <c:forEach items="${list}" var="client">
             <tr>
@@ -42,22 +45,18 @@
                 <td>${client.segmentId.segment}</td>
                 <td>${client.typeId.type}</td>
                 <td>
-                    <form action="getReport/${client.inn}" method="get">
-                        <div>
-                            <button class="myTableButton">Отчёт</button>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <form action="updateClient/${client.inn}" method="get">
-                        <div>
-                            <button class="myTableButton">Обновить</button>
-                        </div>
-                    </form>
+                    <c:if test="${check}">
+                        <form action="/user/addManager" method="post">
+                            <input id="inn" name="inn" value="${client.inn}" style="visibility: hidden;">
+                                <input class="myTableButton" type="submit" value="Закрепить">
+                        </form>
+                    </c:if>
+
                 </td>
             </tr>
         </c:forEach>
     </table>
+    </div>
 </div>
 </body>
 </html>
