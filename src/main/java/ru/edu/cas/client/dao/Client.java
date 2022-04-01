@@ -29,7 +29,7 @@ public class Client {
     private ClientSegment segmentId;
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private  ClientType typeId;
+    private ClientType typeId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

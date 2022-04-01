@@ -46,9 +46,9 @@ public class AccountClientService {
      * @return -AccountClient
      */
     public AccountClient saveOrUpdate(String login, String password, Client client, Role role) {
-        AccountClient accountClient = repository.findByLogin(login);
-        List<String> parameters = Arrays.asList(login,password);
-        if (parameters.contains("")||parameters.contains(null)){
+        AccountClient accountClient = getAccountByLogin(login);
+        List<String> parameters = Arrays.asList(login, password);
+        if (parameters.contains("") || parameters.contains(null)) {
             return null;
         }
         if (accountClient == null) {
@@ -74,10 +74,21 @@ public class AccountClientService {
 
     /**
      * Метод добавляет запись в таблицу account_client
+     *
      * @param accountClient AccountClient
      * @return AccountClient
      */
-    public AccountClient save(AccountClient accountClient){
-       return repository.save(accountClient);
+    public AccountClient save(AccountClient accountClient) {
+        return repository.save(accountClient);
+    }
+
+    /**
+     * Поиск записи по логину
+     *
+     * @param login -логин клиента
+     * @return AccountClient
+     */
+    public AccountClient getAccountByLogin(String login) {
+        return repository.findByLogin(login);
     }
 }

@@ -75,6 +75,14 @@ public class UserService {
         return repository.getById(id);
     }
 
+
+    /**Метод возвращает список пользователей из таблицы user categoryId
+     * @param categoryId  -логин пользователя
+     * */
+    public List<User> getUsersByCategory(Category categoryId) {
+        return repository.findByCategoryId(categoryId);
+    }
+
     /**
      * Метод возвращает запись из таблицы role по названию роли.
      *
@@ -93,6 +101,17 @@ public class UserService {
      */
     public Category getCategory(String category) {
         return categoryRepository.findByCategory(category);
+    }
+
+
+    /**
+     * Метод возвращает запись из таблицы category по идентификатору категории.
+     *
+     * @param categoryId -идентификатор категории
+     * @return
+     */
+    public Category getCategory(int categoryId) {
+        return categoryRepository.findById(categoryId);
     }
 
     /**
@@ -116,15 +135,16 @@ public class UserService {
         if (parameters.contains(null) || parameters.contains("")) {
             return null;
         }
-        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+
         User user = getUser(login);
         if (user == null) {
+            String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
             user = new User();
+            user.setPassword(encodedPassword);
         }
         user.setCategoryId(getCategory(categoryName));
         user.setFirstName(firstName);
         user.setLastName(secondName);
-        user.setPassword(encodedPassword);
         user.setRoleId(getRole(roleName));
         user.setLogin(login);
         repository.save(user);

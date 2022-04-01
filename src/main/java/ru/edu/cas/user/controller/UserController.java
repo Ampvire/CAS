@@ -24,7 +24,6 @@ public class UserController {
     public ModelAndView info() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/user/user_panel.jsp");
-        modelAndView.addObject("list", service.getAllClients(8));
         modelAndView.addObject("segments",service.getListSegments());
         return modelAndView;
     }

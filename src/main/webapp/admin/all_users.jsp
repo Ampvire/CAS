@@ -32,7 +32,7 @@
                <td>${user.roleId.role}</td>
                <td>
                    <form action="updateUser/${user.login}" method="get">
-                       <input type="submit" value="Update" style="width: 100px; margin-right: auto">
+                      <input type="submit" value="Update" style="width: 100px; margin-right: auto">
                    </form>
                </td>
                <td>

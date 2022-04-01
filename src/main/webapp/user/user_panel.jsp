@@ -27,6 +27,12 @@
             </c:forEach>
         </select>
     </form>
+    <form action="client/application" method="get">
+        <div style="width: 500px; display: flex">
+            <label for="app">Заявки на продукты Банка:</label>
+            <input id="app" type="submit" value="Показать" style="width: 100px; margin-left: auto">
+        </div>
+    </form>
 </div>
 <div>
 </div>

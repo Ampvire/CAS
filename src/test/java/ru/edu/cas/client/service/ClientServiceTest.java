@@ -9,7 +9,6 @@ import ru.edu.cas.product.dao.Product;
 import ru.edu.cas.product.service.ProductService;
 import ru.edu.cas.user.dao.User;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -187,7 +186,7 @@ class ClientServiceTest {
 
         String inn = "33333898989";
         List<ClientFinance> finances = service.getAllFinanceByClientInn(inn);
-//        Assertions.assertEquals(2, finances.size());
+        Assertions.assertEquals(2, finances.size());
     }
 
     /**
@@ -198,8 +197,8 @@ class ClientServiceTest {
 
         String inn = "33333898989";
         String date = "1998-01-07";
-        List<ClientFinance> finances = service.getAllFinanceByClientInnAndDate(inn, date);
-        Assertions.assertEquals(1, finances.size());
+        ClientFinance finances = service.getAllFinanceByClientInnAndDate(inn, date);
+        Assertions.assertNotNull(finances);
     }
 
     /**
@@ -249,14 +248,14 @@ class ClientServiceTest {
         int segmentId = clientSegment.getId();
         Assertions.assertEquals(2, segmentId);
 
-        service.saveFinanceInfo(inn, "1000000", "240", "21000", "78000", "3150", "83000");
+        service.saveFinanceInfo(inn, "1000000", "240", "21000", "78000", "3150", "83000","31-12-2004");
 
         client = service.getClient(inn);
         clientSegment = client.getSegmentId();
         segmentId = clientSegment.getId();
         Assertions.assertEquals(1, segmentId);
 
-        service.saveFinanceInfo(inn, "1500000000", "3950", "20000", "78000", "3150", "83000");
+        service.saveFinanceInfo(inn, "1500000000", "3950", "20000", "78000", "3150", "83000","31-12-2004");
 
     }
 }

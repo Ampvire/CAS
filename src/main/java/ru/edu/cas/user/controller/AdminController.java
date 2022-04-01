@@ -43,12 +43,8 @@ public class AdminController {
         User user = service.createOrUpdateUser(login, firstName, secondName, password,
                 categoryName, roleName);
         ModelAndView modelAndView = new ModelAndView();
-        String message = "Пользователь создан";
-        String jsp = "/success.jsp";
-        if (user == null) {
-            message = "Поля должны быть заполнены!";
-            jsp = "/failed.jsp";
-        }
+        String message = user == null ? "Поля должны быть заполнены!" : "Пользователь создан.";
+        String jsp = user == null ? "/failed.jsp" : "/success.jsp";
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
         return modelAndView;
@@ -79,17 +75,12 @@ public class AdminController {
     public ModelAndView updateUpdateSuccess(@RequestParam("login") String login,
                                             @RequestParam("firstName") String firstName,
                                             @RequestParam("secondName") String secondName,
-                                            @RequestParam("password") String password,
                                             @RequestParam("category") String categoryName,
                                             @RequestParam("role") String roleName) {
-        User user = service.createOrUpdateUser(login, firstName, secondName, password, categoryName, roleName);
+        User user = service.createOrUpdateUser(login, firstName, secondName, "password", categoryName, roleName);
         ModelAndView modelAndView = new ModelAndView();
-        String message = "Пользователь создан";
-        String jsp = "/success.jsp";
-        if (user == null) {
-            message = "Поля должны быть заполнены!";
-            jsp = "/failed.jsp";
-        }
+        String message = user == null ? "Поля должны быть заполнены!" : "Пользователь изменен.";
+        String jsp = user == null ? "/failed.jsp" : "/success.jsp";
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
         return modelAndView;
