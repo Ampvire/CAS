@@ -1,45 +1,34 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=utf-8" %>
-<html>
- <head>
-    <title>User panel</title>
- </head>
-<body>
- <h1>User panel</h1>
-<form action="client/getAllClients" method="get">
-   <div style="width: 500px; display: flex">
-      <label for="all">Мои клиенты:</label>
-       <input id="all" type="submit" value="Показать" style="width: 100px; margin-left: auto">
-   </div>
-</form>
-<form action="client/getNewClients" method="get">
-  <div style="width: 500px; display: flex; margin-top: 20px">
-         <label for="segment">Выбрать клиентов по сегменту:</label>
-         <select id="segment" name="segment" style="width: 200px; margin-left: auto">
-             <c:forEach items="${segments}" var="seg">
-                 <option>${seg.segment}</option>
-             </c:forEach>
-         </select>
-         <input type="submit" value="Выбрать" style="width: 100px; margin-left: auto">
-    </div>
-</form>
-<form action="client/newClient" method="get">
-    <div style="width: 500px; display: flex; margin-top: 20px">
-       <label for="client">Создать клиентов:</label>
-        <input id="client" type="submit" value="Создать" style="width: 100px; margin-left: auto">
-    </div>
-</form>
-<form action="client/application" method="get">
-   <div style="width: 500px; display: flex">
-      <label for="app">Заявки на продукты Банка:</label>
-       <input id="app" type="submit" value="Показать" style="width: 100px; margin-left: auto">
-   </div>
-</form>
 
-<form action="/logout" method="get">
-    <div style="width: 300px; display: flex;margin-top: 20px">
-        <input type="submit" value="Logout" style="width: 100px; margin-right: auto">
-    </div>
-</form>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>User panel</title>
+</head>
+<body>
+<div class="sidenav">
+    <form action="/logout" method="get">
+        <button class="btn" type="submit">Выход</button>
+    </form>
+    <form action="client/getAllClients" method="get">
+        <button class="btn">Мои клиенты</button>
+    </form>
+    <form action="client/newClient" method="get">
+        <button class="btn">Создать клиента</button>
+    </form>
+    <form action="client/getNewClients" method="get">
+        <button class="btn" type="submit">Незакрепленные клиенты по сегменту:</button>
+        <select class="btn-select" name="segment">
+            <c:forEach items="${segments}" var="seg">
+                <option>${seg.segment}</option>
+            </c:forEach>
+        </select>
+    </form>
+</div>
+<div>
+</div>
 </body>
 </html>

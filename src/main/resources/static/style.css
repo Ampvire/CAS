@@ -1,0 +1,140 @@
+/* Меню боковой панели */
+.sidenav {
+    height: 100%; /* Полная высота: удалите это, если вы хотите "авто" высота */
+    width: 200px; /* Установите ширину боковой панели */
+    position: fixed; /* Фиксированная боковая панель (оставайтесь на месте при прокрутке) */
+    z-index: 1; /* Оставайтесь с верху */
+    top: 0; /* Оставайтесь на вершине */
+    left: 0;
+    background-color: #191919;
+    overflow-x: hidden; /* Отключить горизонтальную прокрутку */
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #D3D3D3;
+
+
+    display: block;
+}
+
+/* При наведении курсора мыши на навигационные ссылки измените их цвет */
+.sidenav a:hover {
+    color: #f1f1f1;
+    border-color: #0062cc;
+}
+.btn{
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    text-align: inherit;
+    font-size: 20px;
+    color: #D3D3D3;
+    background-color: #191919;
+    border: none;
+
+    display: block;
+}
+.btn-select{
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    text-align: inherit;
+    font-size: 15px;
+    color: #D3D3D3;
+    background-color: #191919;
+    border: none;
+
+    display: block;
+}
+.btn:hover{
+    color: #f1f1f1;
+    border-color: #0062cc;
+}
+
+/* Стиль содержимого страницы */
+/*.main {
+  margin-left: 200px;  То же, что и ширина боковой панели
+  padding: 0px 10px;
+}*/
+
+/* На небольших экранах, где высота меньше 450px, измените стиль боковой панели (меньше отступов и меньший размер шрифта) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+.divBody {
+    height: 100%; /* Полная высота: удалите это, если вы хотите "авто" высота */
+    width: 200px; /* Установите ширину боковой панели */
+    position: fixed; /* Фиксированная боковая панель (оставайтесь на месте при прокрутке) */
+    z-index: 1; /* Оставайтесь с верху */
+    top: 0; /* Оставайтесь на вершине */
+    left: 0;
+    background-color: #191919;
+    overflow-x: hidden; /* Отключить горизонтальную прокрутку */
+    padding-top: 20px;
+}
+.divSecondBody{
+    margin-left: 200px;
+    padding: 50px 50px;
+    background: #c7ced5;
+    height: 100%;
+}
+.myTable {
+    margin-top: 3%;
+    margin-left: 4%;
+    border: #191919;
+    border: 1px;
+    border-color: #191919;
+    background: #c7ced5;
+
+}
+
+.input-form{
+    background: #f1f1f1;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin-top: 10%;
+    margin-left: 45%;
+    border-radius: 20px;
+    width: 200px;
+    padding: 50px 50px;
+}
+
+select{
+    appearance:none;
+    -webkit-appearance:none;
+    /* usual styles */
+    padding:10px;
+    border:none;
+    background-color:lightgray;
+    color:black;
+    font-weight:600;
+    border-radius:10px;
+    width:200px;
+    margin-top: 5px;
+}
+input[type=submit], .btn-send{
+    /* remove default behavior */
+    appearance:none;
+    -webkit-appearance:none;
+    /* usual styles */
+    padding:10px;
+    border:none;
+    background-color:lightgray;
+    color:black;
+    font-weight:600;
+    border-radius:10px;
+    width:200px;
+    margin-top: 5px;
+}
+
+input[type=text], .text-field{
+    padding: 10px;
+    width: 200px;
+    margin: 7px 0;
+}
+
+td{
+    padding: 45px;
+}

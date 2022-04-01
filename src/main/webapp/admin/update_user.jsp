@@ -22,6 +22,10 @@
         <input id="secondName" name="secondName" value="${secondName}" style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
+        <label for="password">Password:</label>
+        <input id="password" name="password"  value="${password}" style="width: 200px; margin-left: auto">
+    </div>
+    <div style="width: 300px; display: flex; margin-top: 20px">
         <label for="category">Category:</label>
                 <select id="category" name="category" style="width: 200px; margin-left: auto">
                     <c:forEach items="${category}" var="cat">

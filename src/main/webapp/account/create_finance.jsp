@@ -5,42 +5,41 @@
     <title>Client panel</title>
 </head>
 <body>
-<form action="financeInfo" method="post">
+
+<form action="/info/${inn}" method="post">
     <div style="width: 300px; display: flex">
-        <label for="rev">Revenue:</label>
-        <input id="rev" name="revenue"  style="width: 200px; margin-left: auto">
+        <label for="sum">Сумма кредита:</label>
+        <input id="sum" name="sum"  value="${sum}" style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="staf">Staf:</label>
-        <input id="staf" name="staf" style="width: 200px; margin-left: auto">
+        <label for="year">Количество лет:</label>
+        <input id="year" name="year" value="${years}" style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="per">costPrice:</label>
-        <input id="per" name="costPrice" style="width: 200px; margin-left: auto">
+        <label for="percent">Процент:</label>
+        <input id="percent" name="percent" value="${percent}" style="width: 200px; margin-left: auto">
     </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="assets">assets:</label>
-        <input id="assets" name="assets" style="width: 200px; margin-left: auto">
-    </div>
-   <div style="width: 300px; display: flex; margin-top: 20px">
-       <label for="res">reserves:</label>
-       <input id="res" name="reserves" style="width: 200px; margin-left: auto">
-   </div>
-   <div style="width: 300px; display: flex; margin-top: 20px">
-       <label for="profit">profit:</label>
-       <input id="profit" name="profit" style="width: 200px; margin-left: auto">
-   </div>
-   <div style="width: 300px; display: flex; margin-top: 20px">
-       <label for="date">Year:</label>
-       <select id="date" name="year" style="width: 200px; margin-left: auto">
-           <c:forEach items="${years}" var="year">
-               <option>${year}</option>
-           </c:forEach>
-       </select>
-   </div>
-    <div style="width: 200px; display: flex; margin-top: 20px">
-       <input id="request" type="submit" value="Заполнить" style="width: 200px; margin-left: auto">
-   </div>
+
+         <div style="width: 200px; display: flex; margin-top: 20px">
+            <input id="request" type="submit" value="Пересчитать" style="width: 200px; margin-left: auto">
+        </div>
+
+
+        <div style="width: 300px; display: flex;margin-top: 20px">
+            <label for="loans">Сумма к выплате:</label>
+            <input id="loans" name="loans"  value="${loans}" style="width: 200px; margin-left: auto">
+        </div>
+        <div style="width: 300px; display: flex; margin-top: 20px">
+            <label for="payment">Ежемесячный платеж:</label>
+            <input id="payment" name="payment" value="${payment}" style="width: 200px; margin-left: auto">
+        </div>
+         <div style="width: 200px; display: flex; margin-top: 20px">
+            <input id="request" type="submit" value="Отправить запрос" style="width: 200px; margin-left: auto">
+        </div>
 </form>
+<form action="" method="post">
+
+</form>
+
 </body>
 </html>
