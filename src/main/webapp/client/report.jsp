@@ -21,6 +21,9 @@
     <form action="../newClient" method="get">
         <button class="btn">Создать клиента</button>
     </form>
+    <form action="../application" method="get">
+        <button class="btn">Заявки на продукты Банка:</button>
+    </form>
 </div>
 <div class="divSecondBody">
     <h2>Финансовые показатели</h2>
