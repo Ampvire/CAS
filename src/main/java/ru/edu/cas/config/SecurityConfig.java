@@ -18,13 +18,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                 .ignoringAntMatchers("/user/info/**")
 //                .and()
                 .authorizeRequests()
+                .antMatchers("/login", "/main.css").permitAll()
                 .antMatchers("/admin").hasAnyRole("Admin")
                 .antMatchers("/admin/**").hasAnyRole("Admin")
                 .antMatchers("/user/**").hasAnyRole("Meneger")
                 .antMatchers("/account/**").hasAnyRole("Client")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/");
 //                .and()
 //                .exceptionHandling().accessDeniedPage("/failed.jsp");
     }
