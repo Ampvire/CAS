@@ -73,6 +73,7 @@ public class UserController {
         return modelAndView;
     }
 
+
 //    @GetMapping("/getAllClients")
 //    public ModelAndView getAllUserClients() {
 //        User user = getCurrentUser();
@@ -90,6 +91,17 @@ public class UserController {
         modelAndView.addObject("segment", segment);
         modelAndView.addObject("list", service.getAllClientsWithoutUser(segment));
         modelAndView.addObject("check", service.chekUserCategory(clientSegment, user));
+        modelAndView.setViewName("/client/new_clients.jsp");
+        return modelAndView;
+    }
+
+
+    @PostMapping("/addManager")
+    public ModelAndView addManager(@RequestParam("inn") String inn) {
+        Client client = service.getClient(inn);
+        User user = getCurrentUser();
+        ModelAndView modelAndView = new ModelAndView();
+        service.addManager(client, user);
         modelAndView.setViewName("/client/new_clients.jsp");
         return modelAndView;
     }
