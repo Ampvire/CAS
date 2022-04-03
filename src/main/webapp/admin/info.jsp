@@ -8,21 +8,23 @@
     <title>Admin panel</title>
 </head>
 <body>
-<div class="sidenav">
-    <form action="/admin/allUsers" method="get">
-        <button class="btn" type="submit">Все пользователи</button>
-    </form>
-    <form action="/admin/delete" method="get">
-        <button class="btn">Удалить пользователя</button>
-    </form>
-    <form action="/admin/newUser" method="get">
-        <button class="btn">Создать пользователя</button>
-    </form>
-    <form action="../logout" method="get">
-        <button class="btn" type="submit">Выход</button>
-    </form>
-</div>
-<div class="divSecondBody">
+<div class="main-wrapper">
+    <div class="sidenav">
+        <form action="/admin/allUsers" method="get">
+            <button class="btn" type="submit">Все пользователи</button>
+        </form>
+        <form action="/admin/delete" method="get">
+            <button class="btn">Удалить пользователя</button>
+        </form>
+        <form action="/admin/newUser" method="get">
+            <button class="btn">Создать пользователя</button>
+        </form>
+        <form action="../logout" method="get">
+            <button class="btn" type="submit">Выход</button>
+        </form>
+    </div>
+    <div class="divSecondBody">
+    </div>
 </div>
 </body>
 </html>
