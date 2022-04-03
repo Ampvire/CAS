@@ -2,25 +2,39 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <title>Admin panel</title>
 </head>
 <body>
-<h1>Admin panel</h1>
-<h2>Delete user</h2>
-<form action="deleteUser" method="post">
-    <div style="width: 300px; display: flex">
-        <label for="login">Login:</label>
-        <input id="login" name="login" style="width: 200px; margin-left: auto">
+<div class="sidenav">
+    <form action="../admin/allUsers" method="get">
+        <button class="btn" type="submit">Все пользователи</button>
+    </form>
+    <form action="../../../admin/info" method="get">
+        <button class="btn" type="submit">На главную</button>
+    </form>
+    <form action="../admin/newUser" method="get">
+        <button class="btn">Создать пользователя</button>
+    </form>
+    <form action="../../logout" method="get">
+        <button class="btn" type="submit">Выход</button>
+    </form>
+</div>
+<div class="divSecondBody">
+    <div class="input-form">
+        <h2>Удаление пользователя</h2>
+        <form action="deleteUser" method="post">
+            <div>
+                <label for="login" class="col-25">Логин:</label>
+                <input type="text" id="login" name="login" class="col-75">
+            </div>
+            <div>
+                <input type="submit" value="Удалить" style="width: 400px">
+            </div>
+        </form>
     </div>
-
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <input type="submit" value="Delete" style="width: 100px; margin-right: auto">
-    </div>
-</form>
-<form action="/logout" method="get">
-    <div style="width: 300px; display: flex;margin-top: 20px">
-        <input type="submit" value="Logout" style="width: 100px; margin-right: auto">
-    </div>
-</form>
+</div>
 </body>
 </html>
