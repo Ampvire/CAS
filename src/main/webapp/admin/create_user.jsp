@@ -2,52 +2,67 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <title>Admin panel</title>
 </head>
 <body>
-<h1>Admin panel</h1>
-<h2>Create user</h2>
-<form action="update" method="post">
-    <div style="width: 300px; display: flex">
-        <label for="login">Login:</label>
-        <input id="login" name="login" style="width: 200px; margin-left: auto">
+<div class="sidenav">
+    <form action="../admin/allUsers" method="get">
+        <button class="btn" type="submit">Все пользователи</button>
+    </form>
+    <form action="../admin/delete" method="get">
+        <button class="btn">Удалить пользователя</button>
+    </form>
+    <form action="../../../admin/info" method="get">
+        <button class="btn" type="submit">На главную</button>
+    </form>
+    <form action="../../logout" method="get">
+        <button class="btn" type="submit">Выход</button>
+    </form>
+</div>
+<div class="divSecondBody">
+    <div class="input-form">
+        <h2>Создание пользователя</h2>
+        <form action="update" method="post">
+            <div>
+                <label for="login" class="col-25">Логин:</label>
+                <input type="text" id="login" name="login" class="col-75">
+            </div>
+            <div>
+                <label for="name" class="col-25">Имя:</label>
+                <input type="text" id="name" name="firstName" class="col-75">
+            </div>
+            <div>
+                <label for="secondName" class="col-25">Фамилия:</label>
+                <input type="text" id="secondName" name="secondName" class="col-75">
+            </div>
+            <div>
+                <label for="password" class="col-25">Password:</label>
+                <input id="password" name="password" class="col-75">
+            </div>
+            <div>
+                <label for="category" class="col-25">Категория:</label>
+                <select id="category" name="category" class="col-75">
+                    <c:forEach items="${categories}" var="cat">
+                        <option>${cat.category}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div>
+                <label for="role" class="col-25">Роль:</label>
+                <select id="role" name="role" class="col-75">
+                    <c:forEach items="${roles}" var="r">
+                        <option>${r.role}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div>
+                <input type="submit" value="Создать" style="width: 400px">
+            </div>
+        </form>
     </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="name">Name:</label>
-        <input id="name" name="firstName" style="width: 200px; margin-left: auto">
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="secondName">Second name:</label>
-        <input id="secondName" name="secondName" style="width: 200px; margin-left: auto">
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="password">Password:</label>
-        <input id="password" name="password" style="width: 200px; margin-left: auto">
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="category">Category:</label>
-        <select id="category" name="category" style="width: 200px; margin-left: auto">
-            <c:forEach items="${categories}" var="cat">
-                <option>${cat.category}</option>
-            </c:forEach>
-        </select>
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="role">Role:</label>
-        <select id="role" name="role" style="width: 200px; margin-left: auto">
-            <c:forEach items="${roles}" var="r">
-                <option>${r.role}</option>
-            </c:forEach>
-        </select>
-    </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <input type="submit" value="Send" style="width: 100px; margin-right: auto">
-    </div>
-</form>
-<form action="/logout" method="get">
-    <div style="width: 300px; display: flex;margin-top: 20px">
-        <input type="submit" value="Logout" style="width: 100px; margin-right: auto">
-    </div>
-</form>
+</div>
 </body>
 </html>

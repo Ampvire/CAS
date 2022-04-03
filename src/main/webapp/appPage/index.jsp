@@ -10,7 +10,7 @@
 </head>
 <body>
     <c:if test="${pageContext.request.isUserInRole('Admin')}">
-        <% response.sendRedirect("/admin"); %>
+        <% response.sendRedirect("/admin/info"); %>
     </c:if>
     <c:if test="${pageContext.request.isUserInRole('Meneger')}">
         <% response.sendRedirect("/user/info"); %>

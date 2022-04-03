@@ -17,7 +17,7 @@ public class AdminController {
         this.service = service;
     }
 
-    @GetMapping()
+    @GetMapping("/info")
     public ModelAndView info() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/admin/info.jsp");
@@ -44,7 +44,7 @@ public class AdminController {
                 categoryName, roleName);
         ModelAndView modelAndView = new ModelAndView();
         String message = user == null ? "Поля должны быть заполнены!" : "Пользователь создан.";
-        String jsp = user == null ? "/failed.jsp" : "/success.jsp";
+        String jsp = user == null ? "/admin/failed.jsp" : "/admin/success.jsp";
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
         return modelAndView;
@@ -80,7 +80,7 @@ public class AdminController {
         User user = service.createOrUpdateUser(login, firstName, secondName, "password", categoryName, roleName);
         ModelAndView modelAndView = new ModelAndView();
         String message = user == null ? "Поля должны быть заполнены!" : "Пользователь изменен.";
-        String jsp = user == null ? "/failed.jsp" : "/success.jsp";
+        String jsp = user == null ? "/admin/failed.jsp" : "/admin/success.jsp";
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
         return modelAndView;
@@ -90,8 +90,8 @@ public class AdminController {
     public ModelAndView deleteUserByLogin(@RequestParam("login") String login) {
         service.deleteUser(login);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", "User deleted!");
-        modelAndView.setViewName("/success.jsp");
+        modelAndView.addObject("message", "Пользователь удалён!");
+        modelAndView.setViewName("/admin/success.jsp");
         return modelAndView;
     }
 
@@ -99,8 +99,8 @@ public class AdminController {
     public ModelAndView deleteUser(@PathVariable("login") String login) {
         service.deleteUser(login);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", "User deleted!");
-        modelAndView.setViewName("/success.jsp");
+        modelAndView.addObject("message", "Пользователь удалён!");
+        modelAndView.setViewName("/admin/success.jsp");
         return modelAndView;
     }
 
