@@ -2,35 +2,44 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
 <head>
-    <title>Client panel</title>
+    <title>Результаты расчета</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-<h1>Расчет кредита</h1>
-<form action="saveApplication" method="post">
-        <div style="width: 300px; display: flex;margin-top: 20px">
-            <label for="loans">Сумма к выплате:</label>
-            <input id="loans" name="loans"  value="${loans}"  style="width: 200px; margin-left: auto">
-        </div>
-        <div style="width: 300px; display: flex; margin-top: 20px">
-            <label for="payment">Ежемесячный платеж:</label>
-            <input id="payment" name="payment" value="${payment}"  style="width: 200px; margin-left: auto">
-        </div>
+<div class="main-wrapper">
+    <div class="sidenav">
+        <form action="/account" method="get">
+            <button class="btn" type="submit">Главная</button>
+        </form>
+        <form action="/logout" method="get">
+            <button class="btn" type="submit">Выход</button>
+        </form>
+    </div>
+    <div class="divSecondBody">
+        <div class="input-form">
+            <form action="saveApplication" method="post">
+                <h2>Расчет кредита</h2>
+                <div>
+                    <label for="loans">Сумма к выплате:</label>
+                    <input type="text" id="loans" name="loans" value="${loans}">
 
-        <div style="width: 300px; display: flex; margin-top: 20px">
-             <label for="per">Процент:</label>
-             <input id="per" name="percent" value="${percent}"   style="width: 200px; margin-left: auto">
+                    <label for="payment">Ежемесячный платеж:</label>
+                    <input type="text"  id="payment" name="payment" value="${payment}">
+
+                    <label for="per">Процентная ставка:</label>
+                    <input type="text"  id="per" name="percent" value="${percent}">
+
+                    <label for="years">Количество лет:</label>
+                    <input type="text"  id="years" name="years" value="${years}">
+
+                    <label for="amount">Сумма кредита:</label>
+                    <input type="text"  id="amount" name="sum" value="${sum}">
+
+                    <input id="request" type="submit" value="Отправить запрос">
+                </div>
+            </form>
         </div>
-        <div style="width: 300px; display: flex; margin-top: 20px">
-             <label for="years">Количество лет:</label>
-             <input id="years" name="years"  value="${years}"   style="width: 200px; margin-left: auto">
-        </div>
-        <div style="width: 300px; display: flex; margin-top: 20px">
-             <label for="amount">Сумма кредита:</label>
-             <input id="amount" name="sum" value="${sum}"    style="width: 200px; margin-left: auto">
-        </div>
-         <div style="width: 200px; display: flex; margin-top: 20px">
-            <input id="request" type="submit" value="Отправить запрос" style="width: 200px; margin-left: auto">
-        </div>
-</form>
+    </div>
+</div>
 </body>
 </html>

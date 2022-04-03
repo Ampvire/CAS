@@ -29,7 +29,8 @@
             <button class="btn" type="submit">Выход</button>
         </form>
     </aside>
-    <article class="divSecondBody">
+    <div class="divSecondBody">
+        <article class="elem-wrapper">
         <div class="table-block">
             <table class="myTable">
                 <tr>
@@ -62,7 +63,8 @@
                 </c:forEach>
             </table>
         </div>
-    </article>
+        </article>
+    </div>
 </div>
 </body>
 </html>

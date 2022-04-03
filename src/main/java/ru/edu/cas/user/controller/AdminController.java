@@ -61,13 +61,13 @@ public class AdminController {
     public ModelAndView updateUser(@PathVariable("login") String login) {
         User user = service.getUser(login);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/admin/update_user.jsp");
         modelAndView.addObject("name", user.getFirstName());
         modelAndView.addObject("secondName", user.getLastName());
         modelAndView.addObject("password", user.getPassword());
         modelAndView.addObject("login", user.getLogin());
         modelAndView.addObject("role", service.getAllRole());
         modelAndView.addObject("category", service.getAllCategory());
+        modelAndView.setViewName("/admin/update_user.jsp");
         return modelAndView;
     }
 

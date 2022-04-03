@@ -3,55 +3,39 @@
 
 <html>
 <head>
-    <title>Client panel</title>
+    <title>Заявка на кредит</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="/script.js"></script>
 </head>
 <body>
-<h1>Расчет кредита</h1>
-<form action="calculation" method="post">
-    <div style="width: 300px; display: flex">
-        <label for="sum">Сумма кредита:</label>
-        <input id="sum" name="sum" style="width: 200px; margin-left: auto">
+<div class="main-wrapper">
+    <div class="sidenav">
+        <form action="/account" method="get">
+            <button class="btn" type="submit">Главная</button>
+        </form>
+        <form action="/logout" method="get">
+            <button class="btn" type="submit">Выход</button>
+        </form>
     </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="year">Количество лет:</label>
-        <select onchange="handleClick( this.selectedIndex)"
-          id="year" name="years" style="width: 200px; margin-left: auto">
-            <c:forEach items="${percents}" var="percent">
-                <option>${percent.years}</option>
-            </c:forEach>
-        </select>
+    <div class="divSecondBody">
+        <div class="input-form">
+            <form action="calculation" method="post">
+                <h2>Заявка на кредит</h2>
+                <div class="form-body">
+                    <input type="text" placeholder="введите сумму" id="sum" name="sum">
+                    <label for="year">Количество лет:</label>
+                    <select onchange="handleClick(this.selectedIndex)" id="year" name="years">
+                        <c:forEach items="${percents}" var="percent">
+                            <option>${percent.years}</option>
+                        </c:forEach>
+                    </select>
+                    <input id="request" type="submit" value="Рассчитать">
+                    <input type="text"  placeholder="введите процент" id="per" name="percent" style="display: none;">
+                </div>
+            </form>
+        </div>
     </div>
-    <div style="width: 300px; display: flex; margin-top: 20px">
-         <label for="per">Процент:</label>
-         <input id="per" name="percent"  disabled style="width: 200px; margin-left: auto">
-    </div>
-    <div style="width:200px; display: flex; margin-top: 20px">
-          <input id="request" type="submit" value="Рассчитать" style="width: 200px; margin-right: auto">
-    </div>
-
-</form>
-
-
-<form action="/logout" method="get">
-    <div style="width: 300px; display: flex;margin-top: 20px">
-        <input type="submit" value="Logout" style="width: 100px; margin-right: auto">
-    </div>
-</form>
+</div>
 </body>
-<script type="text/javascript">
-function Percent (
-                id,
-                years,
-                percent
-){
-    return {
-        id: id, years: years, percent: percent
-    }
-}
-var arrPercent = ${percents}
-  function handleClick(index)
-  {
-    document.getElementById('per').value = (arrPercent[index].percent).toString();
-  }
-</script>
+
 </html>
