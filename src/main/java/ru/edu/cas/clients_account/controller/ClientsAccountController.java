@@ -47,6 +47,7 @@ public class ClientsAccountController {
         List<String> products = service.getAllProductsByClientInn(client.getInn());
         List<Product> banksProducts = productService.getAllProduct();
         List<Application> applicationList = productService.getApplication(client);
+        modelAndView.addObject("client", client);
         modelAndView.addObject("applications", applicationList);
         modelAndView.addObject("banksProducts", banksProducts);
         modelAndView.addObject("finance", finance);

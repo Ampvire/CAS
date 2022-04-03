@@ -2,24 +2,24 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
 <head>
-    <title>Client panel</title>
+    <title>Ввод финансовых показателей</title>
 </head>
 <body>
 <form action="financeInfo" method="post">
     <div style="width: 300px; display: flex">
-        <label for="rev">Revenue:</label>
+        <label for="rev">Выручка:</label>
         <input id="rev" name="revenue"  style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="staf">Staf:</label>
+        <label for="staf">Численность персонала:</label>
         <input id="staf" name="staf" style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="per">costPrice:</label>
+        <label for="per">Себестоимость:</label>
         <input id="per" name="costPrice" style="width: 200px; margin-left: auto">
     </div>
     <div style="width: 300px; display: flex; margin-top: 20px">
-        <label for="assets">assets:</label>
+        <label for="assets">Активы:</label>
         <input id="assets" name="assets" style="width: 200px; margin-left: auto">
     </div>
    <div style="width: 300px; display: flex; margin-top: 20px">
