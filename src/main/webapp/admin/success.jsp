@@ -8,13 +8,13 @@
 <body>
 <div class="sidenav">
     <div class="sidenav">
-        <form action="../admin/allUsers" method="get">
+        <form action="../../admin/allUsers" method="get">
             <button class="btn" type="submit">Все пользователи</button>
         </form>
-        <form action="../admin/delete" method="get">
+        <form action="../../admin/delete" method="get">
             <button class="btn">Удалить пользователя</button>
         </form>
-        <form action="../admin/newUser" method="get">
+        <form action="../../admin/newUser" method="get">
             <button class="btn">Создать пользователя</button>
         </form>
         <form action="../../../logout" method="get">

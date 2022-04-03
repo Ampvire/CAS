@@ -25,15 +25,15 @@
         <form action="success" method="post">
             <div>
                 <label for="login" class="col-25">Логин:</label>
-                <input type="text" id="login" name="login" class="col-75">
+                <input type="text" id="login" name="login" value="${login}" class="col-75">
             </div>
             <div>
                 <label for="name" class="col-25">Имя:</label>
-                <input type="text" id="name" name="firstName" class="col-75">
+                <input type="text" id="name" name="firstName" value="${name}" class="col-75">
             </div>
             <div>
                 <label for="secondName" class="col-25">Фамилия:</label>
-                <input type="text" id="secondName" name="secondName" class="col-75">
+                <input type="text" id="secondName" name="secondName" value="${secondName}" class="col-75">
             </div>
             <div>
                 <label for="category" class="col-25">Категория:</label>

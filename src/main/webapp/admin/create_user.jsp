@@ -40,7 +40,7 @@
             </div>
             <div>
                 <label for="password" class="col-25">Password:</label>
-                <input id="password" name="password" class="col-75">
+                <input type="text" id="password" name="password" class="col-75">
             </div>
             <div>
                 <label for="category" class="col-25">Категория:</label>
