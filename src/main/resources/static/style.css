@@ -28,11 +28,7 @@ body{
 /* Меню боковой панели */
 .sidenav {
     height: 100%; /* Полная высота: удалите это, если вы хотите "авто" высота */
-    width: 250px; /* Установите ширину боковой панели */
-    /*position: fixed; !* Фиксированная боковая панель (оставайтесь на месте при прокрутке) *!*/
-    /*z-index: 1; !* Оставайтесь с верху *!*/
-    /*top: 0; !* Оставайтесь на вершине *!*/
-    /*left: 0;*/
+    width: 20%; /* Установите ширину боковой панели */
     background-color: #191919;
     overflow-x: hidden; /* Отключить горизонтальную прокрутку */
     padding-top: 20px;
@@ -72,7 +68,6 @@ body{
     color: #D3D3D3;
     background-color: #191919;
     border: none;
-
     display: block;
 }
 
@@ -114,7 +109,7 @@ body{
     /*margin-left: 300px;*/
     /*padding: 50px 50px;*/
     display: flex;
-    width: 100%;
+    width: 80%;
     height: 100%;
     align-items: center;
     justify-content: center;
@@ -169,11 +164,6 @@ body{
     width: 400px;
     padding: 50px 50px;
     text-align: center;
-    /*display: flex;*/
-    /*!*width: 100%;*!*/
-    /*!*height: 100%;*!*/
-    /*align-items: center;*/
-    /*justify-content: center;*/
 }
 
 select {
@@ -214,7 +204,7 @@ input[type=text], .text-field{
 }
 
 td, th{
-    padding: 45px;
+    padding: 20px;
 }
 
 #applications-list td, #applications-list th{
