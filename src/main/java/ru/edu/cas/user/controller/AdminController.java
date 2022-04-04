@@ -89,7 +89,7 @@ public class AdminController {
     @PostMapping("/deleteUser")
     public ModelAndView deleteUserByLogin(@RequestParam("login") String login) {
         User user = service.deleteUser(login);
-        String message = user == null ? "Поля должны быть заполнены!" : "Пользователь удален.";
+        String message = user == null ? "Пользователь с логином " + login + " не найден!" : "Пользователь удален.";
         String jsp = user == null ? "/admin/failed.jsp" : "/admin/success.jsp";
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", message);
