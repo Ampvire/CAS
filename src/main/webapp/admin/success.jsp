@@ -1,12 +1,12 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=utf-8" %>
 <html>
- <head>
+<head>
     <title>Результат</title>
-     <link rel="stylesheet" type="text/css" href="/style.css">
- </head>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
 <body>
-<div class="sidenav">
+<div class="main-wrapper">
     <div class="sidenav">
         <form action="../../admin/allUsers" method="get">
             <button class="btn" type="submit">Все пользователи</button>
@@ -21,10 +21,13 @@
             <button class="btn" type="submit">Выход</button>
         </form>
     </div>
-</div>
-<div class="divSecondBody">
-    <div style="width: 300px; display: flex">
-        <h2 style="width: 300px; margin-left: auto">${message}</h2>
+
+    <div class="divSecondBody">
+        <div class="elem-wrapper">
+            <div style="width: 300px; display: flex">
+                <h2 style="width: 300px; margin-left: auto">${message}</h2>
+            </div>
+        </div>
     </div>
 </div>
 </body>

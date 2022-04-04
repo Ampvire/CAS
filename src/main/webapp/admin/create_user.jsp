@@ -16,9 +16,6 @@
         <form action="../admin/delete" method="get">
             <button class="btn">Удалить пользователя</button>
         </form>
-        <form action="../../../admin/info" method="get">
-            <button class="btn" type="submit">На главную</button>
-        </form>
         <form action="../../logout" method="get">
             <button class="btn" type="submit">Выход</button>
         </form>

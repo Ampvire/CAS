@@ -10,9 +10,6 @@
 <body>
 <div class="main-wrapper">
     <div class="sidenav">
-        <form action="../admin/info" method="get">
-            <button class="btn" type="submit">На главную</button>
-        </form>
         <form action="delete" method="get">
             <button class="btn">Удалить пользователя</button>
         </form>
