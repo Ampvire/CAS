@@ -102,6 +102,7 @@ public class UserController {
         User user = getCurrentUser();
         ModelAndView modelAndView = new ModelAndView();
         service.addManager(client, user);
+        modelAndView.addObject("segment", client.getSegmentId().getSegment());
         modelAndView.setViewName("/client/new_clients.jsp");
         return modelAndView;
     }

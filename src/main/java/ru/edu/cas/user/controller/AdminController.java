@@ -88,10 +88,12 @@ public class AdminController {
 
     @PostMapping("/deleteUser")
     public ModelAndView deleteUserByLogin(@RequestParam("login") String login) {
-        service.deleteUser(login);
+        User user = service.deleteUser(login);
+        String message = user == null ? "Пользователь с логином " + login + " не найден!" : "Пользователь удален.";
+        String jsp = user == null ? "/admin/failed.jsp" : "/admin/success.jsp";
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", "Пользователь удалён!");
-        modelAndView.setViewName("/admin/success.jsp");
+        modelAndView.addObject("message", message);
+        modelAndView.setViewName(jsp);
         return modelAndView;
     }
 
