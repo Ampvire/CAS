@@ -92,20 +92,21 @@ public class ClientService {
 
     /**
      * Получить идентификатор сегмента
+     *
      * @param segment -объект класса Segment
-     * */
-    public int getSegmentId(ClientSegment segment){
+     */
+    public int getSegmentId(ClientSegment segment) {
         return segment.getId();
     }
 
 
     /**
      * Метод для выбора клиентов возможных для закрепления
-     * */
-    public boolean chekUserCategory(ClientSegment segment, User user){
-        int segmentId =  getSegmentId(segment);
+     */
+    public boolean chekUserCategory(ClientSegment segment, User user) {
+        int segmentId = getSegmentId(segment);
         Category category = userService.getCategory(String.valueOf(segmentId));
-        List<User>users = userService.getUsersByCategory(category);
+        List<User> users = userService.getUsersByCategory(category);
         return users.contains(user);
     }
 
@@ -147,13 +148,12 @@ public class ClientService {
                 .map(ClientProducts::getProductId)
                 .map(Product::getName)
                 .collect(Collectors.toSet());
-         clientProductsName.addAll(products);
+        clientProductsName.addAll(products);
         return clientProductsName;
     }
 
     /**
      * Метод возвращает список всех продуктов клиента
-     *
      *
      * @param clientId -идентификатор клиента по которому нужно получить информацию
      * @return список(без дубликатов) продуктов клиента
@@ -169,13 +169,12 @@ public class ClientService {
     }
 
 
-
     /**
      * Изменяет менеджера у клиента
      */
-    public void addManager (Client client, User user) {
+    public void addManager(Client client, User user) {
 
-        if (user == null || client ==null) {
+        if (user == null || client == null) {
             throw new RuntimeException("Fields must not be null!");
         }
         client.setUserId(user);
@@ -477,9 +476,11 @@ public class ClientService {
     }
 
     /**
-     * @param sum
-     * @param years
-     * @param percent
+     * Метод возвращает список из значений стоимости займа и ежемесячного платежа
+     *
+     * @param sum     - сумма
+     * @param years   - число лет
+     * @param percent - ставка займа
      * @return
      */
 
@@ -498,15 +499,19 @@ public class ClientService {
     }
 
     /**
-     * @param inn
-     * @param revenue
-     * @param staf
-     * @param costPrice
-     * @param assets
-     * @param reserves
-     * @param profit
-     * @param date
-     * @return
+     * Метод сохраняет финансовую отчетность клиента и
+     * на ее результатах изменяет или не изменяет сегмент,
+     * к которому клиент принадлежит
+     *
+     * @param inn       - ИНН
+     * @param revenue   - доход
+     * @param staf      - персонал
+     * @param costPrice - себестоимость
+     * @param assets    - активы
+     * @param reserves  - резервы
+     * @param profit    - прибыль
+     * @param date      - дата
+     * @return - ClientFinance - финансовая отчётность
      */
     public ClientFinance saveFinanceInfo(String inn, String revenue, String staf, String costPrice, String assets,
                                          String reserves, String profit, String date) {
@@ -545,12 +550,24 @@ public class ClientService {
         return years;
     }
 
+    /**
+     * Метод возвращает последнюю отчетность клиента
+     *
+     * @param inn - ИНН
+     * @return - ClientFinance - финансовая отчётность
+     */
     public ClientFinance getLastFinance(String inn) {
         Client client = getClient(inn);
         return clientFinanceRepository.findFirstByClientIdOrderByIdDesc(client);
     }
 
-    public Client getClientByLogin(String login){
+    /**
+     * Метод возвращает клиента по его логину
+     *
+     * @param login - логин
+     * @return - Client - клиент
+     */
+    public Client getClientByLogin(String login) {
         AccountClient accountClient = accountClientService.getAccountByLogin(login);
         Client client = getClientById(accountClient.getClientId().getId());
         return client;
