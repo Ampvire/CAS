@@ -76,9 +76,11 @@ public class UserService {
     }
 
 
-    /**Метод возвращает список пользователей из таблицы user categoryId
-     * @param categoryId  -логин пользователя
-     * */
+    /**
+     * Метод возвращает список пользователей из таблицы user categoryId
+     *
+     * @param categoryId -логин пользователя
+     */
     public List<User> getUsersByCategory(Category categoryId) {
         return repository.findByCategoryId(categoryId);
     }
@@ -160,11 +162,12 @@ public class UserService {
      *
      * @param login
      */
-    public void deleteUser(String login) {
-        User user = getUser(login);
+    public User deleteUser(String login) {
         if (getUser(login) == null) {
-            throw new RuntimeException("User with login " + login + " not found!");
+            return null;
         }
+        User user = getUser(login);
         repository.delete(user);
+        return user;
     }
 }
