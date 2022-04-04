@@ -39,8 +39,8 @@
                     <th>ОГРН</th>
                     <th>Сегмент</th>
                     <th>ОПФ</th>
-                    <th>Сформировать отчет</th>
-                    <th>Внести изменения</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 <c:forEach items="${list}" var="client">
                     <tr>

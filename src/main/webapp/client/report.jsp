@@ -26,7 +26,6 @@
     <div class="divSecondBody">
         <article class="elem-wrapper">
             <h2>Финансовые показатели</h2>
-            <hr>
             <div class="table-block">
                 <table class="myTable">
                     <colgroup>
@@ -57,7 +56,6 @@
                 </table>
             </div>
             <h2>Анализ финансовых показателей</h2>
-            <hr>
             <div class="table-block">
                 <table class="myTable">
                     <colgroup>
@@ -80,7 +78,6 @@
                 </table>
             </div>
             <h2>Подключенные банковские услуги:</h2>
-            <hr>
             <div class="table-block">
                 <table class="myTable">
                     <colgroup>

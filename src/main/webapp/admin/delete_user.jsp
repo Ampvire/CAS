@@ -13,9 +13,6 @@
         <form action="../admin/allUsers" method="get">
             <button class="btn" type="submit">Все пользователи</button>
         </form>
-        <form action="../../../admin/info" method="get">
-            <button class="btn" type="submit">На главную</button>
-        </form>
         <form action="../admin/newUser" method="get">
             <button class="btn">Создать пользователя</button>
         </form>
