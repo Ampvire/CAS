@@ -104,7 +104,7 @@ public class ClientsAccountController {
         ModelAndView modelAndView = new ModelAndView();
         ClientFinance finance = service.saveFinanceInfo(getCurrentClient().getInn(), revenue, staf, costPrice, assets, reserves, profit, "31-12-" + year);
         String message = "Финансовые показатели" + (finance == null ? " не заполнены" : " заполнены");
-        String jsp = finance == null ? "/failed.jsp" : "/success.jsp";
+        String jsp = finance == null ? "/failed.jsp" : "/account/success.jsp";
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
         return modelAndView;

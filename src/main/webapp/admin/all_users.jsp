@@ -60,7 +60,7 @@
                             </tr>
                         </c:forEach>
                     </table>
-           
+
             </div>
         </article>
     </div>
