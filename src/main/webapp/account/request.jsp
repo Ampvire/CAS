@@ -21,7 +21,7 @@
             <form action="calculation" method="post">
                 <h2>Заявка на кредит</h2>
                 <div class="form-body">
-                    <input type="text" placeholder="введите сумму" id="sum" name="sum">
+                    <input type="text" placeholder="введите сумму" id="sum" name="sum" value="0">
                     <label for="year">Количество лет:</label>
                     <select onchange="handleClick(this.selectedIndex)" id="year" name="years">
                         <c:forEach items="${percents}" var="percent">
