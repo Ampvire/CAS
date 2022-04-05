@@ -17,26 +17,21 @@
     </div>
     <div class="divSecondBody">
         <div class="input-form">
-            <form action="saveApplication" method="post">
                 <h2>Расчет кредита</h2>
-                <div>
-                    <label for="loans">Сумма к выплате:</label>
-                    <input type="text" id="loans" name="loans" value="${loans}">
-
-                    <label for="payment">Ежемесячный платеж:</label>
-                    <input type="text"  id="payment" name="payment" value="${payment}">
-
-                    <label for="per">Процентная ставка:</label>
-                    <input type="text"  id="per" name="percent" value="${percent}">
-
-                    <label for="years">Количество лет:</label>
-                    <input type="text"  id="years" name="years" value="${years}">
-
-                    <label for="amount">Сумма кредита:</label>
-                    <input type="text"  id="amount" name="sum" value="${sum}">
-
-                    <input id="request" type="submit" value="Отправить запрос">
+                <div class="notification">
+                <p>Сумма к выплате: ${loans}р.</p>
+                <p>Ежемесячный платеж: ${payment}р.</p>
+                <p>Процентная ставка: ${percent}%</p>
+                <p>Количество лет: ${years}</p>
+                <p>Сумма кредита: ${sum}р.</p>
                 </div>
+            <form action="saveApplication" method="post">
+                    <input type="text" id="loans" name="loans" value="${loans}" style="display: none">
+                    <input type="text"  id="payment" name="payment" value="${payment}" style="display: none">
+                    <input type="text"  id="per" name="percent" value="${percent}" style="display: none">
+                    <input type="text"  id="years" name="years" value="${years}" style="display: none">
+                    <input type="text"  id="amount" name="sum" value="${sum}" style="display: none">
+                    <input id="request" type="submit" value="Отправить запрос">
             </form>
         </div>
     </div>

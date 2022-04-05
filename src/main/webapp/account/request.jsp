@@ -5,7 +5,6 @@
 <head>
     <title>Заявка на кредит</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
-    <script src="/script.js"></script>
 </head>
 <body>
 <div class="main-wrapper">
@@ -29,13 +28,29 @@
                             <option>${percent.years}</option>
                         </c:forEach>
                     </select>
+                    <label for="per">Процентная ставка:</label>
+                    <input type="text" id="per" name="percent" value="10" disabled>
                     <input id="request" type="submit" value="Рассчитать">
-                    <input type="text"  placeholder="введите процент" id="per" name="percent" style="display: none;">
                 </div>
             </form>
         </div>
     </div>
 </div>
 </body>
+<script>
+    function Percent(
+        id,
+        years,
+        percent
+    ) {
+        return {
+            id: id, years: years, percent: percent
+        }
+    }
 
+    var arrPercent = ${percents}
+        function handleClick(index) {
+            document.getElementById('per').value = (arrPercent[index].percent).toString();
+        }
+</script>
 </html>
