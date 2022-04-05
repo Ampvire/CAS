@@ -24,7 +24,7 @@
         <article class="elem-wrapper">
             <h2>Список всех пользователей</h2>
             <div class="table-block">
-                <form action="allUsers" method="get">
+
                     <table class="myTable">
                         <colgroup>
                             <col span="6" style="background: white;">
@@ -60,7 +60,7 @@
                             </tr>
                         </c:forEach>
                     </table>
-                </form>
+           
             </div>
         </article>
     </div>
