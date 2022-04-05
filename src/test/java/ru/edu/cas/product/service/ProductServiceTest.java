@@ -57,6 +57,6 @@ public class ProductServiceTest {
     @Test
     public void getAllProductName_Test(){
         List<String> products = productService.getAllProductName();
-        //Assertions.assertEquals(4, products.size());
+        Assertions.assertEquals(4, products.size());
     }
 }
