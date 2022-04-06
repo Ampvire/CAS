@@ -60,6 +60,15 @@ body{
     display: block;
 }
 
+.btn-get-instruction{
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 18px;
+}
+
 .btn-select {
     padding: 6px 8px 6px 16px;
     text-decoration: none;

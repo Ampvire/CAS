@@ -74,14 +74,10 @@ public class UserController {
     }
 
 
-//    @GetMapping("/getAllClients")
-//    public ModelAndView getAllUserClients() {
-//        User user = getCurrentUser();
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("list", service.getAllClients(user.getId()));
-//        modelAndView.setViewName("/client/all_clients.jsp");
-//        return modelAndView;
-//    }
+    @GetMapping("/instruction")
+    public ModelAndView getInstruction() {
+        return new ModelAndView("/user/instruction_user.jsp");
+    }
 
     @GetMapping("/getNewClients")
     public ModelAndView getNew(@RequestParam("segment") String segment) {

@@ -25,6 +25,11 @@
     </div>
     <div class="divSecondBody">
         <article class="elem-wrapper">
+            <div class="client-name">
+                <form action="/user/instruction" method="get">
+                    <button title="Инструкция по сервису" class="btn-get-instruction">?</button>
+                </form>
+            </div>
             <h2>Финансовые показатели</h2>
             <div class="table-block">
                 <table class="myTable">

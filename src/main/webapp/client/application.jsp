@@ -31,7 +31,12 @@
 
     <div class="divSecondBody">
         <article class="elem-wrapper">
-            <h1>Список заявок</h1>
+            <div class="client-name">
+                <form action="/user/instruction" method="get">
+                    <button title="Инструкция по сервису" class="btn-get-instruction">?</button>
+                </form>
+            </div>
+            <h2>Список заявок</h2>
             <table id="applications-list">
                 <tr>
                     <th>Клиент</th>

@@ -31,38 +31,44 @@
     </aside>
     <div class="divSecondBody">
         <article class="elem-wrapper">
-        <div class="table-block">
-            <table class="myTable">
-                <tr>
-                    <th>Название</th>
-                    <th>ИНН</th>
-                    <th>ОГРН</th>
-                    <th>Сегмент</th>
-                    <th>ОПФ</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <c:forEach items="${list}" var="client">
+            <div class="client-name">
+            <form action="/user/instruction" method="get">
+                <button title="Инструкция по сервису" class="btn-get-instruction">?</button>
+            </form>
+            </div>
+            <h2>Мои клиенты</h2>
+            <div class="table-block">
+                <table class="myTable">
                     <tr>
-                        <td>${client.name}</td>
-                        <td>${client.inn}</td>
-                        <td>${client.ogrn}</td>
-                        <td>${client.segmentId.segment}</td>
-                        <td>${client.typeId.type}</td>
-                        <td>
-                            <form action="getReport/${client.inn}" method="get">
-                                <button class="myTableButton">Отчёт</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="updateClient/${client.inn}" method="get">
-                                <button class="myTableButton">Изменить</button>
-                            </form>
-                        </td>
+                        <th>Название</th>
+                        <th>ИНН</th>
+                        <th>ОГРН</th>
+                        <th>Сегмент</th>
+                        <th>ОПФ</th>
+                        <th></th>
+                        <th></th>
                     </tr>
-                </c:forEach>
-            </table>
-        </div>
+                    <c:forEach items="${list}" var="client">
+                        <tr>
+                            <td>${client.name}</td>
+                            <td>${client.inn}</td>
+                            <td>${client.ogrn}</td>
+                            <td>${client.segmentId.segment}</td>
+                            <td>${client.typeId.type}</td>
+                            <td>
+                                <form action="getReport/${client.inn}" method="get">
+                                    <button class="myTableButton">Отчёт</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="updateClient/${client.inn}" method="get">
+                                    <button class="myTableButton">Изменить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
         </article>
     </div>
 </div>
