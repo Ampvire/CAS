@@ -34,6 +34,10 @@
                     <input type="text" id="secondName" name="secondName" value="${secondName}" class="col-75">
                 </div>
                 <div>
+                    <label for="status" class="col-25">Статус:</label>
+                    <input type="text" id="status" name="status" value="${status}" class="col-75">
+                </div>
+                <div>
                     <label for="category" class="col-25">Категория:</label>
                     <select id="category" name="category" class="col-75">
                         <c:forEach items="${category}" var="cat">

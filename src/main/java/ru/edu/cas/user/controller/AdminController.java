@@ -4,13 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.edu.cas.client.dao.Client;
+import ru.edu.cas.client.service.ClientService;
 import ru.edu.cas.user.dao.User;
 import ru.edu.cas.user.service.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
     private UserService service;
+    private ClientService clientService;
+
+    @Autowired
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
     @Autowired
     public void setService(UserService service) {
@@ -76,8 +86,11 @@ public class AdminController {
                                             @RequestParam("firstName") String firstName,
                                             @RequestParam("secondName") String secondName,
                                             @RequestParam("category") String categoryName,
+                                            @RequestParam("status") String status,
                                             @RequestParam("role") String roleName) {
         User user = service.createOrUpdateUser(login, firstName, secondName, "password", categoryName, roleName);
+        user.setStatus(status);
+        service.update(user);
         ModelAndView modelAndView = new ModelAndView();
         String message = user == null ? "Поля должны быть заполнены!" : "Пользователь изменен.";
         String jsp = user == null ? "/admin/failed.jsp" : "/admin/success.jsp";
@@ -88,8 +101,14 @@ public class AdminController {
 
     @PostMapping("/deleteUser")
     public ModelAndView deleteUserByLogin(@RequestParam("login") String login) {
-        User user = service.deleteUser(login);
-        String message = user == null ? "Пользователь с логином " + login + " не найден!" : "Пользователь удален.";
+        User user = service.getUser(login);
+        user.setStatus("Inactive");
+        service.update(user);
+        List<Client> clients = clientService.getAllClients(user.getId());
+        for (Client client : clients) {
+            client.setUserId(null);
+        }
+        String message = user == null ? "Пользователь с логином " + login + " не найден!" : "Пользователю установлен признак - неактивен.";
         String jsp = user == null ? "/admin/failed.jsp" : "/admin/success.jsp";
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", message);
@@ -99,9 +118,11 @@ public class AdminController {
 
     @PostMapping("/deleteUser/{login}")
     public ModelAndView deleteUser(@PathVariable("login") String login) {
-        service.deleteUser(login);
+        User user = service.getUser(login);
+        user.setStatus("Inactive");
+        service.update(user);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", "Пользователь удалён!");
+        modelAndView.addObject("message", "Пользователю установлен признак - неактивен.");
         modelAndView.setViewName("/admin/success.jsp");
         return modelAndView;
     }
@@ -109,9 +130,16 @@ public class AdminController {
     @GetMapping("/allUsers")
     public ModelAndView getAll() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("list", service.getAllUsers());
+        modelAndView.addObject("list", service.getAllActiveUsers());
         modelAndView.setViewName("/admin/all_users.jsp");
         return modelAndView;
     }
 
+    @GetMapping("/inactive")
+    public ModelAndView getAllInactive() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("list", service.getAllInactiveUsers());
+        modelAndView.setViewName("/admin/all_users_inactive.jsp");
+        return modelAndView;
+    }
 }

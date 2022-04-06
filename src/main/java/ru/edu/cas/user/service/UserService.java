@@ -66,6 +66,15 @@ public class UserService {
     }
 
     /**
+     * Метод возвращает список активных пользователей из таблицы user
+     *
+     * @return
+     */
+    public List<User> getAllActiveUsers() {
+        return repository.findByStatus("Active");
+    }
+
+    /**
      * Метод возвращает пользователя из таблицы user по id
      *
      * @param id - id пользователя
@@ -143,6 +152,7 @@ public class UserService {
             String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
             user = new User();
             user.setPassword(encodedPassword);
+            user.setStatus("Active");
         }
         user.setCategoryId(getCategory(categoryName));
         user.setFirstName(firstName);
@@ -168,6 +178,30 @@ public class UserService {
         }
         User user = getUser(login);
         repository.delete(user);
+        return user;
+    }
+
+    /**
+     * Метод возвращает неактивных пользователей
+     *
+     * @return
+     */
+    public List<User> getAllInactiveUsers() {
+        return repository.findByStatus("Inactive");
+    }
+
+    /**
+     * Метод  редактирует запись в таблице user.
+     *
+     * @param user User
+     * @return User
+     */
+    public User update(User user) {
+        User userDb = getUser(user.getId());
+        if (userDb == null) {
+            return null;
+        }
+        repository.save(user);
         return user;
     }
 }
