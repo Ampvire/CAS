@@ -16,6 +16,13 @@
     </form>
 </div>
 <div class="divSecondBody">
+    <article class="elem-wrapper">
+    <div class="client-name">
+        <form action="/user/instruction" method="get">
+            <button title="Инструкция по сервису" class="btn-get-instruction">?</button>
+        </form>
+    </div>
+        </article>
     <table class="myTable">
         <colgroup>
             <col span="5" style="background: white;">

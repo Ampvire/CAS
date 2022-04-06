@@ -25,6 +25,11 @@
     </div>
     <div class="divSecondBody">
         <div class="input-form">
+            <div class="client-name">
+                <form action="/user/instruction" method="get">
+                    <button title="Инструкция по сервису" class="btn-get-instruction">?</button>
+                </form>
+            </div>
             <h2>Обновление данных по клиенту</h2>
             <form action="success" method="post">
                 <div>

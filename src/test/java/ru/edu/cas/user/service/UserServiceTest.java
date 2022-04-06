@@ -59,7 +59,7 @@ class UserServiceTest {
     @Test
     void getAllRole() {
         List<Role> roles = service.getAllRole();
-        Assertions.assertEquals(2, roles.size());
+        Assertions.assertEquals(3, roles.size());
     }
 
     /**
@@ -102,4 +102,14 @@ class UserServiceTest {
     }
 
 
+    /**
+     * Неуспешное выполение метода createOrUpdateUser(...)
+     */
+    @Test
+    void createOrUpdateUser() {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("Fields must not be null!");
+        service.createOrUpdateUser(null, null, "Test"
+                , "test123", "1", "Admin");
+    }
 }
