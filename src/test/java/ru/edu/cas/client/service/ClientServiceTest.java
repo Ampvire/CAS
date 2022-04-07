@@ -50,7 +50,7 @@ class ClientServiceTest {
      */
     @Test
     public void createClientProduct_Test() {
-        int clientId = 2;
+        int clientId = 12;
         int productId = 2;
 
         Client client = service.getClientById(clientId);
@@ -69,7 +69,7 @@ class ClientServiceTest {
      */
     @Test
     public void createClientProductById_Test() {
-        int clientId = 2;
+        int clientId = 12;
         int productId = 2;
 
         Set<String> currentProductsByClient = service.getAllProductsByClient(clientId);
@@ -87,7 +87,7 @@ class ClientServiceTest {
      */
     @Test
     void getAllProductsByClient_Test() {
-        int clientId = 2;
+        int clientId = 12;
         int productId = 2;
         Client client = service.getClientById(clientId);
         Product product = productService.getProductById(productId);
@@ -104,7 +104,7 @@ class ClientServiceTest {
      */
     @Test
     public void calcSegmentId_Test() {
-        int clientId = 2;
+        int clientId = 12;
         Client testClient = service.getClientById(clientId);
         List<ClientFinance> financeList = service.getAllFinanceByClientInn(testClient.getInn());
         ClientFinance actualFinanceByClient = financeList.get(financeList.size() - 1);
@@ -192,9 +192,9 @@ class ClientServiceTest {
      */
     @Test
     void getAllFinanceByClientInnAndDate() {
-
-        String inn = "33333898989";
-        String date = "1998-01-07";
+        Client client = service.getClientById(12);
+        String inn = client.getInn();
+        String date = "31-12-2006";
         ClientFinance finances = service.getAllFinanceByClientInnAndDate(inn, date);
         Assertions.assertNotNull(finances);
     }
