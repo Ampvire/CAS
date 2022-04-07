@@ -123,7 +123,7 @@ public class ClientsAccountController {
         Client client = getCurrentClient();
         Application application = productService.saveApplication(client, years, sum, payment, loans, "Кредитование");
         String message = "Заявка" + (application == null ? " не отправлена" : " отправлена");
-        String jsp = application == null ? "/failed.jsp" : "/success.jsp";
+        String jsp = application == null ? "/failed.jsp" : "/account/success.jsp";
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
@@ -136,7 +136,7 @@ public class ClientsAccountController {
         Client client = getCurrentClient();
         Application application = productService.saveApplication(client, null, null, null, null, product);
         String message = "Заявка" + (application == null ? " не отправлена" : " отправлена");
-        String jsp = application == null ? "/failed.jsp" : "/success.jsp";
+        String jsp = application == null ? "/failed.jsp" : "/account/success.jsp";
         modelAndView.addObject("message", message);
         modelAndView.setViewName(jsp);
         return modelAndView;

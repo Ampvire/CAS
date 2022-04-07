@@ -20,6 +20,7 @@ import ru.edu.cas.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +50,10 @@ public class UserController {
         this.accountClientService = accountClientService;
     }
 
+    @Autowired
+    public void setService(ClientService service) {
+        this.service = service;
+    }
 
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,18 +62,12 @@ public class UserController {
     }
 
 
-    @Autowired
-    public void setService(ClientService service) {
-        this.service = service;
-    }
-
-
     @GetMapping("/info")
     public ModelAndView info() {
         User user = getCurrentUser();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("list", service.getAllClients(user.getId()));
-        modelAndView.addObject("segments",service.getListSegments());
+        modelAndView.addObject("segments", service.getListSegments());
         modelAndView.setViewName("/user/user_panel.jsp");
         return modelAndView;
     }
@@ -181,7 +180,8 @@ public class UserController {
         List<Client> clients = service.getAllClients(getCurrentUser().getId());
         List<String> result = Arrays.asList("Согласовано", "Отказано");
         List<Application> applicationList = productService.getApplicationByClient(clients);
-        modelAndView.addObject("segments",service.getListSegments());
+        Collections.reverse(applicationList);
+        modelAndView.addObject("segments", service.getListSegments());
         modelAndView.addObject("applications", applicationList);
         modelAndView.addObject("results", result);
         modelAndView.setViewName("/client/application.jsp");
@@ -199,12 +199,12 @@ public class UserController {
         if (!Objects.equals(reason, "")) {
             application.setRejectReason(reason);
         }
-        if (result.equals("Заявка согласована")) {
+        if (result.equals("Согласовано")) {
             service.createClientProduct(application.getClientId().getId(), application.getProductId().getId());
         }
-
+        productService.saveApplication(application);
         modelAndView.addObject("message", result);
-        modelAndView.setViewName("/success.jsp");
+        modelAndView.setViewName("/client/success.jsp");
         return modelAndView;
     }
 

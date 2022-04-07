@@ -10,11 +10,14 @@
 <body>
 <div class="main-wrapper">
     <div class="sidenav">
+       <form action="newUser" method="get">
+           <button class="btn">Создать пользователя</button>
+       </form>
         <form action="../admin/allUsers" method="get">
-            <button class="btn" type="submit">Все пользователи</button>
+            <button class="btn" type="submit">Aктивные пользователи</button>
         </form>
-        <form action="../admin/newUser" method="get">
-            <button class="btn">Создать пользователя</button>
+        <form action="../admin/inactive" method="get">
+            <button class="btn">Неактивные пользователи</button>
         </form>
         <form action="../../logout" method="get">
             <button class="btn" type="submit">Выход</button>
@@ -22,14 +25,14 @@
     </div>
     <div class="divSecondBody">
         <div class="input-form">
-            <h2>Удаление пользователя</h2>
+            <h2>Поместить пользователя в архив</h2>
             <form action="deleteUser" method="post">
                 <div>
                     <label for="login" class="col-25">Логин:</label>
                     <input type="text" id="login" name="login" class="col-75">
                 </div>
                 <div>
-                    <input type="submit" value="Удалить" style="width: 400px">
+                    <input type="submit" value="В архив" style="width: 400px">
                 </div>
             </form>
         </div>

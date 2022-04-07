@@ -9,4 +9,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByLogin(String login);
     List<User> findByCategoryId(Category category);
+    List<User> findByStatus(String active);
 }

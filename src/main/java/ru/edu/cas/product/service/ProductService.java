@@ -125,6 +125,15 @@ public class ProductService {
     }
 
     /**
+     * Метод записывает данные заявки в таблицу Application
+     * @param ap Application
+     * @return Application
+     */
+    public Application saveApplication(Application ap){
+        return applicationRepository.save(ap);
+    }
+
+    /**
      * @param name
      * @return
      */

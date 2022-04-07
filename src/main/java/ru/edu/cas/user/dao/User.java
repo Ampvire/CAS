@@ -25,6 +25,8 @@ public class User {
     private String lastName;
     @Column(name = "password")
     private String password;
+    @Column(name = "status")
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

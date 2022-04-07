@@ -8,14 +8,17 @@
 <body>
 <div class="main-wrapper">
     <div class="sidenav">
-        <form action="../../admin/allUsers" method="get">
-            <button class="btn" type="submit">Все пользователи</button>
-        </form>
-        <form action="../../admin/delete" method="get">
-            <button class="btn">Удалить пользователя</button>
-        </form>
         <form action="../../admin/newUser" method="get">
             <button class="btn">Создать пользователя</button>
+        </form>
+        <form action="../../admin/delete" method="get">
+            <button class="btn">Перевести в архив</button>
+        </form>
+        <form action="../../admin/allUsers" method="get">
+            <button class="btn" type="submit">Aктивные пользователи</button>
+        </form>
+        <form action="../../admin/inactive" method="get">
+            <button class="btn">Неактивные пользователи</button>
         </form>
         <form action="../../../logout" method="get">
             <button class="btn" type="submit">Выход</button>

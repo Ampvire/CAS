@@ -143,18 +143,18 @@ body{
 
 .myTable form .myTableButton{
     border: solid 1px black;
-    background: white;
+    background: lightgray;
     color: black;
-    height: 70px;
-    width: 120px;
+    height: 35px;
+    width: 100px;
     cursor: pointer;
     border-radius: 10px;
 
 }
 
 .myTable form .myTableButton:hover{
-    background: black;
-    color: white;
+    background: silver;
+
 }
 
 
@@ -222,8 +222,10 @@ td, th{
 }
 
 #applications-list td, #applications-list th{
-    padding: 20px;
-    border: 1px solid #c7ced5;
+    padding: 10px;
+   background-color: white;
+    border-style: ridge;
+    border: 1px solid lightgray;
 }
 
 .col-25 {

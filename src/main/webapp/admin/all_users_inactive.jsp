@@ -16,17 +16,16 @@
         <form action="delete" method="get">
             <button class="btn">Перевести в архив</button>
         </form>
-        <form action="inactive" method="get">
-            <button class="btn">Неактивные пользователи</button>
+        <form action="allUsers" method="get">
+            <button class="btn">Активные пользователи</button>
         </form>
         <form action="../../logout" method="get">
             <button class="btn" type="submit">Выход</button>
         </form>
-
     </div>
     <div class="divSecondBody">
         <article class="elem-wrapper">
-            <h2>Список всех активных пользователей</h2>
+            <h2>Список всех неактивных пользователей</h2>
             <div class="table-block">
 
                     <table class="myTable">
@@ -40,7 +39,6 @@
                             <th>ФАМИЛИЯ</th>
                             <th>КАТЕГОРИЯ</th>
                             <th>РОЛЬ</th>
-                            <th></th>
                             <th></th>
                         </tr>
                         <c:forEach items="${list}" var="user">
@@ -56,15 +54,9 @@
                                         <button class="myTableButton">Обновить</button>
                                     </form>
                                 </td>
-                                <td>
-                                    <form action="deleteUser/${user.login}" method="post">
-                                        <button class="myTableButton">В архив</button>
-                                    </form>
-                                </td>
                             </tr>
                         </c:forEach>
                     </table>
-
             </div>
         </article>
     </div>
