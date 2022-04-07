@@ -30,7 +30,7 @@
     </div>
 
     <div class="divSecondBody">
-       <article class="elem-wrapper">
+        <article class="elem-wrapper">
             <div class="client-name">
                 <form action="/user/instruction" method="get">
                     <button title="Инструкция по сервису" class="btn-get-instruction">?</button>
@@ -59,25 +59,30 @@
                         <td>${application.percent.years}</td>
                         <td>${application.status}</td>
 
-                    <form action="result" method="post">
-                        <td>
-                           <input placeholder="ввести при отказе" id="note" name="reason" style="width: 150px; height: 50px;">
-                        </td>
-                        <td>
-                             <input name="id" value="${application.id}" style="visibility:hidden">
-                                  <select id="status" name="result" style="width: 150px; height: 50px;">
-                                     <c:forEach items="${results}" var="res">
-                                         <option>${res}</option>
-                                     </c:forEach>
-                                 </select>
-
-                            <input type="submit" value="Отправить" style="width: 150px; background: lite grey; height: 30px; cursor: pointer; border: solid 1px black;">
-                       </td>
-                            </form>
+                        <form action="result" method="post">
+                            <td>
+                                <input placeholder="ввести при отказе" id="note" name="reason"
+                                       style="width: 150px; height: 50px;">
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${application.status !='Согласовано'}">
+                                        <input name="id" value="${application.id}" style="visibility:hidden">
+                                        <select id="status" name="result" style="width: 150px; height: 50px;">
+                                            <c:forEach items="${results}" var="res">
+                                                <option>${res}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <input type="submit" value="Отправить"
+                                               style="width: 150px; background: lightgray; height: 30px; cursor: pointer; border: solid 1px black;">
+                                    </c:when>
+                                </c:choose>
+                            </td>
+                        </form>
                     </tr>
                 </c:forEach>
             </table>
-  </article>
+        </article>
     </div>
 </div>
 </body>
