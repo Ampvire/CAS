@@ -143,10 +143,10 @@ body{
 
 .myTable form .myTableButton{
     border: solid 1px black;
-    background: white;
+    background: lightgray;
     color: black;
-    height: 70px;
-    width: 120px;
+    height: 40px;
+    width: 100px;
     cursor: pointer;
     border-radius: 10px;
 
@@ -222,8 +222,8 @@ td, th{
 }
 
 #applications-list td, #applications-list th{
-    padding: 20px;
-    border: 1px solid #c7ced5;
+    padding: 10px;
+   background-color: lightgray;
 }
 
 .col-25 {
