@@ -25,7 +25,7 @@
     </div>
     <div class="divSecondBody">
         <div class="input-form">
-            <h2>Удаление пользователя</h2>
+            <h2>Поместить пользователя в архив</h2>
             <form action="deleteUser" method="post">
                 <div>
                     <label for="login" class="col-25">Логин:</label>

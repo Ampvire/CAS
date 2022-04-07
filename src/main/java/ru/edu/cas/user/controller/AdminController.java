@@ -121,6 +121,10 @@ public class AdminController {
         User user = service.getUser(login);
         user.setStatus("Inactive");
         service.update(user);
+        List<Client> clients = clientService.getAllClients(user.getId());
+        for (Client client : clients) {
+            client.setUserId(null);
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "Пользователю установлен признак - неактивен.");
         modelAndView.setViewName("/admin/success.jsp");
