@@ -56,6 +56,11 @@ public class ClientsAccountController {
         return modelAndView;
     }
 
+    @GetMapping("/instruction")
+    public ModelAndView getInstruction() {
+        return new ModelAndView("/account/instruction_client.jsp");
+    }
+
     @GetMapping("/Кредитование")
     public ModelAndView requestLoans() {
         List<Percent> percents = productService.getPercent();
