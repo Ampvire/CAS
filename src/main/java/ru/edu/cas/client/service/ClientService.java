@@ -223,13 +223,7 @@ public class ClientService {
      */
     public List<Client> getAllClientsWithoutUser(String segment) {
         ClientSegment clientSegment = getSegment(segment);
-        List<User> inactiveUsers = userRepository.findByStatus("Inactive");
-        List<Client> newClient = clientsRepository.findByUserIdAndSegmentId(null, clientSegment);
-
-        inactiveUsers.stream()
-                .forEach(user -> newClient.addAll(clientsRepository.findByUserIdAndSegmentId(user, clientSegment)));
-
-        return newClient;
+        return clientsRepository.findByUserIdAndSegmentId(null, clientSegment);
     }
 
     /**
