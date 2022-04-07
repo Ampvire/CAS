@@ -107,6 +107,7 @@ public class AdminController {
         List<Client> clients = clientService.getAllClients(user.getId());
         for (Client client : clients) {
             client.setUserId(null);
+            clientService.updateClient(client);
         }
         String message = user == null ? "Пользователь с логином " + login + " не найден!" : "Пользователю установлен признак - неактивен.";
         String jsp = user == null ? "/admin/failed.jsp" : "/admin/success.jsp";
@@ -124,6 +125,7 @@ public class AdminController {
         List<Client> clients = clientService.getAllClients(user.getId());
         for (Client client : clients) {
             client.setUserId(null);
+            clientService.updateClient(client);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", "Пользователю установлен признак - неактивен.");
