@@ -561,4 +561,14 @@ public class ClientService {
         Client client = getClientById(accountClient.getClientId().getId());
         return client;
     }
+
+    /**
+     * Метод меняет данные клиента в таблице client
+     * @param client  Client
+     * @return Client
+     */
+    public Client updateClient(Client client) {
+        client = clientsRepository.save(client);
+        return client;
+    }
 }

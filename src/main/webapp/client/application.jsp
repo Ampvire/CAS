@@ -39,15 +39,15 @@
             <h2>Список заявок</h2>
             <table id="applications-list">
                 <tr>
-                    <th>Клиент</th>
-                    <th>Продукт</th>
-                    <th>Сумма кредита</th>
-                    <th>Ежемесячный платеж</th>
-                    <th>Сумма к выплате</th>
-                    <th>Процент</th>
-                    <th>Кол-во лет</th>
-                    <th>Статус</th>
-                    <th></th>
+                    <th>КЛИЕНТ</th>
+                    <th>ПРОДУКТ</th>
+                    <th>СУММА</th>
+                    <th>ПЛАТЕЖ</th>
+                    <th>%</th>
+                    <th>КОЛ-ВО ЛЕТ</th>
+                    <th>СТАТУС</th>
+                    <th>КОММЕНТАРИЙ</th>
+                    <th>СОГЛАСОВАНИЕ</th>
                 </tr>
                 <c:forEach items="${applications}" var="application">
                     <tr>
@@ -55,28 +55,30 @@
                         <td>${application.productId.name}</td>
                         <td>${application.sum}</td>
                         <td>${application.payment}</td>
-                        <td>${application.totalAmount}</td>
                         <td>${application.percent.percent}</td>
                         <td>${application.percent.years}</td>
                         <td>${application.status}</td>
-                        <td>
-                            <form action="result" method="post">
-                                <label for="note">Комментарий<br/>
-                                    <input placeholder="введите комментарий" id="note" name="reason" style="width: 300px; height: 50px;">
-                                </label>
-                                <input name="id" value="${application.id}" style="visibility:hidden">
-                                <label for="status">
-                                    Выбрать статус:<br/>
-                                    <select id="status" name="result" style="width: 150px; height: 50px;">
-                                        <c:forEach items="${results}" var="res">
-                                            <option>${res}</option>
-                                        </c:forEach>
-                                    </select>
-                                </label>
-                                <input type="submit" value="Отправить"
-                                       style="width: 150px; background: white; height: 50px; cursor: pointer; border: solid 1px black;">
-                            </form>
-                        </td>
+
+                        <form action="result" method="post">
+                            <td>
+                                <input placeholder="ввести при отказе" id="note" name="reason"
+                                       style="width: 150px; height: 50px;">
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${application.status !='Согласовано'}">
+                                        <input name="id" value="${application.id}" style="visibility:hidden">
+                                        <select id="status" name="result" style="width: 150px; height: 50px;">
+                                            <c:forEach items="${results}" var="res">
+                                                <option>${res}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <input type="submit" value="Отправить"
+                                               style="width: 150px; background: lightgray; height: 30px; cursor: pointer; border: solid 1px black;">
+                                    </c:when>
+                                </c:choose>
+                            </td>
+                        </form>
                     </tr>
                 </c:forEach>
             </table>
