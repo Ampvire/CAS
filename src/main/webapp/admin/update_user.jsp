@@ -35,7 +35,10 @@
                 </div>
                 <div>
                     <label for="status" class="col-25">Статус:</label>
-                    <input type="text" id="status" name="status" value="${status}" class="col-75">
+                    <select id="status" name="status" class="col-75">
+                        <option value="Active" selected>Активный</option>
+                        <option value="Inactive">Не активный</option>
+                    </select>
                 </div>
                 <div>
                     <label for="category" class="col-25">Категория:</label>

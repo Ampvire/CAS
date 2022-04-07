@@ -72,17 +72,6 @@ public class ClientService {
 
 
     /**
-     * Метод возвращает список всех клиентов по id пользователя
-     *
-     * @param login -логин пользователя
-     * @return
-     */
-    public List<Client> getAllClients(String login) {
-        User user = userService.getUser(login);
-        return clientsRepository.findByUserId(user);
-    }
-
-    /**
      * Получить клиента по идентификатору
      */
     public Client getClientById(int id) {
@@ -234,7 +223,13 @@ public class ClientService {
      */
     public List<Client> getAllClientsWithoutUser(String segment) {
         ClientSegment clientSegment = getSegment(segment);
-        return clientsRepository.findByUserIdAndSegmentId(null, clientSegment);
+        List<User> inactiveUsers = userRepository.findByStatus("Inactive");
+        List<Client> newClient = clientsRepository.findByUserIdAndSegmentId(null, clientSegment);
+
+        inactiveUsers.stream()
+                .forEach(user -> newClient.addAll(clientsRepository.findByUserIdAndSegmentId(user, clientSegment)));
+
+        return newClient;
     }
 
     /**

@@ -116,16 +116,6 @@ public class UserService {
 
 
     /**
-     * Метод возвращает запись из таблицы category по идентификатору категории.
-     *
-     * @param categoryId -идентификатор категории
-     * @return
-     */
-    public Category getCategory(int categoryId) {
-        return categoryRepository.findById(categoryId);
-    }
-
-    /**
      * Метод создает запись в таблице user или редактирует ее.
      *
      * @param login
