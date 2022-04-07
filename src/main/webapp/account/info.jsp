@@ -14,11 +14,17 @@
     </div>
     <div class="divSecondBody">
         <article class="elem-wrapper">
-            <div class="client-name"> ${client.typeId.type} "${client.name}" ИНН${client.inn} </div>
-            <h1>Приветствуем Вас в Банке!</h1>
+            <div class="client-name">
+                <form action="account/instruction" method="get">
+                    <button title="Инструкция по сервису" class="btn-get-instruction">?</button>
+                </form>
+                <br/>
+                ${client.typeId.type} "${client.name}" ИНН${client.inn}
+            </div>
+            <h1 style="text-align: center">Приветствуем Вас в Банке!</h1>
             <form action="account/saveFinance" method="get">
+                <h2>Заполнить данные о компании: </h2>
                 <div style="width: 500px; display: flex">
-                    <label for="info">Заполнить данные о компании: </label>
                     <input id="info" type="submit" value="Заполнить" style="width: 100px; margin-left: auto">
                 </div>
             </form>
