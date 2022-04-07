@@ -41,10 +41,9 @@
                 <tr>
                     <th>КЛИЕНТ</th>
                     <th>ПРОДУКТ</th>
-                    <th>СУММА КРЕДИТА</th>
-                    <th>ЕЖЕМЕСЯЧНЫЙ ПЛАТЕЖ</th>
-                    <th>СУММА К ВЫПЛАТЕ</th>
-                    <th>ПРОЦЕНТ</th>
+                    <th>СУММА</th>
+                    <th>ПЛАТЕЖ</th>
+                    <th>%</th>
                     <th>КОЛ-ВО ЛЕТ</th>
                     <th>СТАТУС</th>
                     <th>КОММЕНТАРИЙ</th>
@@ -56,24 +55,22 @@
                         <td>${application.productId.name}</td>
                         <td>${application.sum}</td>
                         <td>${application.payment}</td>
-                        <td>${application.totalAmount}</td>
                         <td>${application.percent.percent}</td>
                         <td>${application.percent.years}</td>
                         <td>${application.status}</td>
 
                     <form action="result" method="post">
                         <td>
-                           <input placeholder="введите комментарий" id="note" name="reason" style="width: 150px; height: 50px;">
+                           <input placeholder="ввести при отказе" id="note" name="reason" style="width: 150px; height: 50px;">
                         </td>
                         <td>
                              <input name="id" value="${application.id}" style="visibility:hidden">
-                             <label for="status">
                                   <select id="status" name="result" style="width: 150px; height: 50px;">
                                      <c:forEach items="${results}" var="res">
                                          <option>${res}</option>
                                      </c:forEach>
                                  </select>
-                             </label>
+
                             <input type="submit" value="Отправить" style="width: 150px; background: lite grey; height: 30px; cursor: pointer; border: solid 1px black;">
                        </td>
                             </form>

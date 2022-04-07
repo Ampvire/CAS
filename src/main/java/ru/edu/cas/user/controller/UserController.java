@@ -20,6 +20,7 @@ import ru.edu.cas.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -179,6 +180,7 @@ public class UserController {
         List<Client> clients = service.getAllClients(getCurrentUser().getId());
         List<String> result = Arrays.asList("Согласовано", "Отказано");
         List<Application> applicationList = productService.getApplicationByClient(clients);
+        Collections.reverse(applicationList);
         modelAndView.addObject("segments", service.getListSegments());
         modelAndView.addObject("applications", applicationList);
         modelAndView.addObject("results", result);
@@ -197,12 +199,12 @@ public class UserController {
         if (!Objects.equals(reason, "")) {
             application.setRejectReason(reason);
         }
-        if (result.equals("Заявка согласована")) {
+        if (result.equals("Согласовано")) {
             service.createClientProduct(application.getClientId().getId(), application.getProductId().getId());
         }
-
+        productService.saveApplication(application);
         modelAndView.addObject("message", result);
-        modelAndView.setViewName("/success.jsp");
+        modelAndView.setViewName("/client/success.jsp");
         return modelAndView;
     }
 

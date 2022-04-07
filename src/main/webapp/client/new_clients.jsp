@@ -37,11 +37,11 @@
                         <col span="5" style="background:white">
                     </colgroup>
                     <tr>
-                        <th>Наименование</th>
+                        <th>НАИМЕНОВАНИЕ</th>
                         <th>ИНН</th>
                         <th>ОГРН</th>
-                        <th>Сегмент</th>
-                        <th>Тип</th>
+                        <th>СЕГМЕНТ</th>
+                        <th>ТИП</th>
                         <th></th>
                     </tr>
                     <c:forEach items="${list}" var="client">
